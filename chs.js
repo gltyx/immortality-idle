@@ -691,7 +691,7 @@ var cnItems = {
     "Sell one low-grade milkvetch for 125 taels. Right-click items to sell.": "以 125 两的价格出售一个低阶黄花菜。 右键单击要出售的物品。",
     "Ascension Shop": "转生商店",
     "Condense Soul Core": "凝聚魂核",
-    "End your current life, sacrifice all attributes and aptitudes, and enhance your bloodline. Your armor and your weapons equipped on death will become family heirlooms and will be inherited by your future self.": "结束你现在的生活，牺牲所有属性和资质，增强你的血统。 你死后装备的盔甲和武器将成为传家宝，并由你未来的自己继承。",
+    "End your current life, sacrifice all attributes and aptitudes, and enhance your bloodline. Your armor and your weapons equipped on death will become family heirlooms and will be inherited by your future self.": "结束当前生命，牺牲所有属性和资质，增强你的血统。 你死后装备的盔甲和武器将成为传家宝，并由你未来的自己继承。",
     "End your current life, sacrifice all attributes and aptitudes, and permanently increase the amount of aptitude gained on each reincarnation.": "结束当前生命，牺牲所有属性和资质，永久增加每次轮回获得的资质数量。",
     "End your current life, sacrifice all attributes and aptitudes, and permanently increase the power of your aptitudes when gaining attributes.": "结束当前生命，牺牲所有属性和资质，在获得属性时永久提升资质威力。",
     "Enhance Bloodline": "强化血脉",
