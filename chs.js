@@ -1106,7 +1106,7 @@ var cnRegReplace = new Map([
     [/^You attack a hungry wolf for (.+) damage$/, '你攻击了一只饿狼，造成 $1 伤害'],
     [/^You attack a puny spider for (.+) damage$/, '你攻击了一只小蜘蛛，造成 $1 伤害'],
     [/^You attack a pesky mouse for (.+) damage$/, '你攻击了一只讨厌的老鼠，造成 $1 伤害'],
-    [/^Sell all the monster gem grade 1 in the whole inventory.$/, '出售整个库存中的所有 $1级 怪物宝石'],
+    [/^Sell all the monster gem grade (.+) in the whole inventory.$/, '出售整个库存中的所有 $1级 怪物宝石'],
     [/^Sell all the froststeel bar in this inventory slot for (.+) taels.  Shift-right-click items to sell the stack.$/, '以 $1 两的价格出售此库存槽中的所有霜钢锭。 Shift-右键单击项目以出售堆栈。'],
     [/^Sell all the low-grade aster in this inventory slot for (.+) taels.  Shift-right-click items to sell the stack.$/, '以 $1 两的价格出售此库存槽中的所有低品紫菀。 Shift-右键单击项目以出售堆栈。'],
     [/^Sell all the monster gem grade (.+) in this inventory slot for (.+) taels.  Shift-right-click items to sell the stack.$/, '以 $2 两的价格出售此库存槽中的所有 $1 级怪物宝石。 Shift-右键单击项目以出售堆栈。'],
