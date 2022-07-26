@@ -26820,7 +26820,7 @@
                             })
                         }
                         rebirthClicked(e) {
-                            e.preventDefault(), confirm("This will end your current life. Are you sure?") && this.gameStateService.rebirth()
+                            e.preventDefault(), confirm("这将结束你现在的生活。 你确定吗？") && this.gameStateService.rebirth()
                         }
                         ascensionStoreClicked() {
                             this.storeService.updateAscensions(), this.dialog.open(t5, {
