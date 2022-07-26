@@ -24847,7 +24847,7 @@
                         template: function (e, i) {
                             if (1 & e) {
                                 const r = z();
-                                f(0, "div", 0)(1, "h3"), g(2, "Import/Export Save File"), d(), B(3, "hr"), f(4, "div")(5, "textarea", 1, 2), g(7, "To export a game, press the Export button then copy and paste the contents of this box to wherever you want to store the save data. To import a game, paste save data into this box and press the Import button. Make sure that the only thing in the box is your save data or the save may be corrupted. The best way to do this is have the game data in your clipboard, then click on this box and press Ctrl-a then Ctrl-v."), d()(), f(8, "button", 3), x("click", function () {
+                                f(0, "div", 0)(1, "h3"), g(2, "Import/Export Save File"), d(), B(3, "hr"), f(4, "div")(5, "textarea", 1, 2), g(7, "要导出游戏，请按“导出”按钮，然后将此框的内容复制并粘贴到您要存储保存数据的任何位置。 要导入游戏，请将保存数据粘贴到此框中，然后按导入按钮。 确保框中唯一的内容是您的保存数据，否则保存可能已损坏。 最好的方法是在剪贴板中保存游戏数据，然后单击此框并按 Ctrl-a 然后按 Ctrl-v。"), d()(), f(8, "button", 3), x("click", function () {
                                     O(r);
                                     const s = Dt(6);
                                     return i.importClick(s.value)
