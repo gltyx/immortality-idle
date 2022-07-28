@@ -2608,7 +2608,7 @@ var cnItems = {
     "Best home owned:": "最好的家庭拥有：",
     "Completed Apprenticeships": "完成学徒",
     "Days spend doing odd jobs:": "打零工的天数：",
-    "Days spent begging:": "一天的兴奋乞求：",
+    "Days spent begging:": "乞讨花费的天数：",
     "Days spent exhausted": "筋疲力尽的日子",
     "Follower recruited:": "招募的追随者：",
     "Followers died:": "追随者死亡：",
