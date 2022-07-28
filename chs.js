@@ -2599,7 +2599,7 @@ var cnItems = {
     "Fastest Game Speed (40 days/sec)": "最快游戏速度（40天/秒）",
     "Uses 5 Stamina. Increases charisma, provides money, and makes you wonder what more you can gain from immersing yourself in mortal practices.": "消耗 5 点耐力。 增加魅力，提供金钱，让你想知道你可以从凡人实践中获得什么。",
     "Do the impossible: Build a tower past the heavens": "做不可能的事：在天上建造一座塔",
-    "": "",
+    "A Statistics Panel is now available to show cultivators some information about what they have done. Additional Bloodline ascensions are now available. A late game boss is stronger but now has less health to make that fight less of a grind. Cultivators with the right knowledge can automatically rest instead of becoming exhausted. Some additional game options are available. Balance changes and bug fixes.": "现在可以使用统计面板向耕种者显示有关他们所做工作的一些信息。 额外的血统提升现在可用。 游戏后期的 Boss 更强大，但现在的生命值更少，这让这场战斗变得不那么痛苦。 修炼者有正确的知识，可以自然而然地休息，而不至于精疲力竭。 一些额外的游戏选项可用。 平衡变化和错误修复。",
     "": "",
     "": "",
     "": "",
