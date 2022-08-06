@@ -2699,7 +2699,7 @@ var cnItems = {
     "Satisfying Metal Kyoketsu-shoge": "令人满意的金属京月守",
     "Substandard Leather Helm Of Perfect Invulnerability": "完美无懈可击的劣质皮头盔",
     "Uses 25 Stamina. Build your physical power, master your craft, and create weapons.": "消耗 25 点耐力。 建立你的体力，掌握你的手艺，并创造武器。",
-    "": "",
+    "Preformance improvements to allow experienced cultivators fly through the centuries. A new activity. Bug fixes.": "性能改进，让经验丰富的修炼者飞越几个世纪。 一项新活动。 Bug修复。",
     "": "",
     "": "",
     "": "",
