@@ -949,7 +949,7 @@ var cnItems = {
     "Some styling improvements and a fix to very late game reward loot.": "一些样式改进和对非常晚的游戏奖励战利品的修复。",
     "Style fix, clear schedule button, and auto-equip can now be turned off in the options.": "现在可以在选项中关闭样式修复、清除计划按钮和自动装备。",
     "The log panel can now be resized by sliding the slider up and down. The Ascension Techniques panel stays unlocked once unlocked. Old junky gems can now be easily removed if you know how.": "现在可以通过上下滑动滑块来调整日志面板的大小。 提升技术面板一旦解锁就会保持解锁状态。 如果您知道如何操作，现在可以轻松移除旧的垃圾宝石。",
-    "Ascension Techniques.": "提升技术。",
+    "Ascension Techniques.": "转生技术。",
     "Auto-buying should always reserve": "自动购买应始终保留",
     "Automatically equip best equipment": "自动装备最好的设备",
     "Manual Of Effortless Armor Merging": "轻松装甲合并手册",
