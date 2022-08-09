@@ -12305,7 +12305,7 @@
                             let e = window.location.href;
                             if ("http://localhost:4200/" === e) return "";
                             if ("https://immortalityidle.github.io/" === e || "https://immortalityidle.github.io/old/" === e) return "";
-                            if (e.includes("https://immortalityidle.github.io/")) return e = e.substring(0, e.length - 1), e.substring(e.lastIndexOf("/") + 1);
+                            if (e.includes("/")) return e = e.substring(0, e.length - 1), e.substring(e.lastIndexOf("/") + 1);
                             throw new Error("Hey, someone stole this game!")
                         }
                     }
