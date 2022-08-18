@@ -15863,7 +15863,7 @@
                 Ie = (() => {
                     class n {
                         constructor(e, i, r, o, a) {
-                            this.injector = e, this.mainLoopService = i, this.logService = r, this.reincarnationService = o, this.forceRebirth = !1, this.fatherGift = !1, this.lifespanTooltip = "", setTimeout(() => this.hellService = this.injector.get(tt)), this.bigNumberPipe = this.injector.get(Yt), this.characterState = new y2(r, a, this.bigNumberPipe, i), i.tickSubject.subscribe(() => {
+                            this.injector = e, this.mainLoopService = i, this.logService = r, this.reincarnationService = o, this.forceRebirth = !1, this.fatherGift = !1, this.lifespanmatTooltip = "", setTimeout(() => this.hellService = this.injector.get(tt)), this.bigNumberPipe = this.injector.get(Yt), this.characterState = new y2(r, a, this.bigNumberPipe, i), i.tickSubject.subscribe(() => {
                                 this.mainLoopService.totalTicks % 3650 == 0 && this.characterState.increaseBaseLifespan(1, 70), this.characterState.dead || (this.characterState.age++, this.characterState.status.nourishment.value--);
                                 let s = "";
                                 if (this.forceRebirth) s = "You release your soul from your body at the age of " + this.formatAge() + ".";
@@ -15889,7 +15889,7 @@
                             return Math.floor(this.characterState.age / 365) + " years, " + this.characterState.age % 365 + " days"
                         }
                         setLifespanTooltip() {
-                            if (this.characterState.foodLifespan + this.characterState.alchemyLifespan + this.characterState.statLifespan + this.characterState.spiritualityLifespan + this.characterState.magicLifespan <= 0) return void(this.lifespanTooltip = "You have done nothing to extend your lifespan.");
+                            if (this.characterState.foodLifespan + this.characterState.alchemyLifespan + this.characterState.statLifespan + this.characterState.spiritualityLifespan + this.characterState.magicLifespan <= 0) return void(this.lifespanmatTooltip = "You have done nothing to extend your lifespan.");
                             let e = "Your base lifespan of " + this.yearify(this.characterState.baseLifespan) + " is extended by";
                             this.characterState.immortal && (e = "You are immortal. If you had remained mortal, your base lifespan of " + this.yearify(this.characterState.baseLifespan) + " would be extended by"), this.characterState.foodLifespan > 0 && (e += "<br>Healthy Food: " + this.yearify(this.characterState.foodLifespan)), this.characterState.alchemyLifespan > 0 && (e += "<br>Alchemy: " + this.yearify(this.characterState.alchemyLifespan)), this.characterState.statLifespan > 0 && (e += "<br>Basic Attributes: " + this.yearify(this.characterState.statLifespan)), this.characterState.spiritualityLifespan > 0 && (e += "<br>Spirituality: " + this.yearify(this.characterState.spiritualityLifespan)), this.characterState.magicLifespan > 0 && (e += "<br>Magic: " + this.yearify(this.characterState.magicLifespan)), this.lifespanTooltip = e
                         }
@@ -26971,7 +26971,7 @@
                         template: function (e, i) {
                             if (1 & e) {
                                 const r = U();
-                                d(0, "div", 0)(1, "h3"), p(2, "Import/Export Save File"), h(), B(3, "hr"), d(4, "div")(5, "textarea", 1, 2), p(7, "要导出游戏，请按“导出”按钮，然后将此框的内容复制并粘贴到您要存储保存数据的任何位置。 要导入游戏，请将保存数据粘贴到此框中，然后按导入按钮。 确保框中唯一的内容是您的保存数据，否则保存可能已损坏。 最好的方法是在剪贴板中保存游戏数据，然后单击此框并按 Ctrl-a 然后按 Ctrl-v。"), h()(), d(8, "button", 3), T("click", function () {
+                                d(0, "div", 0)(1, "h3"), p(2, "Import/Export Save File"), h(), B(3, "hr"), d(4, "div")(5, "textarea", 1, 2), p(7, "To export a game, press the Export button then copy and paste the contents of this box to wherever you want to store the save data. To import a game, paste save data into this box and press the Import button. Make sure that the only thing in the box is your save data or the save may be corrupted. The best way to do this is have the game data in your clipboard, then click on this box and press Ctrl-a then Ctrl-v."), h()(), d(8, "button", 3), T("click", function () {
                                     O(r);
                                     const a = kt(6);
                                     return i.importClick(a.value)
