@@ -2773,7 +2773,7 @@ var cnItems = {
     "No Shield": "无护盾",
     "No Special Attack": "无特殊攻击",
     "Set a number to change all of the follower job limits to.": "设置一个数字以更改所有追随者工作上限。",
-    "": "",
+    "Gemologists combine spirit gems into higher grades.": "宝石学家将精神宝石组合成更高的等级。",
     "": "",
     "": "",
     "": "",
