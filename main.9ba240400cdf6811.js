@@ -17233,7 +17233,7 @@
             let Mt = (() => {
                 class i {
                     constructor(e, n, r, o, a, s, l, c, u) {
-                        this.injector = e, this.logService = n, this.characterService = r, this.homeService = o, this.inventoryService = a, this.itemRepoService = s, this.battleService = u, this.camelToTitle = new ba, this.followersUnlocked = !1, this.followerLifespanDoubled = !1, this.followers = [], this.stashedFollowers = [], this.followersRecruited = 0, this.autoDismissUnlocked = !1, this.maxFollowerByType = {}, this.stashedFollowersMaxes = {}, this.followerCap = 0, this.followersMaxed = "UNMAXED", this.sortField = "Job", this.sortAscending = !0, this.totalRecruited = 0, this.totalDied = 0, this.totalDismissed = 0, this.highestLevel = 0, this.unlockedHiddenJobs = [], this.autoReplaceUnlocked = !1, this.petsEnabled = !1, this.jobs = {
+                        this.injector = e, this.logService = n, this.characterService = r, this.homeService = o, this.inventoryService = a, this.itemRepoService = s, this.battleService = u, this.camelToTitle = new ba, this.followersUnlocked = !1, this.followerLifespanDoubled = !1, this.followers = [], this.stashedFollowers = [], this.followersRecruited = 0, this.autoDismissUnlocked = !1, this.maxFollowerByType = {}, this.stashedFollowersMaxes = {}, this.followerCap = 0, this.followersMaxed = "UNMAXED", this.sortField = "Job", this.sortAscending = !0, this.totalRecruited = 0, this.totalDied = 0, this.totalDismissed = 0, this.highestLevel = 0, this.unlockedHiddenJobs = [], this.autoReplaceUnlocked = !1, this.petsEnabled = !1, this.onlyWantedFollowers = !1, this.jobs = {
                             builder: {
                                 work: () => {
                                     this.homeService.nextHomeCostReduction += this.jobs.builder.totalPower, this.homeService.upgrading && this.homeService.upgradeTick(this.jobs.builder.totalPower)
@@ -17487,11 +17487,12 @@
                             highestLevel: this.highestLevel,
                             unlockedHiddenJobs: this.unlockedHiddenJobs,
                             autoReplaceUnlocked: this.autoReplaceUnlocked,
-                            petsEnabled: this.petsEnabled
+                            petsEnabled: this.petsEnabled,
+                            onlyWantedFollowers: this.onlyWantedFollowers
                         }
                     }
                     setProperties(e) {
-                        this.followers = e.followers || [], this.stashedFollowers = e.stashedFollowers || [], this.followersUnlocked = e.followersUnlocked || !1, this.autoDismissUnlocked = e.autoDismissUnlocked || !1, this.maxFollowerByType = e.maxFollowerByType || {}, this.stashedFollowersMaxes = e.stashedFollowersMaxes || {}, this.sortField = e.sortField || "Job", this.sortAscending = void 0 === e.sortAscending || e.sortAscending, this.totalRecruited = e.totalRecruited || 0, this.totalDied = e.totalDied || 0, this.totalDismissed = e.totalDismissed || 0, this.highestLevel = e.highestLevel || 0, this.unlockedHiddenJobs = e.unlockedHiddenJobs || [], this.autoReplaceUnlocked = e.autoReplaceUnlocked || !1, this.petsEnabled = e.petsEnabled || !1, this.unhideUnlockedJobs(), this.updateFollowerTotalPower()
+                        this.followers = e.followers || [], this.stashedFollowers = e.stashedFollowers || [], this.followersUnlocked = e.followersUnlocked || !1, this.autoDismissUnlocked = e.autoDismissUnlocked || !1, this.maxFollowerByType = e.maxFollowerByType || {}, this.stashedFollowersMaxes = e.stashedFollowersMaxes || {}, this.sortField = e.sortField || "Job", this.sortAscending = void 0 === e.sortAscending || e.sortAscending, this.totalRecruited = e.totalRecruited || 0, this.totalDied = e.totalDied || 0, this.totalDismissed = e.totalDismissed || 0, this.highestLevel = e.highestLevel || 0, this.unlockedHiddenJobs = e.unlockedHiddenJobs || [], this.autoReplaceUnlocked = e.autoReplaceUnlocked || !1, this.petsEnabled = e.petsEnabled || !1, this.onlyWantedFollowers = e.onlyWantedFollowers || !1, this.unhideUnlockedJobs(), this.updateFollowerTotalPower()
                     }
                     unlockJob(e) {
                         this.unlockedHiddenJobs.includes(e) || this.unlockedHiddenJobs.push(e), this.unhideUnlockedJobs()
@@ -17500,25 +17501,43 @@
                         for (const e of this.unlockedHiddenJobs) this.jobs[e].hidden = !1
                     }
                     generateFollower(e = !1, n) {
-                        if (this.totalRecruited++, this.followersRecruited++, this.followers.length >= this.followerCap) return this.logService.addLogMessage("A new follower shows up, but you already have too many. You are forced to turn them away.", "INJURY", "FOLLOWER"), this.followersMaxed = "MAXED", null;
-                        n = n || this.generateFollowerJob(e);
-                        let r = 1e3,
-                            o = 0;
-                        void 0 !== this.maxFollowerByType[n] && (r = this.maxFollowerByType[n]);
-                        for (const l of this.followers) l.job === n && o++;
-                        if (o >= r) return this.logService.addLogMessage("A new follower shows up, but they were a " + this.camelToTitle.transform(n) + " and you don't want any more of those.", "STANDARD", "FOLLOWER"), this.totalDismissed++, null;
-                        const a = this.followerLifespanDoubled ? 5 : 10;
+                        if (this.totalRecruited++, this.followersRecruited++, this.followers.length >= this.followerCap) {
+                            if (!this.onlyWantedFollowers) return this.logService.addLogMessage("A new follower shows up, but you already have too many. You are forced to turn them away.", "INJURY", "FOLLOWER"), this.followersMaxed = "MAXED", null; {
+                                const s = Object.keys(this.jobs);
+                                let l = !1;
+                                for (const c of s) {
+                                    if (this.jobs[c].hidden) continue;
+                                    let u = void 0 !== this.maxFollowerByType[c] ? this.maxFollowerByType[c] : 1e3,
+                                        f = 0;
+                                    for (const p of this.followers)
+                                        if (p.job === c && f++, f > u) {
+                                            l = !0, this.dismissFollower(p);
+                                            break
+                                        } if (l) break
+                                }
+                                if (!l) return this.logService.addLogMessage("A new follower shows up, but you already have all the followers you want.", "INJURY", "FOLLOWER"), this.followersMaxed = "MAXED", null
+                            }
+                        }
+                        if ("" === (n = n || this.generateFollowerJob(e))) return null;
+                        let r = void 0 !== this.maxFollowerByType[n] ? this.maxFollowerByType[n] : 1e3;
+                        if (this.numFollowersOnJob(n) >= r) return this.logService.addLogMessage("A new follower shows up, but they were a " + this.camelToTitle.transform(n) + " and you don't want any more of those.", "STANDARD", "FOLLOWER"), this.totalDismissed++, null;
+                        const o = this.followerLifespanDoubled ? 5 : 10;
                         this.logService.addLogMessage("A new " + this.camelToTitle.transform(n) + " has come to learn at your feet.", "STANDARD", "FOLLOWER");
-                        const s = {
+                        const a = {
                             name: this.generateFollowerName(),
                             age: 0,
-                            lifespan: this.characterService.characterState.lifespan / a,
+                            lifespan: this.characterService.characterState.lifespan / o,
                             job: n,
                             power: 1,
                             cost: 100,
                             pet: e
                         };
-                        return this.followers.push(s), this.sortFollowers(this.sortAscending), this.followers.length >= this.followerCap && (this.followersMaxed = "MAXED"), this.updateFollowerTotalPower(), s
+                        return this.followers.push(a), this.sortFollowers(this.sortAscending), this.followers.length >= this.followerCap && (this.followersMaxed = "MAXED"), this.updateFollowerTotalPower(), a
+                    }
+                    numFollowersOnJob(e) {
+                        let n = 0;
+                        for (const r of this.followers) r.job === e && n++;
+                        return n
                     }
                     generateFollowerName() {
                         return k1[Math.floor(Math.random() * k1.length)]
@@ -17526,8 +17545,13 @@
                     generateFollowerJob(e = !1) {
                         const n = Object.keys(this.jobs),
                             r = [];
-                        for (const o of n) this.jobs[o].hidden || (e && this.jobs[o].pet || !e && !this.jobs[o].pet) && r.push(o);
-                        return r[Math.floor(Math.random() * r.length)]
+                        for (const o of n)
+                            if (!this.jobs[o].hidden && (e && this.jobs[o].pet || !e && !this.jobs[o].pet))
+                                if (this.onlyWantedFollowers) {
+                                    let a = void 0 !== this.maxFollowerByType[o] ? this.maxFollowerByType[o] : 1e3;
+                                    this.numFollowersOnJob(o) < a && r.push(o)
+                                } else r.push(o);
+                        return 0 === r.length ? "" : r[Math.floor(Math.random() * r.length)]
                     }
                     dismissFollower(e) {
                         this.totalDismissed++;
@@ -18282,12 +18306,21 @@
                                 check: () => this.characterService.characterState.immortal,
                                 effect: () => {},
                                 unlocked: !1
+                            }, {
+                                name: "Headhunter",
+                                description: "You've sorted through so many applicants that you can now always find followers you want.",
+                                hint: "You didn't really want one thousand scouts, did you?",
+                                check: () => this.followerService.totalDismissed > 888,
+                                effect: () => {
+                                    this.followerService.onlyWantedFollowers = !0
+                                },
+                                unlocked: !1
                             }], this.mainLoopService.longTickSubject.subscribe(() => {
                                 for (const y of this.achievements) this.unlockedAchievements.includes(y.name) || y.check() && this.unlockAchievement(y, !0)
                             })
                         }
                         unlockAchievement(e, n) {
-                            n && (this.unlockedAchievements.push(e.name), this.logService.addLogMessage(e.description, "STANDARD", "STORY"), this.gameStateService || (this.gameStateService = this.injector.get(Wi)), this.gameStateService.savetoLocalStorage(), this.characterService.toast("Achievement Unlocked: " + e.displayName)), e.effect(), e.unlocked = !0
+                            n && (this.unlockedAchievements.push(e.name), this.logService.addLogMessage(e.description, "STANDARD", "STORY"), this.gameStateService || (this.gameStateService = this.injector.get(Wi)), this.gameStateService.savetoLocalStorage(), this.characterService.toast("Achievement Unlocked: " + (e.displayName ? e.displayName : e.name))), e.effect(), e.unlocked = !0
                         }
                         getProperties() {
                             return {
@@ -18635,6 +18668,18 @@
                                     useConsumes: !1,
                                     use: () => {
                                         this.characterService.characterState.increaseAttribute("waterLore", .01)
+                                    }
+                                },
+                                bookshelf: {
+                                    id: "bookshelf",
+                                    name: "bookshelf",
+                                    type: "furniture",
+                                    slot: "workbench",
+                                    value: 1e6,
+                                    description: "An bookshelf to read and expand your mind.",
+                                    useConsumes: !1,
+                                    use: () => {
+                                        this.characterService.characterState.increaseAttribute("intelligence", .1)
                                     }
                                 },
                                 prayerShrine: {
@@ -19373,7 +19418,7 @@
                                     useDescription: "Become immortal and win the game.",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.impossibleTaskService || (this.impossibleTaskService = this.injector.get(vr)), this.impossibleTaskService.taskProgress[J.OvercomeDeath].progress++, this.impossibleTaskService.activeTaskIndex = J.OvercomeDeath, this.impossibleTaskService.checkCompletion(), this.impossibleTaskService.taskProgress[J.OvercomeDeath].complete && (this.logService.addLogMessage("YOU HAVE ACHIEVED IMMORTALITY! YOU WILL LIVE FOREVER!", "INJURY", "STORY"), this.gameStateService || (this.gameStateService = this.injector.get(Wi)), this.gameStateService.easyModeEver && this.logService.addLogMessage("Good work, even if you did take the easy path. For more of a challenge, you could reset and try without using the easy game mode.", "STANDARD", "STORY"), this.logService.addLogMessage("You won this game in " + this.mainLoopService.totalTicks + " days over " + this.characterService.characterState.totalLives + " lifetimes. I wonder if other immortals have ever done it faster?", "STANDARD", "STORY"), this.characterService.characterState.immortal = !0)
+                                        this.impossibleTaskService || (this.impossibleTaskService = this.injector.get(vr)), this.impossibleTaskService.taskProgress[J.OvercomeDeath].progress++, this.impossibleTaskService.activeTaskIndex = J.OvercomeDeath, this.impossibleTaskService.checkCompletion(), this.impossibleTaskService.taskProgress[J.OvercomeDeath].complete && (this.logService.addLogMessage("YOU HAVE ACHIEVED IMMORTALITY! YOU WILL LIVE FOREVER!", "INJURY", "STORY"), this.gameStateService || (this.gameStateService = this.injector.get(Wi)), this.gameStateService.easyModeEver && this.logService.addLogMessage("Good work, even if you did take the easy path. For more of a challenge, you could reset and try without using the easy game mode.", "STANDARD", "STORY"), this.logService.addLogMessage("You started your journey on " + new Date(this.gameStateService.gameStartTimestamp).toDateString() + " and succeeded in your quest on " + new Date(this.gameStateService.gameStartTimestamp).toDateString() + ".", "STANDARD", "STORY"), this.logService.addLogMessage("You took " + this.mainLoopService.totalTicks + " days over " + this.characterService.characterState.totalLives + " lifetimes to overcome death.", "STANDARD", "STORY"), this.characterService.characterState.immortal = !0)
                                     }
                                 },
                                 fingers: {
@@ -20768,7 +20813,7 @@
                 it = (() => {
                     class i {
                         constructor(e, n, r, o, a, s, l, c, u, f, p) {
-                            this.injector = e, this.characterService = n, this.inventoryService = r, this.homeService = o, this.mainLoopService = s, this.itemRepoService = l, this.battleService = c, this.logService = u, this.followerService = f, this.impossibleTaskService = p, this.activityLoop = [], this.savedActivityLoop = [], this.savedActivityLoop2 = [], this.savedActivityLoop3 = [], this.spiritActivity = null, this.autoRestart = !1, this.autoPauseUnlocked = !1, this.pauseOnImpossibleFail = !0, this.pauseOnDeath = !0, this.pauseBeforeDeath = !1, this.openApprenticeships = 1, this.oddJobDays = 0, this.beggingDays = 0, this.completedApprenticeships = [], this.currentIndex = 0, this.currentTickCount = 0, this.exhaustionDays = 0, this.currentLoopEntry = void 0, this.currentApprenticeship = R.Resting, this.activityDeath = !1, this.autoRestUnlocked = !1, this.totalExhaustedDays = 0, this.activityHeader = "", this.activityHeaderDescription = "", this.hellEnabled = !1, this.spiritActivityProgress = !1, this.purifyGemsUnlocked = !1, this.defineActivities(), this.activities = [], setTimeout(() => this.activities = this.getActivityList()), a.reincarnateSubject.subscribe(() => {
+                            this.injector = e, this.characterService = n, this.inventoryService = r, this.homeService = o, this.mainLoopService = s, this.itemRepoService = l, this.battleService = c, this.logService = u, this.followerService = f, this.impossibleTaskService = p, this.activityLoop = [], this.savedActivityLoop = [], this.savedActivityLoop2 = [], this.savedActivityLoop3 = [], this.spiritActivity = null, this.autoRestart = !1, this.autoPauseUnlocked = !1, this.pauseOnImpossibleFail = !0, this.pauseOnDeath = !0, this.pauseBeforeDeath = !1, this.openApprenticeships = 1, this.oddJobDays = 0, this.beggingDays = 0, this.completedApprenticeships = [], this.currentIndex = 0, this.currentTickCount = 0, this.exhaustionDays = 0, this.currentLoopEntry = void 0, this.currentApprenticeship = void 0, this.activityDeath = !1, this.autoRestUnlocked = !1, this.totalExhaustedDays = 0, this.activityHeader = "", this.activityHeaderDescription = "", this.hellEnabled = !1, this.spiritActivityProgress = !1, this.purifyGemsUnlocked = !1, this.defineActivities(), this.activities = [], setTimeout(() => this.activities = this.getActivityList()), a.reincarnateSubject.subscribe(() => {
                                 this.reset()
                             }), s.tickSubject.subscribe(() => {
                                 var v;
@@ -20841,11 +20886,11 @@
                             const r = e.unlockedActivities || [R.OddJobs, R.Resting],
                                 o = e.discoveredActivities || [R.OddJobs, R.Resting];
                             for (const a of this.activities) a.unlocked = r.includes(a.activityType), a.discovered || (a.discovered = o.includes(a.activityType) || r.includes(a.activityType));
-                            this.autoRestart = e.autoRestart, this.autoPauseUnlocked = e.autoPauseUnlocked || !1, this.pauseOnDeath = e.pauseOnDeath, this.pauseBeforeDeath = e.pauseBeforeDeath || !1, this.activityLoop = e.activityLoop, this.spiritActivity = null !== (n = e.spiritActivity) && void 0 !== n ? n : null, this.openApprenticeships = e.openApprenticeships || 0, this.currentApprenticeship = e.currentApprenticeship || R.Resting, this.savedActivityLoop = e.savedActivityLoop || [], this.savedActivityLoop2 = e.savedActivityLoop2 || [], this.savedActivityLoop3 = e.savedActivityLoop3 || [], this.autoRestUnlocked = e.autoRestUnlocked || !1, this.purifyGemsUnlocked = e.purifyGemsUnlocked || !1, this.pauseOnImpossibleFail = void 0 === e.pauseOnImpossibleFail || e.pauseOnImpossibleFail, this.totalExhaustedDays = e.totalExhaustedDays || 0;
+                            this.autoRestart = e.autoRestart, this.autoPauseUnlocked = e.autoPauseUnlocked || !1, this.pauseOnDeath = e.pauseOnDeath, this.pauseBeforeDeath = e.pauseBeforeDeath || !1, this.activityLoop = e.activityLoop, this.spiritActivity = null !== (n = e.spiritActivity) && void 0 !== n ? n : null, this.openApprenticeships = e.openApprenticeships || 0, this.currentApprenticeship = e.currentApprenticeship, this.savedActivityLoop = e.savedActivityLoop || [], this.savedActivityLoop2 = e.savedActivityLoop2 || [], this.savedActivityLoop3 = e.savedActivityLoop3 || [], this.autoRestUnlocked = e.autoRestUnlocked || !1, this.purifyGemsUnlocked = e.purifyGemsUnlocked || !1, this.pauseOnImpossibleFail = void 0 === e.pauseOnImpossibleFail || e.pauseOnImpossibleFail, this.totalExhaustedDays = e.totalExhaustedDays || 0;
                             for (let a = 0; a < 5; a++) this.upgradeActivities(!0)
                         }
                         meetsRequirements(e) {
-                            if (this.meetsRequirementsByLevel(e, e.level, !0)) {
+                            if (this.meetsRequirementsByLevel(e, e.level)) {
                                 if (e.unlocked = !0, e.discovered)
                                     for (const n of this.activityLoop) n.activity === e.activityType && n.disabled && (n.disabled = !1);
                                 else e.discovered = !0;
@@ -20853,13 +20898,13 @@
                             }
                             return !1
                         }
-                        meetsRequirementsByLevel(e, n, r) {
-                            if (r && !e.unlocked && this.openApprenticeships <= 0 && e.activityType !== this.currentApprenticeship && (n < e.skipApprenticeshipLevel || e.skipApprenticeshipLevel > 0 && !this.completedApprenticeships.includes(e.activityType))) return !1;
-                            const o = Object.keys(e.requirements[n]);
-                            for (const a in o) {
-                                const s = o[a];
-                                let l = 0;
-                                if (void 0 !== e.requirements[n][s] && (l = e.requirements[n][s]), this.characterService.characterState.attributes[s].value <= l) return !1
+                        meetsRequirementsByLevel(e, n) {
+                            if (e.skipApprenticeshipLevel > 0 && this.openApprenticeships <= 0 && e.activityType !== this.currentApprenticeship && !this.completedApprenticeships.includes(e.activityType)) return !1;
+                            const r = Object.keys(e.requirements[n]);
+                            for (const o in r) {
+                                const a = r[o];
+                                let s = 0;
+                                if (void 0 !== e.requirements[n][a] && (s = e.requirements[n][a]), this.characterService.characterState.attributes[a].value <= s) return !1
                             }
                             return !0
                         }
@@ -20869,10 +20914,10 @@
                             for (let r = this.activityLoop.length - 1; r >= 0; r--)(null === (n = this.getActivityByType(this.activityLoop[r].activity)) || void 0 === n ? void 0 : n.unlocked) || (this.activityLoop[r].disabled = !0)
                         }
                         upgradeActivities(e) {
-                            for (const n of this.activities) n.level < n.description.length - 1 && this.meetsRequirementsByLevel(n, n.level + 1, !1) && (!e && n.unlocked && this.logService.addLogMessage("Congratulations on your promotion! " + n.name[n.level] + " upgraded to " + n.name[n.level + 1], "STANDARD", "EVENT"), n.level++, n.unlocked && n.skipApprenticeshipLevel <= n.level && (this.completedApprenticeships.includes(n.activityType) || this.completedApprenticeships.push(n.activityType)))
+                            for (const n of this.activities) n.level < n.description.length - 1 && this.meetsRequirementsByLevel(n, n.level + 1) && (!e && n.unlocked && this.logService.addLogMessage("Congratulations on your promotion! " + n.name[n.level] + " upgraded to " + n.name[n.level + 1], "STANDARD", "EVENT"), n.level++)
                         }
                         reset() {
-                            this.openApprenticeships = 1, this.currentApprenticeship = R.Resting, this.oddJobDays = 0, this.beggingDays = 0;
+                            this.openApprenticeships = 1, this.currentApprenticeship = void 0, this.oddJobDays = 0, this.beggingDays = 0;
                             for (const e of this.activities) e.level = 0, e.unlocked = !1;
                             for (let e = 0; e < 5; e++) this.upgradeActivities(!0);
                             this.impossibleTaskService.activeTaskIndex !== J.Swim && (this.Resting.unlocked = !0, this.OddJobs.unlocked = !0), this.autoRestart ? (this.checkRequirements(!0), this.pauseOnDeath && !this.characterService.characterState.immortal && (this.mainLoopService.pause = !0)) : this.activityLoop = [], this.currentTickCount = 0, this.currentIndex = 0
@@ -20883,13 +20928,14 @@
                             return null
                         }
                         checkApprenticeship(e) {
-                            if (0 !== this.openApprenticeships) {
+                            if (!this.completedApprenticeships.includes(e))
+                                if (this.currentApprenticeship === e) {
+                                    let n = this.getActivityByType(e);
+                                    n && n.level >= n.skipApprenticeshipLevel && this.completedApprenticeships.push(e)
+                                } else if (this.openApprenticeships > 0) {
                                 this.openApprenticeships--, this.currentApprenticeship = e;
-                                for (const n of this.activities)
-                                    if (n.activityType !== e && n.level < n.skipApprenticeshipLevel) {
-                                        n.unlocked = !1;
-                                        for (let r = this.activityLoop.length - 1; r >= 0; r--) this.activityLoop[r].activity === n.activityType && (this.activityLoop[r].disabled = !0)
-                                    }
+                                for (let n of this.activities) n.skipApprenticeshipLevel > 0 && (n.unlocked = !1);
+                                this.checkRequirements(!0)
                             }
                         }
                         reloadActivities() {
@@ -21355,7 +21401,7 @@
                                     this.characterService.characterState.yinYangUnlocked && (this.characterService.characterState.yin++, this.characterService.characterState.yang++)
                                 }, () => {
                                     var r;
-                                    this.characterService.characterState.increaseAttribute("strength", .5), this.characterService.characterState.increaseAttribute("toughness", .5), this.characterService.characterState.status.stamina.value -= 25;
+                                    this.checkApprenticeship(R.Blacksmithing), this.characterService.characterState.increaseAttribute("strength", .5), this.characterService.characterState.increaseAttribute("toughness", .5), this.characterService.characterState.status.stamina.value -= 25;
                                     const o = Math.log2(this.characterService.characterState.attributes.strength.value + this.characterService.characterState.attributes.toughness.value) + this.characterService.characterState.attributes.fireLore.value + 5 * this.characterService.characterState.attributes.metalLore.value;
                                     this.characterService.characterState.money += o, this.Blacksmithing.lastIncome = o;
                                     let a = .05;
@@ -21366,7 +21412,7 @@
                                     this.characterService.characterState.yinYangUnlocked && (this.characterService.characterState.yin++, this.characterService.characterState.yang++)
                                 }, () => {
                                     var r;
-                                    this.characterService.characterState.increaseAttribute("strength", 1), this.characterService.characterState.increaseAttribute("toughness", 1), this.characterService.characterState.status.stamina.value -= 50;
+                                    this.checkApprenticeship(R.Blacksmithing), this.characterService.characterState.increaseAttribute("strength", 1), this.characterService.characterState.increaseAttribute("toughness", 1), this.characterService.characterState.status.stamina.value -= 50;
                                     const o = Math.log2(this.characterService.characterState.attributes.strength.value + this.characterService.characterState.attributes.toughness.value) + this.characterService.characterState.attributes.fireLore.value + 10 * this.characterService.characterState.attributes.metalLore.value;
                                     this.characterService.characterState.money += o, this.Blacksmithing.lastIncome = o;
                                     let a = .2;
@@ -21446,7 +21492,7 @@
                                     }
                                     this.characterService.characterState.yinYangUnlocked && this.characterService.characterState.yin++
                                 }, () => {
-                                    this.characterService.characterState.increaseAttribute("intelligence", .5), this.characterService.characterState.status.stamina.value -= 10;
+                                    this.checkApprenticeship(R.Alchemy), this.characterService.characterState.increaseAttribute("intelligence", .5), this.characterService.characterState.status.stamina.value -= 10;
                                     const r = Math.log2(this.characterService.characterState.attributes.intelligence.value) + 5 * this.characterService.characterState.attributes.waterLore.value;
                                     this.characterService.characterState.money += r, this.Alchemy.lastIncome = r;
                                     let o = 1 - Math.exp(0 - .025 * Math.log(this.characterService.characterState.attributes.waterLore.value));
@@ -21456,7 +21502,7 @@
                                     }
                                     this.characterService.characterState.yinYangUnlocked && this.characterService.characterState.yin++
                                 }, () => {
-                                    this.characterService.characterState.increaseAttribute("intelligence", 1), this.characterService.characterState.status.stamina.value -= 20;
+                                    this.checkApprenticeship(R.Alchemy), this.characterService.characterState.increaseAttribute("intelligence", 1), this.characterService.characterState.status.stamina.value -= 20;
                                     const r = Math.log2(this.characterService.characterState.attributes.intelligence.value) + 10 * this.characterService.characterState.attributes.waterLore.value;
                                     if (this.characterService.characterState.money += r, this.Alchemy.lastIncome = r, this.characterService.characterState.increaseAttribute("woodLore", .2), this.characterService.characterState.increaseAttribute("waterLore", .6), this.inventoryService.openInventorySlots() > 0) {
                                         let o = this.inventoryService.consume("ingredient");
@@ -21525,7 +21571,7 @@
                                     }
                                     this.characterService.characterState.yinYangUnlocked && this.characterService.characterState.yang++
                                 }, () => {
-                                    this.characterService.characterState.increaseAttribute("strength", .5), this.characterService.characterState.increaseAttribute("intelligence", .5), this.characterService.characterState.status.stamina.value -= 20;
+                                    this.checkApprenticeship(R.Woodworking), this.characterService.characterState.increaseAttribute("strength", .5), this.characterService.characterState.increaseAttribute("intelligence", .5), this.characterService.characterState.status.stamina.value -= 20;
                                     const r = Math.log2(this.characterService.characterState.attributes.strength.value + this.characterService.characterState.attributes.intelligence.value) + 5 * this.characterService.characterState.attributes.woodLore.value;
                                     if (this.characterService.characterState.money += r, this.Woodworking.lastIncome = r, this.characterService.characterState.increaseAttribute("woodLore", .02), Math.random() < .05 && this.inventoryService.openInventorySlots() > 0) {
                                         const o = this.inventoryService.consume("wood");
@@ -21533,7 +21579,7 @@
                                     }
                                     this.characterService.characterState.yinYangUnlocked && this.characterService.characterState.yang++
                                 }, () => {
-                                    this.characterService.characterState.increaseAttribute("strength", 1), this.characterService.characterState.increaseAttribute("intelligence", 1), this.characterService.characterState.status.stamina.value -= 40;
+                                    this.checkApprenticeship(R.Woodworking), this.characterService.characterState.increaseAttribute("strength", 1), this.characterService.characterState.increaseAttribute("intelligence", 1), this.characterService.characterState.status.stamina.value -= 40;
                                     const r = Math.log2(this.characterService.characterState.attributes.strength.value + this.characterService.characterState.attributes.intelligence.value) + 10 * this.characterService.characterState.attributes.woodLore.value;
                                     if (this.characterService.characterState.money += r, this.Woodworking.lastIncome = r, this.characterService.characterState.increaseAttribute("woodLore", .6), Math.random() < .2 && this.inventoryService.openInventorySlots() > 0) {
                                         const o = this.inventoryService.consume("wood");
@@ -21587,7 +21633,7 @@
                                     }
                                     this.characterService.characterState.yinYangUnlocked && (this.characterService.characterState.yin++, this.characterService.characterState.yang++)
                                 }, () => {
-                                    this.characterService.characterState.increaseAttribute("speed", .5), this.characterService.characterState.increaseAttribute("toughness", .5), this.characterService.characterState.status.stamina.value -= 20;
+                                    this.checkApprenticeship(R.Leatherworking), this.characterService.characterState.increaseAttribute("speed", .5), this.characterService.characterState.increaseAttribute("toughness", .5), this.characterService.characterState.status.stamina.value -= 20;
                                     const r = Math.log2(this.characterService.characterState.attributes.speed.value + this.characterService.characterState.attributes.toughness.value) + 5 * this.characterService.characterState.attributes.animalHandling.value;
                                     if (this.characterService.characterState.money += r, this.Leatherworking.lastIncome = r, this.characterService.characterState.increaseAttribute("animalHandling", .003), Math.random() < .01 && this.inventoryService.openInventorySlots() > 0) {
                                         const o = this.inventoryService.consume("hide");
@@ -21595,7 +21641,7 @@
                                     }
                                     this.characterService.characterState.yinYangUnlocked && (this.characterService.characterState.yin++, this.characterService.characterState.yang++)
                                 }, () => {
-                                    this.characterService.characterState.increaseAttribute("speed", 1), this.characterService.characterState.increaseAttribute("toughness", 1), this.characterService.characterState.status.stamina.value -= 40;
+                                    this.checkApprenticeship(R.Leatherworking), this.characterService.characterState.increaseAttribute("speed", 1), this.characterService.characterState.increaseAttribute("toughness", 1), this.characterService.characterState.status.stamina.value -= 40;
                                     const r = Math.log2(this.characterService.characterState.attributes.speed.value + this.characterService.characterState.attributes.toughness.value) + 10 * this.characterService.characterState.attributes.animalHandling.value;
                                     if (this.characterService.characterState.money += r, this.Leatherworking.lastIncome = r, this.characterService.characterState.increaseAttribute("animalHandling", .1), Math.random() < .2 && this.inventoryService.openInventorySlots() > 0) {
                                         const o = this.inventoryService.consume("hide");
@@ -22118,7 +22164,7 @@
                         }), h(), d(20, "label", 4), m(21, "Show this summary at the start of each life"), h()()()()), 2 & e && (g(7), F(" ", n.causeOfDeath, " "), g(2), b("ngIf", !n.characterService.characterState.immortal), g(4), se(n.attributeGains), g(2), b("ngIf", n.characterService.characterState.showTips), g(4), b("checked", n.characterService.characterState.showLifeSummary))
                     },
                     directives: [st],
-                    styles: [".textDiv[_ngcontent-%COMP%]{white-space:pre-wrap}.lifeSummary[_ngcontent-%COMP%]{max-height:500px;overflow-y:auto}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
+                    styles: [".textDiv[_ngcontent-%COMP%]{white-space:pre-wrap}.lifeSummary[_ngcontent-%COMP%]{max-height:600px;overflow-y:auto}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
             class oU {
@@ -26400,7 +26446,7 @@
                     type: i
                 }), i.\u0275inj = He({}), i
             })();
-            const s5 = {
+            const s4 = {
                 provide: xn,
                 useExisting: Be(() => Um),
                 multi: !0
@@ -26436,7 +26482,7 @@
                             return null
                         }
                         _getOptionValue(e) {
-                            const n = function l5(i) {
+                            const n = function l4(i) {
                                 return i.split(":")[0]
                             }(e);
                             return this._optionMap.has(n) ? this._optionMap.get(n) : e
@@ -26464,7 +26510,7 @@
                         inputs: {
                             compareWith: "compareWith"
                         },
-                        features: [Ue([s5]), ee]
+                        features: [Ue([s4]), ee]
                     }), i
                 })(),
                 jm = (() => {
@@ -26498,7 +26544,7 @@
                         }
                     }), i
                 })();
-            const c5 = {
+            const c4 = {
                 provide: xn,
                 useExisting: Be(() => qm),
                 multi: !0
@@ -26560,7 +26606,7 @@
                             return null
                         }
                         _getOptionValue(e) {
-                            const n = function u5(i) {
+                            const n = function u4(i) {
                                 return i.split(":")[0]
                             }(e);
                             return this._optionMap.has(n) ? this._optionMap.get(n)._value : e
@@ -26588,7 +26634,7 @@
                         inputs: {
                             compareWith: "compareWith"
                         },
-                        features: [Ue([c5]), ee]
+                        features: [Ue([c4]), ee]
                     }), i
                 })(),
                 zm = (() => {
@@ -26625,7 +26671,7 @@
                         }
                     }), i
                 })(),
-                b5 = (() => {
+                b4 = (() => {
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
@@ -26637,30 +26683,30 @@
                         ]
                     }), i
                 })(),
-                S5 = (() => {
+                S4 = (() => {
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
                     }, i.\u0275mod = je({
                         type: i
                     }), i.\u0275inj = He({
-                        imports: [b5]
+                        imports: [b4]
                     }), i
                 })();
 
-            function w5(i, t) {
+            function w4(i, t) {
                 1 & i && (d(0, "span", 16), m(1, "Game"), h())
             }
 
-            function C5(i, t) {
+            function C4(i, t) {
                 1 & i && (d(0, "span"), m(1, " \xa0\xa0Only starting your journey to immortality from the beginning again (Hard Reset) will prove you never took the easy path. "), h())
             }
 
-            function k5(i, t) {
+            function k4(i, t) {
                 1 & i && (d(0, "span", 16), m(1, "Home"), h())
             }
 
-            function M5(i, t) {
+            function M4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span"), m(2, " Automatically buy up to "), d(3, "input", 18), M("change", function (r) {
@@ -26673,7 +26719,7 @@
                 }
             }
 
-            function x5(i, t) {
+            function x4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span"), m(2, " Automatically plow up to "), d(3, "input", 18), M("change", function (r) {
@@ -26686,7 +26732,7 @@
                 }
             }
 
-            function T5(i, t) {
+            function T4(i, t) {
                 if (1 & i && (d(0, "option", 21), m(1), h()), 2 & i) {
                     const e = t.$implicit,
                         n = w(3);
@@ -26694,12 +26740,12 @@
                 }
             }
 
-            function D5(i, t) {
+            function D4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span"), m(2, " Automatically upgrade your home up to a "), d(3, "select", 19), M("change", function (r) {
                         return E(e), w(2).autoBuyHomeLimitChanged(r)
-                    }), x(4, T5, 2, 3, "option", 20), h()()()
+                    }), x(4, T4, 2, 3, "option", 20), h()()()
                 }
                 if (2 & i) {
                     const e = w(2);
@@ -26707,10 +26753,10 @@
                 }
             }
 
-            function E5(i, t) {
+            function E4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-tab"), x(1, k5, 2, 0, "ng-template", 1), x(2, M5, 5, 1, "div", 17), x(3, x5, 5, 1, "div", 17), x(4, D5, 5, 1, "div", 17), d(5, "div")(6, "span")(7, "input", 7), M("change", function (r) {
+                    d(0, "mat-tab"), x(1, k4, 2, 0, "ng-template", 1), x(2, M4, 5, 1, "div", 17), x(3, x4, 5, 1, "div", 17), x(4, D4, 5, 1, "div", 17), d(5, "div")(6, "span")(7, "input", 7), M("change", function (r) {
                         return E(e), w().autoPauseThugs(r)
                     }), h(), d(8, "label", 8), m(9, "Automatically pause if thugs rough you up."), h()()()()
                 }
@@ -26720,11 +26766,11 @@
                 }
             }
 
-            function A5(i, t) {
+            function A4(i, t) {
                 1 & i && (d(0, "span", 16), m(1, "Crafting"), h())
             }
 
-            function P5(i, t) {
+            function P4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 22), M("change", function (r) {
@@ -26737,7 +26783,7 @@
                 }
             }
 
-            function I5(i, t) {
+            function I4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 24), M("change", function (r) {
@@ -26750,7 +26796,7 @@
                 }
             }
 
-            function O5(i, t) {
+            function O4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 26), M("change", function (r) {
@@ -26763,7 +26809,7 @@
                 }
             }
 
-            function R5(i, t) {
+            function R4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 28), M("change", function (r) {
@@ -26776,7 +26822,7 @@
                 }
             }
 
-            function F5(i, t) {
+            function F4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 30), M("change", function (r) {
@@ -26789,18 +26835,18 @@
                 }
             }
 
-            function L5(i, t) {
-                if (1 & i && (d(0, "mat-tab"), x(1, A5, 2, 0, "ng-template", 1), x(2, P5, 5, 1, "div", 17), x(3, I5, 5, 1, "div", 17), x(4, O5, 5, 1, "div", 17), x(5, R5, 5, 1, "div", 17), x(6, F5, 5, 1, "div", 17), h()), 2 & i) {
+            function L4(i, t) {
+                if (1 & i && (d(0, "mat-tab"), x(1, A4, 2, 0, "ng-template", 1), x(2, P4, 5, 1, "div", 17), x(3, I4, 5, 1, "div", 17), x(4, O4, 5, 1, "div", 17), x(5, R4, 5, 1, "div", 17), x(6, F4, 5, 1, "div", 17), h()), 2 & i) {
                     const e = w();
                     g(2), b("ngIf", e.inventoryService.autoequipBestArmor || e.inventoryService.autoequipBestWeapon), g(1), b("ngIf", e.inventoryService.autoequipBestArmor && e.inventoryService.autoArmorMergeUnlocked || e.inventoryService.autoequipBestWeapon && e.inventoryService.autoArmorMergeUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked)
                 }
             }
 
-            function N5(i, t) {
+            function N4(i, t) {
                 1 & i && (d(0, "span", 16), m(1, "Sales"), h())
             }
 
-            function B5(i, t) {
+            function B4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 32), M("change", function (r) {
@@ -26813,7 +26859,7 @@
                 }
             }
 
-            function H5(i, t) {
+            function H4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 34), M("change", function (r) {
@@ -26826,7 +26872,7 @@
                 }
             }
 
-            function V5(i, t) {
+            function V4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 36), M("change", function (r) {
@@ -26839,7 +26885,7 @@
                 }
             }
 
-            function U5(i, t) {
+            function U4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 38), M("change", function (r) {
@@ -26852,7 +26898,7 @@
                 }
             }
 
-            function j5(i, t) {
+            function j4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 40), M("change", function (r) {
@@ -26865,7 +26911,7 @@
                 }
             }
 
-            function q5(i, t) {
+            function q4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 42), M("change", function (r) {
@@ -26878,7 +26924,7 @@
                 }
             }
 
-            function z5(i, t) {
+            function z4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div")(1, "span"), m(2), I(3, "titlecase"), h(), d(4, "span"), m(5, " - Reserve \xa0"), d(6, "input", 18), M("change", function (r) {
@@ -26895,14 +26941,14 @@
                 }
             }
 
-            function Y5(i, t) {
-                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, " Automatically Sold Items: "), h(), d(3, "div", 44), x(4, z5, 10, 4, "div", 45), h()()), 2 & i) {
+            function Y4(i, t) {
+                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, " Automatically Sold Items: "), h(), d(3, "div", 44), x(4, z4, 10, 4, "div", 45), h()()), 2 & i) {
                     const e = w(2);
                     g(4), b("ngForOf", e.inventoryService.autoSellEntries)
                 }
             }
 
-            function G5(i, t) {
+            function G4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div")(1, "span"), m(2), I(3, "titlecase"), h(), d(4, "span"), m(5, " - Reserve \xa0"), d(6, "input", 18), M("change", function (r) {
@@ -26919,14 +26965,14 @@
                 }
             }
 
-            function $5(i, t) {
-                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, "Automatically Used Items:"), h(), d(3, "div", 44), x(4, G5, 10, 4, "div", 45), h()()), 2 & i) {
+            function $4(i, t) {
+                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, "Automatically Used Items:"), h(), d(3, "div", 44), x(4, G4, 10, 4, "div", 45), h()()), 2 & i) {
                     const e = w(2);
                     g(4), b("ngForOf", e.inventoryService.autoUseEntries)
                 }
             }
 
-            function W5(i, t) {
+            function W4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div")(1, "span"), m(2), I(3, "titlecase"), d(4, "input", 18), M("change", function (r) {
@@ -26946,25 +26992,25 @@
                 }
             }
 
-            function K5(i, t) {
-                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, "Automatically Balanced Items:"), h(), d(3, "div", 44), x(4, W5, 9, 5, "div", 45), h()()), 2 & i) {
+            function K4(i, t) {
+                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, "Automatically Balanced Items:"), h(), d(3, "div", 44), x(4, W4, 9, 5, "div", 45), h()()), 2 & i) {
                     const e = w(2);
                     g(4), b("ngForOf", e.inventoryService.autoBalanceItems)
                 }
             }
 
-            function J5(i, t) {
-                if (1 & i && (d(0, "mat-tab"), x(1, N5, 2, 0, "ng-template", 1), x(2, B5, 5, 1, "div", 17), x(3, H5, 5, 1, "div", 17), x(4, V5, 5, 1, "div", 17), x(5, U5, 5, 1, "div", 17), x(6, j5, 5, 1, "div", 17), x(7, q5, 5, 1, "div", 17), x(8, Y5, 5, 1, "div", 17), x(9, $5, 5, 1, "div", 17), x(10, K5, 5, 1, "div", 17), h()), 2 & i) {
+            function J4(i, t) {
+                if (1 & i && (d(0, "mat-tab"), x(1, N4, 2, 0, "ng-template", 1), x(2, B4, 5, 1, "div", 17), x(3, H4, 5, 1, "div", 17), x(4, V4, 5, 1, "div", 17), x(5, U4, 5, 1, "div", 17), x(6, j4, 5, 1, "div", 17), x(7, q4, 5, 1, "div", 17), x(8, Y4, 5, 1, "div", 17), x(9, $4, 5, 1, "div", 17), x(10, K4, 5, 1, "div", 17), h()), 2 & i) {
                     const e = w();
                     g(2), b("ngIf", e.inventoryService.autoSellOldHerbs), g(1), b("ngIf", e.inventoryService.autoSellOldWood), g(1), b("ngIf", e.inventoryService.autoSellOldOre), g(1), b("ngIf", e.inventoryService.autoSellOldOre), g(1), b("ngIf", e.inventoryService.autoSellOldHides), g(1), b("ngIf", e.inventoryService.autoSellOldGemsUnlocked), g(1), b("ngIf", e.inventoryService.autoSellUnlocked), g(1), b("ngIf", e.inventoryService.autoUseUnlocked), g(1), b("ngIf", e.inventoryService.autoBalanceUnlocked)
                 }
             }
 
-            function Q5(i, t) {
+            function Q4(i, t) {
                 1 & i && (d(0, "span", 16), m(1, "Auto-buy"), h())
             }
 
-            function Z5(i, t) {
+            function Z4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "div", 2)(1, "span")(2, "input", 47), M("change", function (r) {
@@ -26979,7 +27025,7 @@
                 }
             }
 
-            function X5(i, t) {
+            function X4(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "tr")(1, "td")(2, "button", 51), M("click", function () {
@@ -27004,20 +27050,20 @@
                 }
             }
 
-            function e4(i, t) {
-                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, " Auto-Buyer Options: "), d(3, "table", 49)(4, "tr")(5, "th", 50), m(6, "Priority Order"), h(), d(7, "th"), m(8, "Enabled"), h(), d(9, "th"), m(10, "Wait For Finish"), h()(), x(11, X5, 13, 5, "tr", 45), h()()()), 2 & i) {
+            function e5(i, t) {
+                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, " Auto-Buyer Options: "), d(3, "table", 49)(4, "tr")(5, "th", 50), m(6, "Priority Order"), h(), d(7, "th"), m(8, "Enabled"), h(), d(9, "th"), m(10, "Wait For Finish"), h()(), x(11, X4, 13, 5, "tr", 45), h()()()), 2 & i) {
                     const e = w(2);
                     g(11), b("ngForOf", e.autoBuyerService.autoBuyerSettings)
                 }
             }
 
-            function t4(i, t) {
-                if (1 & i && (d(0, "mat-tab"), x(1, Q5, 2, 0, "ng-template", 1), x(2, Z5, 7, 2, "div", 17), x(3, e4, 12, 1, "div", 17), h()), 2 & i) {
+            function t5(i, t) {
+                if (1 & i && (d(0, "mat-tab"), x(1, Q4, 2, 0, "ng-template", 1), x(2, Z4, 7, 2, "div", 17), x(3, e5, 12, 1, "div", 17), h()), 2 & i) {
                     const e = w();
                     g(2), b("ngIf", e.homeService.autoBuyLandUnlocked || e.homeService.autoBuyHomeUnlocked || e.homeService.autoBuyFurnitureUnlocked), g(1), b("ngIf", e.autoBuyerService.autoBuyerSettingsUnlocked)
                 }
             }
-            let n4 = (() => {
+            let n5 = (() => {
                 class i {
                     constructor(e, n, r, o, a, s, l) {
                         this.homeService = e, this.characterService = n, this.inventoryService = r, this.gameStateService = o, this.followerService = a, this.autoBuyerService = s, this.mainLoopService = l
@@ -27099,7 +27145,7 @@
                             if (e.preventDefault(), e.stopPropagation(), this.characterService.characterState.easyMode) this.characterService.characterState.easyMode = !1;
                             else {
                                 if (!this.gameStateService.easyModeEver) {
-                                    if (!confirm("这将启用简单模式并永久标记您的保存。 你确定吗？")) return void(e.target.checked = !1);
+                                    if (!confirm("This will enable easy mode and mark your save permanently. Are you sure?")) return void(e.target.checked = !1);
                                     this.gameStateService.easyModeEver = !0
                                 }
                                 this.characterService.characterState.easyMode = !0
@@ -27185,9 +27231,9 @@
                         ["type", "checkbox", 3, "checked", "change"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Manuals Options"), h(), d(3, "mat-tab-group")(4, "mat-tab"), x(5, w5, 2, 0, "ng-template", 1), d(6, "div", 2)(7, "span", 3)(8, "input", 4), M("change", function (o) {
+                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Manuals Options"), h(), d(3, "mat-tab-group")(4, "mat-tab"), x(5, w4, 2, 0, "ng-template", 1), d(6, "div", 2)(7, "span", 3)(8, "input", 4), M("change", function (o) {
                             return n.easyModeChange(o)
-                        }), h(), d(9, "label", 5), m(10, "Easy Mode"), h()(), x(11, C5, 2, 0, "span", 6), h(), d(12, "div", 2)(13, "span")(14, "input", 7), M("change", function (o) {
+                        }), h(), d(9, "label", 5), m(10, "Easy Mode"), h()(), x(11, C4, 2, 0, "span", 6), h(), d(12, "div", 2)(13, "span")(14, "input", 7), M("change", function (o) {
                             return n.autoBuyFoodChange(o)
                         }), h(), d(15, "label", 8), m(16, "Automatically buy rice each day if you have no food to avoid starvation."), h()()(), d(17, "div", 2)(18, "span")(19, "input", 9), M("change", function (o) {
                             return n.showLifeSummaryChange(o)
@@ -27195,7 +27241,7 @@
                             return n.showTipsChange(o)
                         }), h(), d(25, "label", 12), m(26, "Include tips in the life summary. Warning, this can spoil the fun of discovering things for yourself."), h()()(), d(27, "div", 2)(28, "span")(29, "input", 13), M("change", function (o) {
                             return n.scientificNotationChange(o)
-                        }), h(), d(30, "label", 14), m(31, "Turn on numbers with scientific notation."), h(), m(32, "\xa0 "), d(33, "span", 15), m(34, "Changing this will save and reload immediately."), h()()()(), x(35, E5, 10, 4, "mat-tab", 6), x(36, L5, 7, 5, "mat-tab", 6), x(37, J5, 11, 9, "mat-tab", 6), x(38, t4, 4, 2, "mat-tab", 6), h()()), 2 & e && (g(8), b("checked", n.characterService.characterState.easyMode), g(3), b("ngIf", n.gameStateService.easyModeEver), g(3), b("checked", n.inventoryService.autoBuyFood), g(5), b("checked", n.characterService.characterState.showLifeSummary), g(5), b("checked", n.characterService.characterState.showTips), g(5), b("checked", n.mainLoopService.scientificNotation), g(6), b("ngIf", n.homeService.autoBuyLandUnlocked || n.homeService.autoFieldUnlocked || n.homeService.autoBuyHomeUnlocked), g(1), b("ngIf", n.inventoryService.autoequipBestArmor || n.inventoryService.autoequipBestWeapon || n.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", n.inventoryService.autoSellOldHerbs || n.inventoryService.autoSellOldWood || n.inventoryService.autoSellOldOre || n.inventoryService.autoSellOldHides || n.inventoryService.autoSellOldGemsUnlocked || n.inventoryService.autoSellUnlocked || n.inventoryService.autoUseUnlocked || n.inventoryService.autoBalanceUnlocked), g(1), b("ngIf", n.homeService.autoBuyLandUnlocked || n.homeService.autoBuyHomeUnlocked || n.homeService.autoBuyFurnitureUnlocked || n.autoBuyerService.autoBuyerSettingsUnlocked))
+                        }), h(), d(30, "label", 14), m(31, "Turn on numbers with scientific notation."), h(), m(32, "\xa0 "), d(33, "span", 15), m(34, "Changing this will save and reload immediately."), h()()()(), x(35, E4, 10, 4, "mat-tab", 6), x(36, L4, 7, 5, "mat-tab", 6), x(37, J4, 11, 9, "mat-tab", 6), x(38, t5, 4, 2, "mat-tab", 6), h()()), 2 & e && (g(8), b("checked", n.characterService.characterState.easyMode), g(3), b("ngIf", n.gameStateService.easyModeEver), g(3), b("checked", n.inventoryService.autoBuyFood), g(5), b("checked", n.characterService.characterState.showLifeSummary), g(5), b("checked", n.characterService.characterState.showTips), g(5), b("checked", n.mainLoopService.scientificNotation), g(6), b("ngIf", n.homeService.autoBuyLandUnlocked || n.homeService.autoFieldUnlocked || n.homeService.autoBuyHomeUnlocked), g(1), b("ngIf", n.inventoryService.autoequipBestArmor || n.inventoryService.autoequipBestWeapon || n.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", n.inventoryService.autoSellOldHerbs || n.inventoryService.autoSellOldWood || n.inventoryService.autoSellOldOre || n.inventoryService.autoSellOldHides || n.inventoryService.autoSellOldGemsUnlocked || n.inventoryService.autoSellUnlocked || n.inventoryService.autoUseUnlocked || n.inventoryService.autoBalanceUnlocked), g(1), b("ngIf", n.homeService.autoBuyLandUnlocked || n.homeService.autoBuyHomeUnlocked || n.homeService.autoBuyFurnitureUnlocked || n.autoBuyerService.autoBuyerSettingsUnlocked))
                     },
                     directives: [fj, B1, ZU, At, st, Nt, jm, zm],
                     pipes: [un],
@@ -27203,40 +27249,40 @@
                 }), i
             })();
 
-            function r4(i, t) {
+            function r5(i, t) {
                 if (1 & i && (d(0, "span"), m(1), I(2, "bigNumber"), h()), 2 & i) {
                     const e = w();
                     g(1), xi(" Next rank requires ", H(2, 2, e.characterService.characterState.condenseSoulCoreCost), " spirituality and a grade ", e.storeService.soulCoreRank + 12, " spirit gem. ")
                 }
             }
 
-            function o4(i, t) {
+            function o5(i, t) {
                 1 & i && (d(0, "span"), m(1, " Max Rank "), h())
             }
 
-            function a4(i, t) {
+            function a5(i, t) {
                 if (1 & i && (d(0, "span"), m(1), I(2, "bigNumber"), h()), 2 & i) {
                     const e = w();
                     g(1), xi(" Next rank requires ", H(2, 2, e.characterService.characterState.reinforceMeridiansCost), " spirituality and a grade ", e.storeService.meridianRank + 16, " spirit gem. ")
                 }
             }
 
-            function s4(i, t) {
+            function s5(i, t) {
                 1 & i && (d(0, "span"), m(1, " Max Rank "), h())
             }
 
-            function l4(i, t) {
+            function l5(i, t) {
                 if (1 & i && (d(0, "span"), m(1), I(2, "bigNumber"), h()), 2 & i) {
                     const e = w();
                     g(1), xi(" Next rank requires ", H(2, 2, e.characterService.characterState.bloodlineCost), " spirituality and a ", e.storeService.bloodLineHomeRequirement.name, ". ")
                 }
             }
 
-            function c4(i, t) {
+            function c5(i, t) {
                 1 & i && (d(0, "span"), m(1, " Max Rank "), h())
             }
 
-            function u4(i, t) {
+            function u5(i, t) {
                 if (1 & i && (d(0, "span"), m(1), I(2, "number"), I(3, "number"), h()), 2 & i) {
                     const e = w();
                     g(1), xi(" You have consumed ", Ge(2, 2, 100 * (e.characterService.characterState.empowermentFactor - 1), "1.0-0"), " Empowerment Pills which multiplies all your attribute gains by ", Ge(3, 5, e.characterService.characterState.getEmpowermentMult(), "1.0-3"), ". You will always keep this bonus, even after ascending. ")
@@ -27265,48 +27311,48 @@
                     template: function (e, n) {
                         1 & e && (d(0, "div", 0)(1, "span"), m(2, "Ascension Techniques"), h(), B(3, "hr"), d(4, "table")(5, "tr")(6, "td")(7, "button", 1), M("click", function () {
                             return n.storeService.condenseSoulCore()
-                        }), m(8, "Condense Soul Core"), h()(), d(9, "td"), m(10, " End your current life, sacrifice all attributes and aptitudes that are not protected by the power of your previous soul core ascensions, and permanently increase the amount of aptitude gained on each Reincarnation and Ascension. "), B(11, "br"), m(12), B(13, "br"), x(14, r4, 3, 4, "span", 2), x(15, o4, 2, 0, "span", 2), h()(), d(16, "tr")(17, "td")(18, "button", 1), M("click", function () {
+                        }), m(8, "Condense Soul Core"), h()(), d(9, "td"), m(10, " End your current life, sacrifice all attributes and aptitudes that are not protected by the power of your previous soul core ascensions, and permanently increase the amount of aptitude gained on each Reincarnation and Ascension. "), B(11, "br"), m(12), B(13, "br"), x(14, r5, 3, 4, "span", 2), x(15, o5, 2, 0, "span", 2), h()(), d(16, "tr")(17, "td")(18, "button", 1), M("click", function () {
                             return n.storeService.reinforceMeridians()
-                        }), m(19, "Reinforce Meridians"), h()(), d(20, "td"), m(21, " End your current life, sacrifice all attributes and aptitudes that are not protected by the power of your previous soul core ascensions, and permanently increase the power of your aptitudes when gaining attributes. "), B(22, "br"), m(23), B(24, "br"), x(25, a4, 3, 4, "span", 2), x(26, s4, 2, 0, "span", 2), h()(), d(27, "tr")(28, "td")(29, "button", 1), M("click", function () {
+                        }), m(19, "Reinforce Meridians"), h()(), d(20, "td"), m(21, " End your current life, sacrifice all attributes and aptitudes that are not protected by the power of your previous soul core ascensions, and permanently increase the power of your aptitudes when gaining attributes. "), B(22, "br"), m(23), B(24, "br"), x(25, a5, 3, 4, "span", 2), x(26, s5, 2, 0, "span", 2), h()(), d(27, "tr")(28, "td")(29, "button", 1), M("click", function () {
                             return n.storeService.upgradeBloodline()
-                        }), m(30), h()(), d(31, "td"), m(32), B(33, "br"), m(34), B(35, "br"), x(36, l4, 3, 4, "span", 2), x(37, c4, 2, 0, "span", 2), h()()(), x(38, u4, 4, 8, "span", 2), h()), 2 & e && (g(7), b("disabled", n.storeService.soulCoreRank > 8), g(5), F(" Current Rank: ", n.storeService.soulCoreRank, " "), g(2), b("ngIf", n.storeService.soulCoreRank < 9), g(1), b("ngIf", n.storeService.soulCoreRank >= 9), g(3), b("disabled", n.storeService.meridianRank > 8), g(5), F(" Current Rank: ", n.storeService.meridianRank, " "), g(2), b("ngIf", n.storeService.meridianRank < 9), g(1), b("ngIf", n.storeService.meridianRank >= 9), g(3), b("disabled", n.characterService.characterState.bloodlineRank >= 9), g(1), se(n.storeService.bloodlineLabel), g(2), F(" ", n.storeService.bloodlineDescription, " "), g(2), F(" Current Rank: ", n.characterService.characterState.bloodlineRank, " "), g(2), b("ngIf", n.characterService.characterState.bloodlineRank < 9), g(1), b("ngIf", n.characterService.characterState.bloodlineRank >= 9), g(1), b("ngIf", n.characterService.characterState.empowermentFactor > 1))
+                        }), m(30), h()(), d(31, "td"), m(32), B(33, "br"), m(34), B(35, "br"), x(36, l5, 3, 4, "span", 2), x(37, c5, 2, 0, "span", 2), h()()(), x(38, u5, 4, 8, "span", 2), h()), 2 & e && (g(7), b("disabled", n.storeService.soulCoreRank > 8), g(5), F(" Current Rank: ", n.storeService.soulCoreRank, " "), g(2), b("ngIf", n.storeService.soulCoreRank < 9), g(1), b("ngIf", n.storeService.soulCoreRank >= 9), g(3), b("disabled", n.storeService.meridianRank > 8), g(5), F(" Current Rank: ", n.storeService.meridianRank, " "), g(2), b("ngIf", n.storeService.meridianRank < 9), g(1), b("ngIf", n.storeService.meridianRank >= 9), g(3), b("disabled", n.characterService.characterState.bloodlineRank >= 9), g(1), se(n.storeService.bloodlineLabel), g(2), F(" ", n.storeService.bloodlineDescription, " "), g(2), F(" Current Rank: ", n.characterService.characterState.bloodlineRank, " "), g(2), b("ngIf", n.characterService.characterState.bloodlineRank < 9), g(1), b("ngIf", n.characterService.characterState.bloodlineRank >= 9), g(1), b("ngIf", n.characterService.characterState.empowermentFactor > 1))
                     },
                     styles: ["table[_ngcontent-%COMP%]{border-spacing:8px}td[_ngcontent-%COMP%]{border-bottom:1px var(--tableDividerColor) solid}button[_ngcontent-%COMP%]{margin-top:2px}"]
                 }), i
             })();
 
-            function h4(i, t) {
+            function h5(i, t) {
                 if (1 & i && (d(0, "div"), m(1), h()), 2 & i) {
                     const e = w(2).$implicit;
                     g(1), se(e.displayName)
                 }
             }
 
-            function d4(i, t) {
+            function d5(i, t) {
                 if (1 & i && (d(0, "div"), m(1), h()), 2 & i) {
                     const e = w(2).$implicit;
                     g(1), se(e.name)
                 }
             }
 
-            function f4(i, t) {
-                if (1 & i && (d(0, "div", 4), x(1, h4, 2, 1, "div", 5), x(2, d4, 2, 1, "div", 5), h()), 2 & i) {
+            function f5(i, t) {
+                if (1 & i && (d(0, "div", 4), x(1, h5, 2, 1, "div", 5), x(2, d5, 2, 1, "div", 5), h()), 2 & i) {
                     const e = w().$implicit;
                     ve("matTooltip", e.description), g(1), b("ngIf", e.displayName), g(1), b("ngIf", !e.displayName)
                 }
             }
 
-            function p4(i, t) {
+            function p5(i, t) {
                 1 & i && (d(0, "div", 4), m(1, " ? "), h()), 2 & i && ve("matTooltip", w().$implicit.hint)
             }
 
-            function m4(i, t) {
-                if (1 & i && (d(0, "div"), x(1, f4, 3, 3, "div", 3), x(2, p4, 2, 1, "div", 3), h()), 2 & i) {
+            function m5(i, t) {
+                if (1 & i && (d(0, "div"), x(1, f5, 3, 3, "div", 3), x(2, p5, 2, 1, "div", 3), h()), 2 & i) {
                     const e = t.$implicit;
                     g(1), b("ngIf", e.unlocked), g(1), b("ngIf", !e.unlocked)
                 }
             }
-            let g4 = (() => {
+            let g5 = (() => {
                 class i {
                     constructor(e) {
                         this.achievementService = e
@@ -27330,13 +27376,13 @@
                         [4, "ngIf"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Achievements"), h(), B(3, "hr"), d(4, "div", 1), x(5, m4, 3, 2, "div", 2), h()()), 2 & e && (g(5), b("ngForOf", n.achievementService.achievements))
+                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Achievements"), h(), B(3, "hr"), d(4, "div", 1), x(5, m5, 3, 2, "div", 2), h()()), 2 & e && (g(5), b("ngForOf", n.achievementService.achievements))
                     },
                     directives: [Nt, st, At],
                     styles: [".itemSlot[_ngcontent-%COMP%]{width:90px;height:90px;font-size:small;display:table-cell;vertical-align:middle;cursor:default}.achievementGrid[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;border-spacing:4px;max-height:600px}.itemSlot[_ngcontent-%COMP%] > tr[_ngcontent-%COMP%]{line-height:12px}.iconButton[_ngcontent-%COMP%]{float:right}"]
                 }), i
             })();
-            class v4 {}
+            class v5 {}
             class Sr {
                 constructor(t) {
                     this.normalizedNames = new Map, this.lazyUpdate = null, t ? this.lazyInit = "string" == typeof t ? () => {
@@ -27431,7 +27477,7 @@
                     this.init(), Array.from(this.normalizedNames.keys()).forEach(e => t(this.normalizedNames.get(e), this.headers.get(e)))
                 }
             }
-            class y4 {
+            class y5 {
                 encodeKey(t) {
                     return rM(t)
                 }
@@ -27445,8 +27491,8 @@
                     return decodeURIComponent(t)
                 }
             }
-            const b4 = /%(\d[a-f0-9])/gi,
-                S4 = {
+            const b5 = /%(\d[a-f0-9])/gi,
+                S5 = {
                     40: "@",
                     "3A": ":",
                     24: "$",
@@ -27459,9 +27505,9 @@
                 };
 
             function rM(i) {
-                return encodeURIComponent(i).replace(b4, (t, e) => {
+                return encodeURIComponent(i).replace(b5, (t, e) => {
                     var n;
-                    return null !== (n = S4[e]) && void 0 !== n ? n : t
+                    return null !== (n = S5[e]) && void 0 !== n ? n : t
                 })
             }
 
@@ -27470,9 +27516,9 @@
             }
             class wr {
                 constructor(t = {}) {
-                    if (this.updates = null, this.cloneFrom = null, this.encoder = t.encoder || new y4, t.fromString) {
+                    if (this.updates = null, this.cloneFrom = null, this.encoder = t.encoder || new y5, t.fromString) {
                         if (t.fromObject) throw new Error("Cannot specify both fromString and fromObject.");
-                        this.map = function _4(i, t) {
+                        this.map = function _5(i, t) {
                             const e = new Map;
                             return i.length > 0 && i.replace(/^\?/, "").split("&").forEach(r => {
                                 const o = r.indexOf("="),
@@ -27570,7 +27616,7 @@
                     }), this.cloneFrom = this.updates = null)
                 }
             }
-            class w4 {
+            class w5 {
                 constructor() {
                     this.map = new Map
                 }
@@ -27605,7 +27651,7 @@
             class el {
                 constructor(t, e, n, r) {
                     let o;
-                    if (this.url = e, this.body = null, this.reportProgress = !1, this.withCredentials = !1, this.responseType = "json", this.method = t.toUpperCase(), function C4(i) {
+                    if (this.url = e, this.body = null, this.reportProgress = !1, this.withCredentials = !1, this.responseType = "json", this.method = t.toUpperCase(), function C5(i) {
                             switch (i) {
                                 case "DELETE":
                                 case "GET":
@@ -27616,7 +27662,7 @@
                                 default:
                                     return !0
                             }
-                        }(this.method) || r ? (this.body = void 0 !== n ? n : null, o = r) : o = n, o && (this.reportProgress = !!o.reportProgress, this.withCredentials = !!o.withCredentials, o.responseType && (this.responseType = o.responseType), o.headers && (this.headers = o.headers), o.context && (this.context = o.context), o.params && (this.params = o.params)), this.headers || (this.headers = new Sr), this.context || (this.context = new w4), this.params) {
+                        }(this.method) || r ? (this.body = void 0 !== n ? n : null, o = r) : o = n, o && (this.reportProgress = !!o.reportProgress, this.withCredentials = !!o.withCredentials, o.responseType && (this.responseType = o.responseType), o.headers && (this.headers = o.headers), o.context && (this.context = o.context), o.params && (this.params = o.params)), this.headers || (this.headers = new Sr), this.context || (this.context = new w5), this.params) {
                         const a = this.params.toString();
                         if (0 === a.length) this.urlWithParams = e;
                         else {
@@ -27626,7 +27672,7 @@
                     } else this.params = new wr, this.urlWithParams = e
                 }
                 serializeBody() {
-                    return null === this.body ? null : aM(this.body) || sM(this.body) || lM(this.body) || function k4(i) {
+                    return null === this.body ? null : aM(this.body) || sM(this.body) || lM(this.body) || function k5(i) {
                         return "undefined" != typeof URLSearchParams && i instanceof URLSearchParams
                     }(this.body) || "string" == typeof this.body ? this.body : this.body instanceof wr ? this.body.toString() : "object" == typeof this.body || "boolean" == typeof this.body || Array.isArray(this.body) ? JSON.stringify(this.body) : this.body.toString()
                 }
@@ -27655,7 +27701,7 @@
                 }
             }
             var Ut = (() => ((Ut = Ut || {})[Ut.Sent = 0] = "Sent", Ut[Ut.UploadProgress = 1] = "UploadProgress", Ut[Ut.ResponseHeader = 2] = "ResponseHeader", Ut[Ut.DownloadProgress = 3] = "DownloadProgress", Ut[Ut.Response = 4] = "Response", Ut[Ut.User = 5] = "User", Ut))();
-            class Gm extends class M4 {
+            class Gm extends class M5 {
                 constructor(t, e = 200, n = "OK") {
                     this.headers = t.headers || new Sr, this.status = void 0 !== t.status ? t.status : e, this.statusText = t.statusText || n, this.url = t.url || null, this.ok = this.status >= 200 && this.status < 300
                 }
@@ -27767,18 +27813,18 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(v4))
+                    return new(e || i)(S(v5))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
                 }), i
             })();
-            const T4 = ["*"];
+            const T5 = ["*"];
             let Uu;
 
             function tl(i) {
                 var t;
-                return (null === (t = function D4() {
+                return (null === (t = function D5() {
                     if (void 0 === Uu && (Uu = null, "undefined" != typeof window)) {
                         const i = window;
                         void 0 !== i.trustedTypes && (Uu = i.trustedTypes.createPolicy("angular#components", {
@@ -27965,7 +28011,7 @@
                             url: r,
                             options: o
                         } = e, a = null !== (n = null == o ? void 0 : o.withCredentials) && void 0 !== n && n;
-                        if (!this._httpClient) throw function E4() {
+                        if (!this._httpClient) throw function E5() {
                             return Error("Could not find HttpClient provider for use with Angular Material icons. Please include the HttpClientModule from @angular/common/http in your app imports.")
                         }();
                         if (null == r) throw Error(`Cannot fetch icon from URL "${r}".`);
@@ -27996,7 +28042,7 @@
                     _getIconConfigFromResolvers(e, n) {
                         for (let r = 0; r < this._resolvers.length; r++) {
                             const o = this._resolvers[r](n, e);
-                            if (o) return P4(o) ? new so(o.url, null, o.options) : new so(o, null)
+                            if (o) return P5(o) ? new so(o.url, null, o.options) : new so(o, null)
                         }
                     }
                 }
@@ -28017,17 +28063,17 @@
                 return i + ":" + t
             }
 
-            function P4(i) {
+            function P5(i) {
                 return !(!i.url || !i.options)
             }
-            const I4 = fm(class {
+            const I5 = fm(class {
                     constructor(i) {
                         this._elementRef = i
                     }
                 }),
-                O4 = new q("mat-icon-location", {
+                O5 = new q("mat-icon-location", {
                     providedIn: "root",
-                    factory: function R4() {
+                    factory: function R5() {
                         const i = Il(fe),
                             t = i ? i.location : null;
                         return {
@@ -28036,10 +28082,10 @@
                     }
                 }),
                 mM = ["clip-path", "color-profile", "src", "cursor", "fill", "filter", "marker", "marker-start", "marker-mid", "marker-end", "mask", "stroke"],
-                F4 = mM.map(i => `[${i}]`).join(", "),
-                L4 = /^url\(['"]?#(.*?)['"]?\)$/;
+                F5 = mM.map(i => `[${i}]`).join(", "),
+                L5 = /^url\(['"]?#(.*?)['"]?\)$/;
             let si = (() => {
-                    class i extends I4 {
+                    class i extends I5 {
                         constructor(e, n, r, o, a) {
                             super(e), this._iconRegistry = n, this._location = o, this._errorHandler = a, this._inline = !1, this._currentIconFetch = Ze.EMPTY, r || e.nativeElement.setAttribute("aria-hidden", "true")
                         }
@@ -28128,12 +28174,12 @@
                             })
                         }
                         _cacheChildrenWithExternalReferences(e) {
-                            const n = e.querySelectorAll(F4),
+                            const n = e.querySelectorAll(F5),
                                 r = this._elementsWithExternalReferences = this._elementsWithExternalReferences || new Map;
                             for (let o = 0; o < n.length; o++) mM.forEach(a => {
                                 const s = n[o],
                                     l = s.getAttribute(a),
-                                    c = l ? l.match(L4) : null;
+                                    c = l ? l.match(L5) : null;
                                 if (c) {
                                     let u = r.get(s);
                                     u || (u = [], r.set(s, u)), u.push({
@@ -28153,7 +28199,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(ju), So("aria-hidden"), _(O4), _(ar))
+                        return new(e || i)(_(xe), _(ju), So("aria-hidden"), _(O5), _(ar))
                     }, i.\u0275cmp = le({
                         type: i,
                         selectors: [
@@ -28173,7 +28219,7 @@
                         },
                         exportAs: ["matIcon"],
                         features: [ee],
-                        ngContentSelectors: T4,
+                        ngContentSelectors: T5,
                         decls: 1,
                         vars: 0,
                         template: function (e, n) {
@@ -28197,18 +28243,18 @@
                     }), i
                 })();
 
-            function N4(i, t) {
+            function N5(i, t) {
                 if (1 & i && (d(0, "span")(1, "mat-icon", 6), m(2, " help "), h(), m(3), h()), 2 & i) {
                     const e = w().$implicit;
                     g(1), ve("matTooltip", e.description), g(2), F(" ", e.name, " ")
                 }
             }
 
-            function B4(i, t) {
+            function B5(i, t) {
                 1 & i && (d(0, "span"), m(1, " ???????????? "), h())
             }
 
-            function H4(i, t) {
+            function H5(i, t) {
                 if (1 & i && (d(0, "div", 7), B(1, "span"), h()), 2 & i) {
                     const e = w().$implicit,
                         n = w();
@@ -28216,11 +28262,11 @@
                 }
             }
 
-            function V4(i, t) {
+            function V5(i, t) {
                 1 & i && (d(0, "span")(1, "mat-icon"), m(2, " done "), h()())
             }
 
-            function U4(i, t) {
+            function U5(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "span")(1, "button", 8), M("click", function () {
@@ -28229,7 +28275,7 @@
                 }
             }
 
-            function j4(i, t) {
+            function j5(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "span")(1, "button", 8), M("click", function () {
@@ -28238,14 +28284,14 @@
                 }
             }
 
-            function q4(i, t) {
-                if (1 & i && (d(0, "tr")(1, "td"), x(2, N4, 4, 2, "span", 4), x(3, B4, 2, 0, "span", 4), h(), d(4, "td"), x(5, H4, 2, 4, "div", 5), h(), d(6, "td"), x(7, V4, 3, 0, "span", 4), x(8, U4, 3, 0, "span", 4), x(9, j4, 3, 0, "span", 4), h()()), 2 & i) {
+            function q5(i, t) {
+                if (1 & i && (d(0, "tr")(1, "td"), x(2, N5, 4, 2, "span", 4), x(3, B5, 2, 0, "span", 4), h(), d(4, "td"), x(5, H5, 2, 4, "div", 5), h(), d(6, "td"), x(7, V5, 3, 0, "span", 4), x(8, U5, 3, 0, "span", 4), x(9, j5, 3, 0, "span", 4), h()()), 2 & i) {
                     const e = t.$implicit,
                         n = w();
                     g(2), b("ngIf", n.impossibleTaskService.nextTask >= e.taskType), g(1), b("ngIf", n.impossibleTaskService.nextTask < e.taskType), g(2), b("ngIf", n.impossibleTaskService.nextTask >= e.taskType), g(2), b("ngIf", n.impossibleTaskService.taskProgress[e.taskType].complete), g(1), b("ngIf", n.impossibleTaskService.activeTaskIndex === e.taskType), g(1), b("ngIf", -1 === n.impossibleTaskService.activeTaskIndex && n.impossibleTaskService.nextTask === e.taskType)
                 }
             }
-            let z4 = (() => {
+            let z5 = (() => {
                 class i {
                     constructor(e, n, r) {
                         this.impossibleTaskService = e, this.gameStateService = n, this.activityService = r, this.Math = Math
@@ -28278,7 +28324,7 @@
                     template: function (e, n) {
                         1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Impossible Tasks"), h(), d(3, "span")(4, "input", 1), M("change", function (o) {
                             return n.pauseOnImpossibleFailChange(o)
-                        }), h(), d(5, "label", 2), m(6, "Automatically pause if task related activity fails"), h()(), B(7, "hr"), d(8, "div")(9, "table"), x(10, q4, 10, 6, "tr", 3), h()()()), 2 & e && (g(4), b("checked", n.activityService.pauseOnImpossibleFail), g(6), b("ngForOf", n.impossibleTaskService.tasks))
+                        }), h(), d(5, "label", 2), m(6, "Automatically pause if task related activity fails"), h()(), B(7, "hr"), d(8, "div")(9, "table"), x(10, q5, 10, 6, "tr", 3), h()()()), 2 & e && (g(4), b("checked", n.activityService.pauseOnImpossibleFail), g(6), b("ngForOf", n.impossibleTaskService.tasks))
                     },
                     directives: [Nt, st, si, At],
                     styles: ["", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
@@ -28288,7 +28334,7 @@
                 appVersion: Xm(147).i8,
                 production: !0
             };
-            let Y4 = (() => {
+            let Y5 = (() => {
                     class i {
                         constructor(e) {
                             this.gameStateService = e
@@ -28336,7 +28382,7 @@
                         template: function (e, n) {
                             if (1 & e) {
                                 const r = V();
-                                d(0, "div", 0)(1, "h3"), m(2, "Import/Export Save File"), h(), B(3, "hr"), d(4, "div")(5, "textarea", 1, 2), m(7, "要导出游戏，请按“导出”按钮，然后将此框的内容复制并粘贴到您要存储保存数据的任何位置。 要导入游戏，请将保存数据粘贴到此框中，然后按导入按钮。 确保框中唯一的内容是您的保存数据，否则保存可能已损坏。 最好的方法是在剪贴板中保存游戏数据，然后单击此框并按 Ctrl-a 然后按 Ctrl-v。"), h()(), d(8, "button", 3), M("click", function () {
+                                d(0, "div", 0)(1, "h3"), m(2, "Import/Export Save File"), h(), B(3, "hr"), d(4, "div")(5, "textarea", 1, 2), m(7, "To export a game, press the Export button then copy and paste the contents of this box to wherever you want to store the save data. To import a game, paste save data into this box and press the Import button. Make sure that the only thing in the box is your save data or the save may be corrupted. The best way to do this is have the game data in your clipboard, then click on this box and press Ctrl-a then Ctrl-v."), h()(), d(8, "button", 3), M("click", function () {
                                     E(r);
                                     const a = Rt(6);
                                     return n.importClick(a.value)
@@ -28354,7 +28400,7 @@
                         styles: ["textarea[_ngcontent-%COMP%]{width:450px;height:450px}#importFile[_ngcontent-%COMP%]{display:none}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                     }), i
                 })(),
-                G4 = (() => {
+                G5 = (() => {
                     class i {
                         constructor() {}
                         ngOnInit() {}
@@ -28375,10 +28421,10 @@
                         template: function (e, n) {
                             1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Tutorial"), h(), B(3, "hr"), d(4, "div", 1)(5, "span"), m(6, " Immortality Idle is a time management incremental game inspired by cultivation stories. You can choose your daily activities to survive, grow, and thrive with the goal of achieving immortality. You will probably not achieve your goal during your first lifetime. Don't worry if you die before you succeed! The attributes you develop during each life will improve your aptitudes when you are reincarnated, making your future efforts even more effective. If you persist in your growth, find balance, and seek insights, you will ultimately develop magical abilities, perform impossible tasks, and become an immortal. "), h(), B(7, "hr"), d(8, "span"), m(9, " Your attributes govern what you are able to do. At first, you will only be able to perform some very simple activities. As your attributes increase, you will find new activities appearing that you can try. Many of these activities will earn you money (taels), but the amount you earn depends on your attributes and knowledge of the related lore for the job. A strong and tough blacksmith with good knowledge of metal lore will make much more each day than a weak one just beginning the trade. Many activities have advanced ranks that you can achieve by increasing your attributes, and you may even create some items so good that you want to keep them for yourself. "), h(), B(10, "hr"), d(11, "span"), m(12, " Your health shows how much damage you can take before dying. Your stamina determines how much work you can do before you are exhausted. Some stamina can be recovered automatically each day depending on what kind of home and furniture you have, but you may need to take a rest day occasionally. "), h(), B(13, "hr"), d(14, "span"), m(15, " Your home is an important part of your life. A meager tent leaves you vulnerable to wild animals while a solid house can help you recover each day. Keeping up a home requires money each day, and better homes cost more. Not even an aspiring immortal can avoid their bills. "), h(), B(16, "hr"), d(17, "span"), m(18, " You will need to eat each day to survive. If you have food in your inventory, you will automatically eat some each day. If you don't have food but you have money, you will spend a tael to buy a bowl of rice. If don't have any food or money, you put yourself at risk of starvation. Eating a healthy diet can lead to better health, more stamina, and even a longer life. "), h(), B(19, "hr"), d(20, "span"), m(21, " As you move forward on your journey toward immortality, you will unlock many achievements. Each one can provide you with a benefit. Some achievements will allow you to purchase valuable manuals that will provide you with new abilities essential to your immortal progression. The Story messages in the game's log can help you remember your major accomplishments. "), h(), B(22, "hr"), d(23, "span"), m(24, " There are many secrets to discover and insights to learn. Many things will give you more information if you hover the mouse over them. If you find the game too difficult, an easy mode is available in the options panel. Now, it's time to develop your potential for immortality. Get to it! "), h()()())
                         },
-                        styles: [".tutorialDiv[_ngcontent-%COMP%]{max-height:500px}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
+                        styles: [".tutorialDiv[_ngcontent-%COMP%]{max-height:600px}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                     }), i
                 })(),
-                $4 = (() => {
+                $5 = (() => {
                     class i {
                         constructor() {}
                         ngOnInit() {}
@@ -28390,20 +28436,20 @@
                         selectors: [
                             ["app-changelog-panel"]
                         ],
-                        decls: 236,
+                        decls: 241,
                         vars: 0,
                         consts: [
                             [1, "darkMode"],
                             [1, "changeLogContainer"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Change Log"), h(), B(3, "hr"), d(4, "div", 1)(5, "table")(6, "tr")(7, "td"), m(8, "v1.0.60"), h(), d(9, "td"), m(10, "Equipment and Home panels can now be collapsed. Bug fixes."), h()(), d(11, "tr")(12, "td"), m(13, "v1.0.59"), h(), d(14, "td"), m(15, "Life summary panel. Tips are available for cultivators who don't want to figure things out on their own. Automated merging is easier to achieve. Low level crafting produces better items. Balance changes to equipment and boss fights. Game speed hotkeys changed. Bug fixes."), h()(), d(16, "tr")(17, "td"), m(18, "v1.0.58"), h(), d(19, "td"), m(20, "Tuned equipment degradation down. Equipment should now reach equilibrium between damage and improvement at higher points."), h()(), d(21, "tr")(22, "td"), m(23, "v1.0.57"), h(), d(24, "td"), m(25, "Fix for wooden weapons not getting proper benefit from weaponsmiths."), h()(), d(26, "tr")(27, "td"), m(28, "v1.0.56"), h(), d(29, "td"), m(30, "New tooltip system. Notification for offline tick gains. Minor changes to import/export functions. Equipment damage system changed. Hotkeys 0-5 for game speeds. Activities you can't do now show as disabled instead of disappearing. Notification popups. Bug fixes."), h()(), d(31, "tr")(32, "td"), m(33, "v1.0.55"), h(), d(34, "td"), m(35, "Monsters have started dropping better hides. Inventory sorting. A new activity. More options panel options. You can import and export save files instead of text blocks. Bug fixes."), h()(), d(36, "tr")(37, "td"), m(38, "v1.0.54"), h(), d(39, "td"), m(40, "Preformance improvements to allow experienced cultivators fly through the centuries. A new activity. Bug fixes."), h()(), d(41, "tr")(42, "td"), m(43, "v1.0.53"), h(), d(44, "td"), m(45, "You might be more powerful now. Certain enemies might also be. More powerful herbs have been spotted in the wilds. New crafting options. UI improvements and bug fixes."), h()(), d(46, "tr")(47, "td"), m(48, "v1.0.52"), h(), d(49, "td"), m(50, "Even more Bloodline ascensions are now available. New activities. Bug fixes."), h()(), d(51, "tr")(52, "td"), m(53, "v1.0.51"), h(), d(54, "td"), m(55, "A Statistics Panel is now available to show cultivators some information about what they have done. Additional Bloodline ascensions are now available. A late game boss is stronger but now has less health to make that fight less of a grind. Cultivators with the right knowledge can automatically rest instead of becoming exhausted. Some additional game options are available. Balance changes and bug fixes."), h()(), d(56, "tr")(57, "td"), m(58, "v1.0.50"), h(), d(59, "td"), m(60, "An easy mode is available to cultivators who think the game is too hard. New achievements and manuals. New activities for magically empowered seekers of immortality. UI improvements. Bug fixes and balance improvements."), h()(), d(61, "tr")(62, "td"), m(63, "v1.0.49"), h(), d(64, "td"), m(65, "Pause before death is available if you know the right secrets. Improvements to followers. Better game performance. "), h()(), d(66, "tr")(67, "td"), m(68, "v1.0.48"), h(), d(69, "td"), m(70, "Better follower management. Item names stay more consistent when merged and upgraded. Balance and bug fixes."), h()(), d(71, "tr")(72, "td"), m(73, "v1.0.47"), h(), d(74, "td"), m(75, "Better inventory slots that don't jiggle around. Auto-sell and auto-use can now reserve some of the items (set value in the options panel). Bug and balance fixes."), h()(), d(76, "tr")(77, "td"), m(78, "v1.0.46"), h(), d(79, "td"), m(80, "Condensing your Soul Core now provides greater benefits."), h()(), d(81, "tr")(82, "td"), m(83, "v1.0.45"), h(), d(84, "td"), m(85, "A powerful new pill can now be created by aspiring immortals who have mastered many jobs."), h()(), d(86, "tr")(87, "td"), m(88, "v1.0.44"), h(), d(89, "td"), m(90, "Autobuy options are now configurable if you have found the secret knowledge needed."), h()(), d(91, "tr")(92, "td"), m(93, "v1.0.43"), h(), d(94, "td"), m(95, "When the game is paused you can advance a day with the Enter key. Time now moves faster the older you are starting at 5,000 years old. Base lifespan now increases based on total days lived, not number of lives lived. Balance changes to attributes and aptitudes."), h()(), d(96, "tr")(97, "td"), m(98, "v1.0.42"), h(), d(99, "td"), m(100, "Gaining large numbers of items at once is now much more efficient, so having obscenely huge farms no longer breaks the game."), h()(), d(101, "tr")(102, "td"), m(103, "v1.0.41"), h(), d(104, "td"), m(105, "Panel size fixes. Bloodline ascension rank 5. Fixed log line duplication bug. Pause on death should no longer allow extra days to pass before pausing."), h()(), d(106, "tr")(107, "td"), m(108, "v1.0.40"), h(), d(109, "td"), m(110, "Changed the way damage and armor work. Late-game fights should now be more epic and interesting."), h()(), d(111, "tr")(112, "td"), m(113, "v1.0.39"), h(), d(114, "td"), m(115, "Better descriptions for resting activities. Shift-click activities to load them onto the schedule 10 at a time. Canopy beds give more health."), h()(), d(116, "tr")(117, "td"), m(118, "v1.0.38"), h(), d(119, "td"), m(120, "Better performance for aspiring immortals who want to buy vast tracts of land."), h()(), d(121, "tr")(122, "td"), m(123, "v1.0.37"), h(), d(124, "td"), m(125, "New status bars that show values on non-chrome browsers."), h()(), d(126, "tr")(127, "td"), m(128, "v1.0.36"), h(), d(129, "td"), m(130, "You can now choose how much money to reserve when doing automatic purchases."), h()(), d(131, "tr")(132, "td"), m(133, "v1.0.35"), h(), d(134, "td"), m(135, "The log panel can now be resized by sliding the slider up and down. The Ascension Techniques panel stays unlocked once unlocked. Old junky gems can now be easily removed if you know how."), h()(), d(136, "tr")(137, "td"), m(138, "v1.0.34"), h(), d(139, "td"), m(140, "Style fix, clear schedule button, and auto-equip can now be turned off in the options."), h()(), d(141, "tr")(142, "td"), m(143, "v1.0.33"), h(), d(144, "td"), m(145, "Some styling improvements and a fix to very late game reward loot."), h()(), d(146, "tr")(147, "td"), m(148, "v1.0.32"), h(), d(149, "td"), m(150, "Automerging will now upgrade equipped weapons and armor if all merge manuals have been achieved and purchased."), h()(), d(151, "tr")(152, "td"), m(153, "v1.0.31"), h(), d(154, "td"), m(155, "Some balance changes."), h()(), d(156, "tr")(157, "td"), m(158, "v1.0.30"), h(), d(159, "td"), m(160, "A certain impossible task is now slightly less impossible."), h()(), d(161, "tr")(162, "td"), m(163, "v1.0.29"), h(), d(164, "td"), m(165, "Silly levels that stamina could reach are now slightly less silly. Pausing the game banks time ticks."), h()(), d(166, "tr")(167, "td"), m(168, "v1.0.28"), h(), d(169, "td"), m(170, "Improvements to automatic home purchasing."), h()(), d(171, "tr")(172, "td"), m(173, "v1.0.27"), h(), d(174, "td"), m(175, "You can now save and load an activity schedule."), h()(), d(176, "tr")(177, "td"), m(178, "v1.0.26"), h(), d(179, "td"), m(180, "Fixed a bug with activities incorrectly being removed from the schedule on reincarnation."), h()(), d(181, "tr")(182, "td"), m(183, "v1.0.25"), h(), d(184, "td"), m(185, "New activities and activity upgrades now get log entries. Armor now degrades when attacked."), h()(), d(186, "tr")(187, "td"), m(188, "v1.0.24"), h(), d(189, "td"), m(190, "Bug fix for aspiring immortals who got tangled up while trying to swim to the bottom of the ocean."), h()(), d(191, "tr")(192, "td"), m(193, "v1.0.23"), h(), d(194, "td"), m(195, "Bug fix for aspiring immortals who achieved infinite wealth. Money is now capped at an amount that is plenty for everything but doesn't break your computer."), h()(), d(196, "tr")(197, "td"), m(198, "v1.0.22"), h(), d(199, "td"), m(200, "Leatherworking and Woodworking now have master ranks. You can now see how much money you made on each job the last time you did it. Better logs can now be chopped."), h()(), d(201, "tr")(202, "td"), m(203, "v1.0.21"), h(), d(204, "td"), m(205, "Followers can now be trained to be more powerful and can be automatically dismissed by job."), h()(), d(206, "tr")(207, "td"), m(208, "v1.0.20"), h(), d(209, "td"), m(210, "Added Discord link."), h()(), d(211, "tr")(212, "td"), m(213, "v1.0.19"), h(), d(214, "td"), m(215, "Added changelog."), h()(), d(216, "tr")(217, "td"), m(218, "v1.0.18"), h(), d(219, "td"), m(220, "New follower types are now available."), h()(), d(221, "tr")(222, "td"), m(223, "v1.0.17"), h(), d(224, "td"), m(225, "Crafting log entries can now be filtered out."), h()(), d(226, "tr")(227, "td"), m(228, "v1.0.16"), h(), d(229, "td"), m(230, "Added tutorial help button."), h()(), d(231, "tr")(232, "td"), m(233, "v0.0.0 - v1.0.15"), h(), d(234, "td"), m(235, "Created and launched the game."), h()()()()())
+                            1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Change Log"), h(), B(3, "hr"), d(4, "div", 1)(5, "table")(6, "tr")(7, "td"), m(8, "v1.0.61"), h(), d(9, "td"), m(10, "A new achievement for managing your followers. Immortality races Season 1 (see the Discord). Bug fixes."), h()(), d(11, "tr")(12, "td"), m(13, "v1.0.60"), h(), d(14, "td"), m(15, "Equipment and Home panels can now be collapsed. Bug fixes."), h()(), d(16, "tr")(17, "td"), m(18, "v1.0.59"), h(), d(19, "td"), m(20, "Life summary panel. Tips are available for cultivators who don't want to figure things out on their own. Automated merging is easier to achieve. Low level crafting produces better items. Balance changes to equipment and boss fights. Game speed hotkeys changed. Bug fixes."), h()(), d(21, "tr")(22, "td"), m(23, "v1.0.58"), h(), d(24, "td"), m(25, "Tuned equipment degradation down. Equipment should now reach equilibrium between damage and improvement at higher points."), h()(), d(26, "tr")(27, "td"), m(28, "v1.0.57"), h(), d(29, "td"), m(30, "Fix for wooden weapons not getting proper benefit from weaponsmiths."), h()(), d(31, "tr")(32, "td"), m(33, "v1.0.56"), h(), d(34, "td"), m(35, "New tooltip system. Notification for offline tick gains. Minor changes to import/export functions. Equipment damage system changed. Hotkeys 0-5 for game speeds. Activities you can't do now show as disabled instead of disappearing. Notification popups. Bug fixes."), h()(), d(36, "tr")(37, "td"), m(38, "v1.0.55"), h(), d(39, "td"), m(40, "Monsters have started dropping better hides. Inventory sorting. A new activity. More options panel options. You can import and export save files instead of text blocks. Bug fixes."), h()(), d(41, "tr")(42, "td"), m(43, "v1.0.54"), h(), d(44, "td"), m(45, "Preformance improvements to allow experienced cultivators fly through the centuries. A new activity. Bug fixes."), h()(), d(46, "tr")(47, "td"), m(48, "v1.0.53"), h(), d(49, "td"), m(50, "You might be more powerful now. Certain enemies might also be. More powerful herbs have been spotted in the wilds. New crafting options. UI improvements and bug fixes."), h()(), d(51, "tr")(52, "td"), m(53, "v1.0.52"), h(), d(54, "td"), m(55, "Even more Bloodline ascensions are now available. New activities. Bug fixes."), h()(), d(56, "tr")(57, "td"), m(58, "v1.0.51"), h(), d(59, "td"), m(60, "A Statistics Panel is now available to show cultivators some information about what they have done. Additional Bloodline ascensions are now available. A late game boss is stronger but now has less health to make that fight less of a grind. Cultivators with the right knowledge can automatically rest instead of becoming exhausted. Some additional game options are available. Balance changes and bug fixes."), h()(), d(61, "tr")(62, "td"), m(63, "v1.0.50"), h(), d(64, "td"), m(65, "An easy mode is available to cultivators who think the game is too hard. New achievements and manuals. New activities for magically empowered seekers of immortality. UI improvements. Bug fixes and balance improvements."), h()(), d(66, "tr")(67, "td"), m(68, "v1.0.49"), h(), d(69, "td"), m(70, "Pause before death is available if you know the right secrets. Improvements to followers. Better game performance. "), h()(), d(71, "tr")(72, "td"), m(73, "v1.0.48"), h(), d(74, "td"), m(75, "Better follower management. Item names stay more consistent when merged and upgraded. Balance and bug fixes."), h()(), d(76, "tr")(77, "td"), m(78, "v1.0.47"), h(), d(79, "td"), m(80, "Better inventory slots that don't jiggle around. Auto-sell and auto-use can now reserve some of the items (set value in the options panel). Bug and balance fixes."), h()(), d(81, "tr")(82, "td"), m(83, "v1.0.46"), h(), d(84, "td"), m(85, "Condensing your Soul Core now provides greater benefits."), h()(), d(86, "tr")(87, "td"), m(88, "v1.0.45"), h(), d(89, "td"), m(90, "A powerful new pill can now be created by aspiring immortals who have mastered many jobs."), h()(), d(91, "tr")(92, "td"), m(93, "v1.0.44"), h(), d(94, "td"), m(95, "Autobuy options are now configurable if you have found the secret knowledge needed."), h()(), d(96, "tr")(97, "td"), m(98, "v1.0.43"), h(), d(99, "td"), m(100, "When the game is paused you can advance a day with the Enter key. Time now moves faster the older you are starting at 5,000 years old. Base lifespan now increases based on total days lived, not number of lives lived. Balance changes to attributes and aptitudes."), h()(), d(101, "tr")(102, "td"), m(103, "v1.0.42"), h(), d(104, "td"), m(105, "Gaining large numbers of items at once is now much more efficient, so having obscenely huge farms no longer breaks the game."), h()(), d(106, "tr")(107, "td"), m(108, "v1.0.41"), h(), d(109, "td"), m(110, "Panel size fixes. Bloodline ascension rank 5. Fixed log line duplication bug. Pause on death should no longer allow extra days to pass before pausing."), h()(), d(111, "tr")(112, "td"), m(113, "v1.0.40"), h(), d(114, "td"), m(115, "Changed the way damage and armor work. Late-game fights should now be more epic and interesting."), h()(), d(116, "tr")(117, "td"), m(118, "v1.0.39"), h(), d(119, "td"), m(120, "Better descriptions for resting activities. Shift-click activities to load them onto the schedule 10 at a time. Canopy beds give more health."), h()(), d(121, "tr")(122, "td"), m(123, "v1.0.38"), h(), d(124, "td"), m(125, "Better performance for aspiring immortals who want to buy vast tracts of land."), h()(), d(126, "tr")(127, "td"), m(128, "v1.0.37"), h(), d(129, "td"), m(130, "New status bars that show values on non-chrome browsers."), h()(), d(131, "tr")(132, "td"), m(133, "v1.0.36"), h(), d(134, "td"), m(135, "You can now choose how much money to reserve when doing automatic purchases."), h()(), d(136, "tr")(137, "td"), m(138, "v1.0.35"), h(), d(139, "td"), m(140, "The log panel can now be resized by sliding the slider up and down. The Ascension Techniques panel stays unlocked once unlocked. Old junky gems can now be easily removed if you know how."), h()(), d(141, "tr")(142, "td"), m(143, "v1.0.34"), h(), d(144, "td"), m(145, "Style fix, clear schedule button, and auto-equip can now be turned off in the options."), h()(), d(146, "tr")(147, "td"), m(148, "v1.0.33"), h(), d(149, "td"), m(150, "Some styling improvements and a fix to very late game reward loot."), h()(), d(151, "tr")(152, "td"), m(153, "v1.0.32"), h(), d(154, "td"), m(155, "Automerging will now upgrade equipped weapons and armor if all merge manuals have been achieved and purchased."), h()(), d(156, "tr")(157, "td"), m(158, "v1.0.31"), h(), d(159, "td"), m(160, "Some balance changes."), h()(), d(161, "tr")(162, "td"), m(163, "v1.0.30"), h(), d(164, "td"), m(165, "A certain impossible task is now slightly less impossible."), h()(), d(166, "tr")(167, "td"), m(168, "v1.0.29"), h(), d(169, "td"), m(170, "Silly levels that stamina could reach are now slightly less silly. Pausing the game banks time ticks."), h()(), d(171, "tr")(172, "td"), m(173, "v1.0.28"), h(), d(174, "td"), m(175, "Improvements to automatic home purchasing."), h()(), d(176, "tr")(177, "td"), m(178, "v1.0.27"), h(), d(179, "td"), m(180, "You can now save and load an activity schedule."), h()(), d(181, "tr")(182, "td"), m(183, "v1.0.26"), h(), d(184, "td"), m(185, "Fixed a bug with activities incorrectly being removed from the schedule on reincarnation."), h()(), d(186, "tr")(187, "td"), m(188, "v1.0.25"), h(), d(189, "td"), m(190, "New activities and activity upgrades now get log entries. Armor now degrades when attacked."), h()(), d(191, "tr")(192, "td"), m(193, "v1.0.24"), h(), d(194, "td"), m(195, "Bug fix for aspiring immortals who got tangled up while trying to swim to the bottom of the ocean."), h()(), d(196, "tr")(197, "td"), m(198, "v1.0.23"), h(), d(199, "td"), m(200, "Bug fix for aspiring immortals who achieved infinite wealth. Money is now capped at an amount that is plenty for everything but doesn't break your computer."), h()(), d(201, "tr")(202, "td"), m(203, "v1.0.22"), h(), d(204, "td"), m(205, "Leatherworking and Woodworking now have master ranks. You can now see how much money you made on each job the last time you did it. Better logs can now be chopped."), h()(), d(206, "tr")(207, "td"), m(208, "v1.0.21"), h(), d(209, "td"), m(210, "Followers can now be trained to be more powerful and can be automatically dismissed by job."), h()(), d(211, "tr")(212, "td"), m(213, "v1.0.20"), h(), d(214, "td"), m(215, "Added Discord link."), h()(), d(216, "tr")(217, "td"), m(218, "v1.0.19"), h(), d(219, "td"), m(220, "Added changelog."), h()(), d(221, "tr")(222, "td"), m(223, "v1.0.18"), h(), d(224, "td"), m(225, "New follower types are now available."), h()(), d(226, "tr")(227, "td"), m(228, "v1.0.17"), h(), d(229, "td"), m(230, "Crafting log entries can now be filtered out."), h()(), d(231, "tr")(232, "td"), m(233, "v1.0.16"), h(), d(234, "td"), m(235, "Added tutorial help button."), h()(), d(236, "tr")(237, "td"), m(238, "v0.0.0 - v1.0.15"), h(), d(239, "td"), m(240, "Created and launched the game."), h()()()()())
                         },
                         styles: ["table[_ngcontent-%COMP%]{border-spacing:4px}.changeLogContainer[_ngcontent-%COMP%]{max-height:600px}td[_ngcontent-%COMP%]{vertical-align:top}"]
                     }), i
                 })();
 
-            function W4(i, t) {
+            function W5(i, t) {
                 if (1 & i && (d(0, "tr")(1, "td"), m(2), I(3, "camelToTitle"), h(), d(4, "td"), m(5), I(6, "bigNumber"), h()()), 2 & i) {
                     const e = t.$implicit;
                     g(2), F(" Highest ", H(3, 2, e.key), " "), g(3), F(" ", H(6, 4, e.value), " ")
@@ -28437,7 +28483,7 @@
                         [4, "ngFor", "ngForOf"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Statistics"), h(), B(3, "hr"), d(4, "div", 1)(5, "table")(6, "tr")(7, "td"), m(8, " Game days per real second: "), h(), d(9, "td"), m(10), I(11, "number"), h()(), d(12, "tr")(13, "td"), m(14, " Game years per real minute: "), h(), d(15, "td"), m(16), I(17, "number"), h()(), d(18, "tr")(19, "td"), m(20, " Game years per real hour: "), h(), d(21, "td"), m(22), I(23, "number"), h()(), d(24, "tr")(25, "td"), m(26, " Total days lived: "), h(), d(27, "td"), m(28), I(29, "bigNumber"), h()(), d(30, "tr")(31, "td"), m(32, " Total lives lived: "), h(), d(33, "td"), m(34), h()(), d(35, "tr")(36, "td"), m(37, " Total enemies killed: "), h(), d(38, "td"), m(39), h()(), d(40, "tr")(41, "td"), m(42, " Enemies killed this life: "), h(), d(43, "td"), m(44), h()(), d(45, "tr")(46, "td"), m(47, " Troubling monsters encountered: "), h(), d(48, "td"), m(49), h()(), d(50, "tr")(51, "td"), m(52, " Manuals discovered: "), h(), d(53, "td"), m(54), h()(), d(55, "tr")(56, "td"), m(57, " Inventory Capacity: "), h(), d(58, "td"), m(59), h()(), d(60, "tr")(61, "td"), m(62, " Automatically sold items: "), h(), d(63, "td"), m(64), h()(), d(65, "tr")(66, "td"), m(67, " Automatically used items: "), h(), d(68, "td"), m(69), h()(), d(70, "tr")(71, "td"), m(72, " Automatically balanced items: "), h(), d(73, "td"), m(74), h()(), d(75, "tr")(76, "td"), m(77, " Items used: "), h(), d(78, "td"), m(79), h()(), d(80, "tr")(81, "td"), m(82, " Items sold: "), h(), d(83, "td"), m(84), h()(), d(85, "tr")(86, "td"), m(87, " Potions used: "), h(), d(88, "td"), m(89), h()(), d(90, "tr")(91, "td"), m(92, " Pills used: "), h(), d(93, "td"), m(94), h()(), d(95, "tr")(96, "td"), m(97, " Gems sold: "), h(), d(98, "td"), m(99), h()(), d(100, "tr")(101, "td"), m(102, " Items overflowed: "), h(), d(103, "td"), m(104), h()(), d(105, "tr")(106, "td"), m(107, " Unlocked Achievements: "), h(), d(108, "td"), m(109), h()(), d(110, "tr")(111, "td"), m(112, " Most land owned: "), h(), d(113, "td"), m(114), I(115, "bigNumber"), h()(), d(116, "tr")(117, "td"), m(118, " Highest land price: "), h(), d(119, "td"), m(120), I(121, "bigNumber"), h()(), d(122, "tr")(123, "td"), m(124, " Most fields owned: "), h(), d(125, "td"), m(126), I(127, "bigNumber"), h()(), d(128, "tr")(129, "td"), m(130, " Highest average farm yield: "), h(), d(131, "td"), m(132), I(133, "number"), h()(), d(134, "tr")(135, "td"), m(136, " Best home owned: "), h(), d(137, "td"), m(138), h()(), d(139, "tr")(140, "td"), m(141, " Follower recruited: "), h(), d(142, "td"), m(143), h()(), d(144, "tr")(145, "td"), m(146, " Followers recruited lately: "), h(), d(147, "td"), m(148), h()(), d(149, "tr")(150, "td"), m(151, " Followers died: "), h(), d(152, "td"), m(153), h()(), d(154, "tr")(155, "td"), m(156, " Followers dismissed: "), h(), d(157, "td"), m(158), h()(), d(159, "tr")(160, "td"), m(161, " Highest follower level: "), h(), d(162, "td"), m(163), h()(), d(164, "tr")(165, "td"), m(166, " Most money: "), h(), d(167, "td"), m(168), I(169, "bigNumber"), h()(), d(170, "tr")(171, "td"), m(172, " Oldest age: "), h(), d(173, "td"), m(174), h()(), x(175, W4, 7, 6, "tr", 2), I(176, "keyvalue"), d(177, "tr")(178, "td"), m(179, " Highest health: "), h(), d(180, "td"), m(181), h()(), d(182, "tr")(183, "td"), m(184, " Highest stamina: "), h(), d(185, "td"), m(186), h()(), d(187, "tr")(188, "td"), m(189, " Highest mana: "), h(), d(190, "td"), m(191), h()(), d(192, "tr")(193, "td"), m(194, " Highest damage dealt: "), h(), d(195, "td"), m(196), I(197, "bigNumber"), h()(), d(198, "tr")(199, "td"), m(200, " Highest damage taken: "), h(), d(201, "td"), m(202), I(203, "bigNumber"), h()(), d(204, "tr")(205, "td"), m(206, " Days spent exhausted "), h(), d(207, "td"), m(208), I(209, "bigNumber"), h()(), d(210, "tr")(211, "td"), m(212, " Completed Apprenticeships "), h(), d(213, "td"), m(214), h()(), d(215, "tr")(216, "td"), m(217, " Open apprenticeships: "), h(), d(218, "td"), m(219), h()(), d(220, "tr")(221, "td"), m(222, " Days spend doing odd jobs: "), h(), d(223, "td"), m(224), h()(), d(225, "tr")(226, "td"), m(227, " Days spent begging: "), h(), d(228, "td"), m(229), h()()()()()), 2 & e && (g(10), F(" ", Ge(11, 43, n.daysPerSecond, "1.0-2"), " "), g(6), F(" ", Ge(17, 46, 60 * n.daysPerSecond / 365, "1.0-2"), " "), g(6), F(" ", Ge(23, 49, 60 * n.daysPerSecond * 60 / 365, "1.0-2"), " "), g(6), F(" ", H(29, 52, n.mainLoopService.totalTicks), " "), g(6), F(" ", n.characterService.characterState.totalLives, " "), g(5), F(" ", n.battleService.totalKills, " "), g(5), F(" ", n.battleService.kills, " "), g(5), F(" ", n.battleService.troubleKills, " "), g(5), F(" ", n.storeService.manuals.length, " "), g(5), F(" ", n.inventoryService.maxItems, " "), g(5), F(" ", n.inventoryService.autoSellEntries.length, " "), g(5), F(" ", n.inventoryService.autoUseEntries.length, " "), g(5), F(" ", n.inventoryService.autoBalanceItems.length, " "), g(5), F(" ", n.inventoryService.lifetimeUsedItems, " "), g(5), F(" ", n.inventoryService.lifetimeSoldItems, " "), g(5), F(" ", n.inventoryService.lifetimePotionsUsed, " "), g(5), F(" ", n.inventoryService.lifetimePillsUsed, " "), g(5), F(" ", n.inventoryService.lifetimeGemsSold, " "), g(5), F(" ", n.inventoryService.thrownAwayItems, " "), g(5), F(" ", n.achievementService.unlockedAchievements.length, " "), g(5), F(" ", H(115, 54, n.homeService.highestLand), " "), g(6), F(" ", H(121, 56, n.homeService.highestLandPrice), " "), g(6), F(" ", H(127, 58, n.homeService.mostFields), " "), g(6), F(" ", Ge(133, 60, n.homeService.highestAverageYield, "1.0-2"), " "), g(6), F(" ", n.homeService.homesList[n.homeService.bestHome].name, " "), g(5), F(" ", n.followerService.totalRecruited, " "), g(5), F(" ", n.followerService.followersRecruited, " "), g(5), F(" ", n.followerService.totalDied, " "), g(5), F(" ", n.followerService.totalDismissed, " "), g(5), F(" ", n.followerService.highestLevel, " "), g(5), F(" ", H(169, 63, n.characterService.characterState.highestMoney), " "), g(6), F(" ", n.characterService.yearify(n.characterService.characterState.highestAge), " "), g(1), b("ngForOf", H(176, 65, n.characterService.characterState.highestAttributes)), g(6), F(" ", n.characterService.characterState.highestHealth, " "), g(5), F(" ", n.characterService.characterState.highestStamina, " "), g(5), F(" ", n.characterService.characterState.highestMana, " "), g(5), F(" ", H(197, 67, n.battleService.highestDamageDealt), " "), g(6), F(" ", H(203, 69, n.battleService.highestDamageTaken), " "), g(6), F(" ", H(209, 71, n.activityService.totalExhaustedDays), " "), g(6), F(" ", n.activityService.completedApprenticeships.length, " "), g(5), F(" ", n.activityService.openApprenticeships, " "), g(5), F(" ", n.activityService.oddJobDays, " "), g(5), F(" ", n.activityService.beggingDays, " "))
+                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Statistics"), h(), B(3, "hr"), d(4, "div", 1)(5, "table")(6, "tr")(7, "td"), m(8, " Game days per real second: "), h(), d(9, "td"), m(10), I(11, "number"), h()(), d(12, "tr")(13, "td"), m(14, " Game years per real minute: "), h(), d(15, "td"), m(16), I(17, "number"), h()(), d(18, "tr")(19, "td"), m(20, " Game years per real hour: "), h(), d(21, "td"), m(22), I(23, "number"), h()(), d(24, "tr")(25, "td"), m(26, " Total days lived: "), h(), d(27, "td"), m(28), I(29, "bigNumber"), h()(), d(30, "tr")(31, "td"), m(32, " Total lives lived: "), h(), d(33, "td"), m(34), h()(), d(35, "tr")(36, "td"), m(37, " Total enemies killed: "), h(), d(38, "td"), m(39), h()(), d(40, "tr")(41, "td"), m(42, " Enemies killed this life: "), h(), d(43, "td"), m(44), h()(), d(45, "tr")(46, "td"), m(47, " Troubling monsters encountered: "), h(), d(48, "td"), m(49), h()(), d(50, "tr")(51, "td"), m(52, " Manuals discovered: "), h(), d(53, "td"), m(54), h()(), d(55, "tr")(56, "td"), m(57, " Inventory Capacity: "), h(), d(58, "td"), m(59), h()(), d(60, "tr")(61, "td"), m(62, " Automatically sold items: "), h(), d(63, "td"), m(64), h()(), d(65, "tr")(66, "td"), m(67, " Automatically used items: "), h(), d(68, "td"), m(69), h()(), d(70, "tr")(71, "td"), m(72, " Automatically balanced items: "), h(), d(73, "td"), m(74), h()(), d(75, "tr")(76, "td"), m(77, " Items used: "), h(), d(78, "td"), m(79), h()(), d(80, "tr")(81, "td"), m(82, " Items sold: "), h(), d(83, "td"), m(84), h()(), d(85, "tr")(86, "td"), m(87, " Potions used: "), h(), d(88, "td"), m(89), h()(), d(90, "tr")(91, "td"), m(92, " Pills used: "), h(), d(93, "td"), m(94), h()(), d(95, "tr")(96, "td"), m(97, " Gems sold: "), h(), d(98, "td"), m(99), h()(), d(100, "tr")(101, "td"), m(102, " Items overflowed: "), h(), d(103, "td"), m(104), h()(), d(105, "tr")(106, "td"), m(107, " Unlocked Achievements: "), h(), d(108, "td"), m(109), h()(), d(110, "tr")(111, "td"), m(112, " Most land owned: "), h(), d(113, "td"), m(114), I(115, "bigNumber"), h()(), d(116, "tr")(117, "td"), m(118, " Highest land price: "), h(), d(119, "td"), m(120), I(121, "bigNumber"), h()(), d(122, "tr")(123, "td"), m(124, " Most fields owned: "), h(), d(125, "td"), m(126), I(127, "bigNumber"), h()(), d(128, "tr")(129, "td"), m(130, " Highest average farm yield: "), h(), d(131, "td"), m(132), I(133, "number"), h()(), d(134, "tr")(135, "td"), m(136, " Best home owned: "), h(), d(137, "td"), m(138), h()(), d(139, "tr")(140, "td"), m(141, " Follower recruited: "), h(), d(142, "td"), m(143), h()(), d(144, "tr")(145, "td"), m(146, " Followers recruited lately: "), h(), d(147, "td"), m(148), h()(), d(149, "tr")(150, "td"), m(151, " Followers died: "), h(), d(152, "td"), m(153), h()(), d(154, "tr")(155, "td"), m(156, " Followers dismissed: "), h(), d(157, "td"), m(158), h()(), d(159, "tr")(160, "td"), m(161, " Highest follower level: "), h(), d(162, "td"), m(163), h()(), d(164, "tr")(165, "td"), m(166, " Most money: "), h(), d(167, "td"), m(168), I(169, "bigNumber"), h()(), d(170, "tr")(171, "td"), m(172, " Oldest age: "), h(), d(173, "td"), m(174), h()(), x(175, W5, 7, 6, "tr", 2), I(176, "keyvalue"), d(177, "tr")(178, "td"), m(179, " Highest health: "), h(), d(180, "td"), m(181), h()(), d(182, "tr")(183, "td"), m(184, " Highest stamina: "), h(), d(185, "td"), m(186), h()(), d(187, "tr")(188, "td"), m(189, " Highest mana: "), h(), d(190, "td"), m(191), h()(), d(192, "tr")(193, "td"), m(194, " Highest damage dealt: "), h(), d(195, "td"), m(196), I(197, "bigNumber"), h()(), d(198, "tr")(199, "td"), m(200, " Highest damage taken: "), h(), d(201, "td"), m(202), I(203, "bigNumber"), h()(), d(204, "tr")(205, "td"), m(206, " Days spent exhausted "), h(), d(207, "td"), m(208), I(209, "bigNumber"), h()(), d(210, "tr")(211, "td"), m(212, " Completed Apprenticeships "), h(), d(213, "td"), m(214), h()(), d(215, "tr")(216, "td"), m(217, " Open apprenticeships: "), h(), d(218, "td"), m(219), h()(), d(220, "tr")(221, "td"), m(222, " Days spend doing odd jobs: "), h(), d(223, "td"), m(224), h()(), d(225, "tr")(226, "td"), m(227, " Days spent begging: "), h(), d(228, "td"), m(229), h()()()()()), 2 & e && (g(10), F(" ", Ge(11, 43, n.daysPerSecond, "1.0-2"), " "), g(6), F(" ", Ge(17, 46, 60 * n.daysPerSecond / 365, "1.0-2"), " "), g(6), F(" ", Ge(23, 49, 60 * n.daysPerSecond * 60 / 365, "1.0-2"), " "), g(6), F(" ", H(29, 52, n.mainLoopService.totalTicks), " "), g(6), F(" ", n.characterService.characterState.totalLives, " "), g(5), F(" ", n.battleService.totalKills, " "), g(5), F(" ", n.battleService.kills, " "), g(5), F(" ", n.battleService.troubleKills, " "), g(5), F(" ", n.storeService.manuals.length, " "), g(5), F(" ", n.inventoryService.maxItems, " "), g(5), F(" ", n.inventoryService.autoSellEntries.length, " "), g(5), F(" ", n.inventoryService.autoUseEntries.length, " "), g(5), F(" ", n.inventoryService.autoBalanceItems.length, " "), g(5), F(" ", n.inventoryService.lifetimeUsedItems, " "), g(5), F(" ", n.inventoryService.lifetimeSoldItems, " "), g(5), F(" ", n.inventoryService.lifetimePotionsUsed, " "), g(5), F(" ", n.inventoryService.lifetimePillsUsed, " "), g(5), F(" ", n.inventoryService.lifetimeGemsSold, " "), g(5), F(" ", n.inventoryService.thrownAwayItems, " "), g(5), F(" ", n.achievementService.unlockedAchievements.length, " "), g(5), F(" ", H(115, 54, n.homeService.highestLand), " "), g(6), F(" ", H(121, 56, n.homeService.highestLandPrice), " "), g(6), F(" ", H(127, 58, n.homeService.mostFields), " "), g(6), F(" ", Ge(133, 60, n.homeService.highestAverageYield, "1.0-2"), " "), g(6), F(" ", n.homeService.homesList[n.homeService.bestHome].name, " "), g(5), F(" ", n.followerService.totalRecruited, " "), g(5), F(" ", n.followerService.followersRecruited, " "), g(5), F(" ", n.followerService.totalDied, " "), g(5), F(" ", n.followerService.totalDismissed, " "), g(5), F(" ", n.followerService.highestLevel, " "), g(5), F(" ", H(169, 63, n.characterService.characterState.highestMoney), " "), g(6), F(" ", n.characterService.yearify(n.characterService.characterState.highestAge), " "), g(1), b("ngForOf", H(176, 65, n.characterService.characterState.highestAttributes)), g(6), F(" ", n.characterService.characterState.highestHealth, " "), g(5), F(" ", n.characterService.characterState.highestStamina, " "), g(5), F(" ", n.characterService.characterState.highestMana, " "), g(5), F(" ", H(197, 67, n.battleService.highestDamageDealt), " "), g(6), F(" ", H(203, 69, n.battleService.highestDamageTaken), " "), g(6), F(" ", H(209, 71, n.activityService.totalExhaustedDays), " "), g(6), F(" ", n.activityService.completedApprenticeships.length, " "), g(5), F(" ", n.activityService.openApprenticeships, " "), g(5), F(" ", n.activityService.oddJobDays, " "), g(5), F(" ", n.activityService.beggingDays, " "))
                     },
                     styles: ["table[_ngcontent-%COMP%]{width:100%}.statisticsDiv[_ngcontent-%COMP%]{width:100%;height:500px;overflow:auto}td[_ngcontent-%COMP%]{width:45%}"]
                 }), i
@@ -28447,7 +28493,7 @@
                     highlighted: i
                 }
             };
-            let K4 = (() => {
+            let K5 = (() => {
                 class i {
                     constructor(e) {
                         this.gameStateService = e, this.error = ""
@@ -28495,7 +28541,7 @@
                 }), i
             })();
 
-            function J4(i, t) {
+            function J5(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "mat-icon", 46), M("click", function () {
@@ -28504,7 +28550,7 @@
                 }
             }
 
-            function Q4(i, t) {
+            function Q5(i, t) {
                 if (1 & i) {
                     const e = V();
                     d(0, "span")(1, "mat-icon", 47), M("click", function () {
@@ -28513,7 +28559,7 @@
                 }
             }
 
-            function Z4(i, t) {
+            function Z5(i, t) {
                 if (1 & i && B(0, "app-vertical-panel-slider", 42), 2 & i) {
                     w();
                     const e = Rt(40),
@@ -28522,7 +28568,7 @@
                 }
             }
 
-            function X4(i, t) {
+            function X5(i, t) {
                 if (1 & i && B(0, "app-vertical-panel-slider", 42), 2 & i) {
                     w();
                     const e = Rt(43),
@@ -28632,10 +28678,10 @@
                             this.gameStateService.loadFromLocalStorage(), this.mainLoopService.start()
                         }
                         hardResetClicked(e) {
-                            e.preventDefault(), confirm("这将永久重置所有内容。 你确定吗？") && this.gameStateService.hardReset()
+                            e.preventDefault(), confirm("This will reset everything permanently. Are you sure?") && this.gameStateService.hardReset()
                         }
                         saveClicked(e) {
-                            e.preventDefault(), e.stopPropagation(), (e.ctrlKey || e.metaKey) && (e.shiftKey || e.altKey) ? this.gameStateService.loadFromLocalStorage(!0) : e.shiftKey || e.altKey ? this.dialog.open(K4, {
+                            e.preventDefault(), e.stopPropagation(), (e.ctrlKey || e.metaKey) && (e.shiftKey || e.altKey) ? this.gameStateService.loadFromLocalStorage(!0) : e.shiftKey || e.altKey ? this.dialog.open(K5, {
                                 width: "400px",
                                 data: {
                                     someField: "foo"
@@ -28643,7 +28689,7 @@
                             }) : (this.gameStateService.savetoLocalStorage(), this.characterService.toast("Manual Save Complete"))
                         }
                         exportClicked() {
-                            this.dialog.open(Y4, {
+                            this.dialog.open(Y5, {
                                 width: "700px",
                                 data: {
                                     someField: "foo"
@@ -28659,7 +28705,7 @@
                             })
                         }
                         storeOptionsClicked() {
-                            this.dialog.open(n4, {
+                            this.dialog.open(n5, {
                                 width: "700px",
                                 data: {
                                     someField: "foo"
@@ -28667,7 +28713,7 @@
                             })
                         }
                         rebirthClicked(e) {
-                            e.preventDefault(), confirm("这将结束你现在的生活。 你确定吗？") && this.gameStateService.rebirth()
+                            e.preventDefault(), confirm("This will end your current life. Are you sure?") && this.gameStateService.rebirth()
                         }
                         ascensionStoreClicked() {
                             this.storeService.updateAscensions(), this.dialog.open(nM, {
@@ -28678,7 +28724,7 @@
                             })
                         }
                         tutorialClicked() {
-                            this.dialog.open(G4, {
+                            this.dialog.open(G5, {
                                 width: "700px",
                                 data: {
                                     someField: "foo"
@@ -28694,7 +28740,7 @@
                             })
                         }
                         changelogClicked() {
-                            this.dialog.open($4, {
+                            this.dialog.open($5, {
                                 width: "700px",
                                 data: {
                                     someField: "foo"
@@ -28702,7 +28748,7 @@
                             })
                         }
                         achievementsClicked() {
-                            this.dialog.open(g4, {
+                            this.dialog.open(g5, {
                                 width: "750px",
                                 data: {
                                     someField: "foo"
@@ -28710,7 +28756,7 @@
                             })
                         }
                         impossibleTasksClicked() {
-                            this.dialog.open(z4, {
+                            this.dialog.open(z5, {
                                 width: "500px",
                                 data: {
                                     someField: "foo"
@@ -28741,18 +28787,18 @@
                             [1, "top-line"],
                             [1, "gameTitle"],
                             [1, "versionNumber", 3, "click"],
-                            ["matTooltip", "Confused? Click here.", 1, "iconButton", 3, "click"],
+                            ["matTooltip", "Confused? Click here.", "aria-label", "Tutorial", 1, "iconButton", 3, "click"],
                             ["matTooltip", "Statistics!", 1, "iconButton", 3, "click"],
-                            ["matTooltip", "A store that sells special manuals for aspiring immortals.", 1, "iconButton", 3, "ngClass", "click"],
-                            ["matTooltip", "Configuration options for purchased items.", 1, "iconButton", 3, "click"],
-                            ["matTooltip", "Achievements!", 1, "iconButton", 3, "click"],
-                            ["matTooltip", "Impossible Tasks", "class", "iconButton", 3, "click", 4, "ngIf"],
+                            ["matTooltip", "A store that sells special manuals for aspiring immortals.", "aria-label", "Store", 1, "iconButton", 3, "ngClass", "click"],
+                            ["matTooltip", "Configuration options for purchased items.", "aria-label", "Options", 1, "iconButton", 3, "click"],
+                            ["matTooltip", "Achievements!", "aria-label", "Achievements", 1, "iconButton", 3, "click"],
+                            ["matTooltip", "Impossible Tasks", "class", "iconButton", "aria-label", "Impossible Tasks", 3, "click", 4, "ngIf"],
                             [4, "ngIf"],
                             ["href", "", "matTooltip", "Voluntarily end this life, allowing your current attributes to strengthen your aptitudes in the next life.", 3, "click"],
-                            ["matTooltip", "Click to save your game now.\n        Shift-click for save options.\n        Ctrl-shift-click to load backup save.", 1, "iconButton", 3, "click"],
+                            ["matTooltip", "Click to save your game now.\n        Shift-click for save options.\n        Ctrl-shift-click to load backup save.", "aria-label", "Save", 1, "iconButton", 3, "click"],
                             ["type", "checkbox", "id", "darkMode", 3, "checked", "change"],
                             ["for", "darkMode"],
-                            ["matTooltip", "Import or export your save game file. Sometimes immortals need a different browser.", 1, "iconButton", 3, "click"],
+                            ["matTooltip", "Import or export your save game file. Sometimes immortals need a different browser.", "aria-label", "Export", 1, "iconButton", 3, "click"],
                             ["href", "", "matTooltip", "Completely restart your journey toward immortality.", 3, "click"],
                             ["href", "https://discord.gg/Na7Qmwy3XK", "target", "_blank", "rel", "noopener noreferrer", "matTooltip", "Have questions? Try the Immortality Idle Discord."],
                             [1, "bodyContainer"],
@@ -28782,8 +28828,8 @@
                             ["appResizable", "", 1, "logContainer"],
                             ["logContainer", "appResizable"],
                             [1, "logPanel", "panel"],
-                            ["matTooltip", "Impossible Tasks", 1, "iconButton", 3, "click"],
-                            ["matTooltip", "Ascension Techniques.", 1, "iconButton", 3, "click"]
+                            ["matTooltip", "Impossible Tasks", "aria-label", "Impossible Tasks", 1, "iconButton", 3, "click"],
+                            ["matTooltip", "Ascension Techniques.", "aria-label", "Ascension", 1, "iconButton", 3, "click"]
                         ],
                         template: function (e, n) {
                             if (1 & e && (d(0, "div", 0)(1, "div", 1)(2, "div", 2)(3, "span", 3), m(4), d(5, "span", 4), M("click", function () {
@@ -28798,7 +28844,7 @@
                                     return n.storeOptionsClicked()
                                 }), m(15, " settings "), h()(), d(16, "mat-icon", 9), M("click", function () {
                                     return n.achievementsClicked()
-                                }), m(17, " military_tech "), h(), x(18, J4, 2, 0, "mat-icon", 10), x(19, Q4, 3, 0, "span", 11), d(20, "span")(21, "a", 12), M("click", function (o) {
+                                }), m(17, " military_tech "), h(), x(18, J5, 2, 0, "mat-icon", 10), x(19, Q5, 3, 0, "span", 11), d(20, "span")(21, "a", 12), M("click", function (o) {
                                     return n.rebirthClicked(o)
                                 }), m(22, "Reincarnate"), h()(), d(23, "mat-icon", 13), M("click", function (o) {
                                     return n.saveClicked(o)
@@ -28808,7 +28854,7 @@
                                     return n.exportClicked()
                                 }), m(30, " upload "), h(), d(31, "a", 17), M("click", function (o) {
                                     return n.hardResetClicked(o)
-                                }), m(32, "Hard Reset"), h(), d(33, "a", 18), m(34, "Discord"), h()(), d(35, "div", 19)(36, "div", 20, 21)(38, "div", 22), B(39, "app-time-panel", 23, 24), x(41, Z4, 1, 2, "app-vertical-panel-slider", 25), B(42, "app-attributes-panel", 26, 27), x(44, X4, 1, 2, "app-vertical-panel-slider", 25), B(45, "app-health-panel", 28, 29), h(), d(47, "div", 30), B(48, "app-activity-panel", 31, 32), x(50, eq, 1, 2, "app-vertical-panel-slider", 25), B(51, "app-battle-panel", 33, 34), h(), d(53, "div", 35), B(54, "app-equipment-panel", 36, 37), x(56, tq, 1, 2, "app-vertical-panel-slider", 25), B(57, "app-home-panel", 38, 39), x(59, iq, 1, 2, "app-vertical-panel-slider", 25), B(60, "app-inventory-panel", 40, 41), h()(), B(62, "app-vertical-panel-slider", 42), d(63, "div", 43, 44), B(65, "app-log-panel", 45), h()()()()), 2 & e) {
+                                }), m(32, "Hard Reset"), h(), d(33, "a", 18), m(34, "Discord"), h()(), d(35, "div", 19)(36, "div", 20, 21)(38, "div", 22), B(39, "app-time-panel", 23, 24), x(41, Z5, 1, 2, "app-vertical-panel-slider", 25), B(42, "app-attributes-panel", 26, 27), x(44, X5, 1, 2, "app-vertical-panel-slider", 25), B(45, "app-health-panel", 28, 29), h(), d(47, "div", 30), B(48, "app-activity-panel", 31, 32), x(50, eq, 1, 2, "app-vertical-panel-slider", 25), B(51, "app-battle-panel", 33, 34), h(), d(53, "div", 35), B(54, "app-equipment-panel", 36, 37), x(56, tq, 1, 2, "app-vertical-panel-slider", 25), B(57, "app-home-panel", 38, 39), x(59, iq, 1, 2, "app-vertical-panel-slider", 25), B(60, "app-inventory-panel", 40, 41), h()(), B(62, "app-vertical-panel-slider", 42), d(63, "div", 43, 44), B(65, "app-log-panel", 45), h()()()()), 2 & e) {
                                 const r = Rt(37),
                                     o = Rt(64);
                                 b("ngClass", Ye(14, nq, n.gameStateService.isDarkMode)), g(4), F(" Immortality Idle - ", n.hellService.inHell ? "Escape from The Eighteen Hells" : n.characterService.characterState.immortal ? "You are Immortal!" : "Can you become an immortal?", " "), g(2), se(n.gameStateService.isExperimental ? "Experimental" : "v" + n.applicationVersion), g(6), b("ngClass", Ye(16, rq, n.storeService.isManualAvailable())), g(6), b("ngIf", n.impossibleTaskService.impossibleTasksUnlocked), g(1), b("ngIf", n.characterService.characterState.ascensionUnlocked), g(7), b("checked", n.gameStateService.isDarkMode), g(15), b("ngIf", n.activateSliders), g(3), b("ngIf", n.activateSliders), g(6), b("ngIf", n.activateSliders), g(6), b("ngIf", n.activateSliders), g(3), b("ngIf", n.activateSliders), g(3), b("top", r)("bottom", o)
@@ -28902,7 +28948,7 @@
             function dq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 5), M("click", function () {
+                    d(0, "mat-icon", 30), M("click", function () {
                         return E(e), w().fastClick()
                     }), I(1, "number"), m(2, " fast_forward "), h()
                 }
@@ -28915,7 +28961,7 @@
             function fq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 5), M("click", function () {
+                    d(0, "mat-icon", 31), M("click", function () {
                         return E(e), w().fasterClick()
                     }), I(1, "number"), m(2, " skip_next "), h()
                 }
@@ -28928,7 +28974,7 @@
             function pq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 5), M("click", function () {
+                    d(0, "mat-icon", 32), M("click", function () {
                         return E(e), w().fastestClick()
                     }), I(1, "number"), m(2, " bolt "), h()
                 }
@@ -28941,7 +28987,7 @@
             function mq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 23), M("click", function () {
+                    d(0, "mat-icon", 33), M("click", function () {
                         return E(e), w().timeOptions()
                     }), m(1, " settings "), h()
                 }
@@ -28950,9 +28996,9 @@
             function gq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "h6")(1, "input", 24), M("change", function (r) {
+                    d(0, "h6")(1, "input", 34), M("change", function (r) {
                         return E(e), w().useSavedTicks(r)
-                    }), h(), d(2, "label", 25), m(3), I(4, "number"), h()()
+                    }), h(), d(2, "label", 35), m(3), I(4, "number"), h()()
                 }
                 if (2 & i) {
                     const e = w();
@@ -28969,7 +29015,7 @@
             function vq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "tr", 27), M("dragover", function (r) {
+                    d(0, "tr", 37), M("dragover", function (r) {
                         return E(e), w(2).allowDrop(r)
                     })("drop", function (r) {
                         E(e);
@@ -28979,19 +29025,19 @@
                         E(e);
                         const o = w().index;
                         return w().drag(o, r)
-                    }), d(1, "td", 28), m(2), h(), d(3, "td", 28)(4, "div", 29), B(5, "span"), h()(), d(6, "td", 28)(7, "mat-icon", 30), M("click", function (r) {
+                    }), d(1, "td", 38), m(2), h(), d(3, "td", 38)(4, "div", 39), B(5, "span"), h()(), d(6, "td", 38)(7, "mat-icon", 40), M("click", function (r) {
                         E(e);
                         const o = w().$implicit;
                         return w().onMinusClick(o, r)
-                    }), m(8, "remove"), h(), d(9, "mat-icon", 31), M("click", function (r) {
+                    }), m(8, "remove"), h(), d(9, "mat-icon", 41), M("click", function (r) {
                         E(e);
                         const o = w().$implicit;
                         return w().onPlusClick(o, r)
-                    }), m(10, "add"), h(), d(11, "mat-icon", 32), M("click", function () {
+                    }), m(10, "add"), h(), d(11, "mat-icon", 42), M("click", function () {
                         E(e);
                         const r = w().$implicit;
                         return w().onDisableClick(r)
-                    }), m(12, "cancel"), h(), d(13, "mat-icon", 33), M("click", function () {
+                    }), m(12, "cancel"), h(), d(13, "mat-icon", 43), M("click", function () {
                         E(e);
                         const r = w().$implicit;
                         return w().onRemoveClick(r)
@@ -29007,7 +29053,7 @@
             }
 
             function yq(i, t) {
-                if (1 & i && (cr(0), x(1, vq, 15, 17, "tr", 26), ur()), 2 & i) {
+                if (1 & i && (cr(0), x(1, vq, 15, 17, "tr", 36), ur()), 2 & i) {
                     const e = t.$implicit,
                         n = w();
                     g(1), b("ngIf", "" !== n.getActivityName(e.activity))
@@ -29022,7 +29068,7 @@
             function bq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "tr")(1, "td"), m(2), h(), d(3, "td")(4, "div", 36), B(5, "span"), h()(), d(6, "td")(7, "mat-icon", 33), M("click", function () {
+                    d(0, "tr")(1, "td"), m(2), h(), d(3, "td")(4, "div", 46), B(5, "span"), h()(), d(6, "td")(7, "mat-icon", 43), M("click", function () {
                         return E(e), w(2).removeSpiritActivity()
                     }), m(8, "clear"), h()()()
                 }
@@ -29035,11 +29081,11 @@
             function Sq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "table", 34), M("drop", function (r) {
+                    d(0, "table", 44), M("drop", function (r) {
                         return E(e), w().spiritActivityDrop(r)
                     })("dragover", function (r) {
                         return E(e), w().allowDrop(r)
-                    }), d(1, "tr")(2, "td", 35), m(3, " Spiritual Projection "), h()(), x(4, bq, 9, 4, "tr", 8), h()
+                    }), d(1, "tr")(2, "td", 45), m(3, " Spiritual Projection "), h()(), x(4, bq, 9, 4, "tr", 10), h()
                 }
                 if (2 & i) {
                     const e = w();
@@ -29159,11 +29205,13 @@
                         [1, "dropAccepter", 3, "dragover", "drop"],
                         [1, "panelHeader"],
                         ["matTooltip", "Achieving immortality doesn't happen overnight. It takes lifetimes of hard work. Choose how to schedule your days to take care of your basic needs and develop your immortal potential. Add activities from the activities panel. Repeat them if you want to, or rearrange them by dragging them where you want them to go."],
-                        ["matTooltip", "Pause the game. \n      Hotkey: Alt-0 to pause or spacebar to toggle. \n      Clicking this again while paused will step time forward a single day. \n      When paused, you can also advance one day by pressing the Enter key.", 1, "iconButton", 3, "ngClass", "click"],
-                        ["matTooltip", "Slow Game Speed (1 day/sec).\n      Hotkey: Alt-1", 1, "iconButton", 3, "ngClass", "click"],
-                        [1, "iconButton", 3, "ngClass", "matTooltip", "click"],
-                        ["class", "iconButton", 3, "ngClass", "matTooltip", "click", 4, "ngIf"],
-                        ["matTooltip", "Options", "class", "iconButton", 3, "click", 4, "ngIf"],
+                        ["matTooltip", "Pause the game. \n      Hotkey: Alt-0 to pause or spacebar to toggle. \n      Clicking this again while paused will step time forward a single day. \n      When paused, you can also advance one day by pressing the Enter key.", "aria-label", "Pause", 1, "iconButton", 3, "ngClass", "click"],
+                        ["matTooltip", "Slow Game Speed (1 day/sec).\n      Hotkey: Alt-1", "aria-label", "Slow Speed", 1, "iconButton", 3, "ngClass", "click"],
+                        ["aria-label", "Standard Speed", 1, "iconButton", 3, "ngClass", "matTooltip", "click"],
+                        ["class", "iconButton", "aria-label", "Fast Speed", 3, "ngClass", "matTooltip", "click", 4, "ngIf"],
+                        ["class", "iconButton", "aria-label", "Faster Speed", 3, "ngClass", "matTooltip", "click", 4, "ngIf"],
+                        ["class", "iconButton", "aria-label", "Fastest Speed", 3, "ngClass", "matTooltip", "click", 4, "ngIf"],
+                        ["matTooltip", "Options", "class", "iconButton", "aria-label", "Time Options", 3, "click", 4, "ngIf"],
                         [4, "ngIf"],
                         [1, "overflow"],
                         [4, "ngFor", "ngForOf"],
@@ -29171,25 +29219,33 @@
                         [1, "saveButtonBar"],
                         [1, "saveButtonGroup"],
                         ["matTooltip", "Save your current schedule of actviities (Schedule #1).", 1, "saveButton", 3, "click"],
-                        [1, "iconButton", "saveIcon"],
+                        ["aria-label", "Save Schedule 1", 1, "iconButton", "saveIcon"],
                         [1, "saveSlot"],
                         ["matTooltip", "Save your current schedule of actviities (Schedule #2).", 1, "saveButton", 3, "click"],
+                        ["aria-label", "Save Schedule 2", 1, "iconButton", "saveIcon"],
                         ["matTooltip", "Save your current schedule of actviities (Schedule #3).", 1, "saveButton", 3, "click"],
+                        ["aria-label", "Save Schedule 3", 1, "iconButton", "saveIcon"],
                         ["matTooltip", "Load your saved schedule of actviities (Schedule #1). Note that activities that you cannot do right now will not be loaded.", 1, "saveButton", 3, "click"],
+                        ["aria-label", "Load Schedule 1", 1, "iconButton", "saveIcon"],
                         ["matTooltip", "Load your saved schedule of actviities (Schedule #2). Note that activities that you cannot do right now will not be loaded.", 1, "saveButton", 3, "click"],
+                        ["aria-label", "Load Schedule 2", 1, "iconButton", "saveIcon"],
                         ["matTooltip", "Load your saved schedule of actviities (Schedule #3). Note that activities that you cannot do right now will not be loaded.", 1, "saveButton", 3, "click"],
-                        ["matTooltip", "Clear your current schedule.", 1, "iconButton", "saveIcon", 3, "click"],
-                        ["matTooltip", "Options", 1, "iconButton", 3, "click"],
+                        ["aria-label", "Load Schedule 3", 1, "iconButton", "saveIcon"],
+                        ["matTooltip", "Clear your current schedule.", "aria-label", "Clear Schedule", 1, "iconButton", "saveIcon", 3, "click"],
+                        ["aria-label", "Fast Speed", 1, "iconButton", 3, "ngClass", "matTooltip", "click"],
+                        ["aria-label", "Faster Speed", 1, "iconButton", 3, "ngClass", "matTooltip", "click"],
+                        ["aria-label", "Fastest Speed", 1, "iconButton", 3, "ngClass", "matTooltip", "click"],
+                        ["matTooltip", "Options", "aria-label", "Time Options", 1, "iconButton", 3, "click"],
                         ["type", "checkbox", "id", "useSavedTicks", 3, "checked", "change"],
                         ["for", "useSavedTicks"],
                         ["draggable", "true", 3, "dragover", "drop", "dragstart", 4, "ngIf"],
                         ["draggable", "true", 3, "dragover", "drop", "dragstart"],
                         [3, "ngClass"],
                         [1, "progress-bar"],
-                        ["matTooltip", "Spend fewer days on this.\n\n            Shift- or Ctrl-click to remove 10x\n            Shift-Ctrl-click to remove 100x", 1, "iconButton", 3, "click"],
-                        ["matTooltip", "Spend more days on this.\n\n            Shift- or Ctrl-click to add 10x\n            Shift-Ctrl-click to add 100x", 1, "iconButton", 3, "click"],
-                        ["matTooltip", "Disable this activity on the schedule.", 1, "iconButton", 3, "click"],
-                        ["matTooltip", "Remove this activity from the schedule.", 1, "iconButton", 3, "click"],
+                        ["matTooltip", "Spend fewer days on this.\n\n            Shift- or Ctrl-click to remove 10x\n            Shift-Ctrl-click to remove 100x", "aria-label", "Remove Days", 1, "iconButton", 3, "click"],
+                        ["matTooltip", "Spend more days on this.\n\n            Shift- or Ctrl-click to add 10x\n            Shift-Ctrl-click to add 100x", "aria-label", "Add Days", 1, "iconButton", 3, "click"],
+                        ["matTooltip", "Disable this activity on the schedule.", "aria-label", "Disable Activity", 1, "iconButton", 3, "click"],
+                        ["matTooltip", "Remove this activity from the schedule.", "aria-label", "Remove Activity", 1, "iconButton", 3, "click"],
                         [1, "spiritActivityPanel", 3, "drop", "dragover"],
                         ["matTooltip", "You can project your spiritual self to take on a second activity while your physical body continues its work. Whatever activity you drop here will be completed each day as long as you have enough mana to support the effort. Requires 5 mana.", 1, "spiritProjectionLabel"],
                         [1, "progress-bar", 3, "ngClass"]
@@ -29205,19 +29261,19 @@
                             return n.slowClick()
                         }), m(9, " slow_motion_video "), h(), d(10, "mat-icon", 5), M("click", function () {
                             return n.standardClick()
-                        }), I(11, "number"), m(12, " play_arrow "), h(), x(13, dq, 3, 7, "mat-icon", 6), x(14, fq, 3, 7, "mat-icon", 6), x(15, pq, 3, 7, "mat-icon", 6), x(16, mq, 2, 0, "mat-icon", 7), x(17, gq, 5, 5, "h6", 8), h(), d(18, "div", 9)(19, "table"), x(20, yq, 2, 1, "ng-container", 10), h(), x(21, Sq, 5, 1, "table", 11), h(), d(22, "div", 12)(23, "div", 13)(24, "div", 14), M("click", function () {
+                        }), I(11, "number"), m(12, " play_arrow "), h(), x(13, dq, 3, 7, "mat-icon", 6), x(14, fq, 3, 7, "mat-icon", 7), x(15, pq, 3, 7, "mat-icon", 8), x(16, mq, 2, 0, "mat-icon", 9), x(17, gq, 5, 5, "h6", 10), h(), d(18, "div", 11)(19, "table"), x(20, yq, 2, 1, "ng-container", 12), h(), x(21, Sq, 5, 1, "table", 13), h(), d(22, "div", 14)(23, "div", 15)(24, "div", 16), M("click", function () {
                             return n.activityService.saveActivityLoop()
-                        }), d(25, "mat-icon", 15), m(26, " content_paste "), h(), d(27, "div", 16), m(28, "1"), h()(), d(29, "div", 17), M("click", function () {
+                        }), d(25, "mat-icon", 17), m(26, " content_paste "), h(), d(27, "div", 18), m(28, "1"), h()(), d(29, "div", 19), M("click", function () {
                             return n.activityService.saveActivityLoop(2)
-                        }), d(30, "mat-icon", 15), m(31, " content_paste "), h(), d(32, "div", 16), m(33, "2"), h()(), d(34, "div", 18), M("click", function () {
+                        }), d(30, "mat-icon", 20), m(31, " content_paste "), h(), d(32, "div", 18), m(33, "2"), h()(), d(34, "div", 21), M("click", function () {
                             return n.activityService.saveActivityLoop(3)
-                        }), d(35, "mat-icon", 15), m(36, " content_paste "), h(), d(37, "div", 16), m(38, "3"), h()()(), d(39, "div", 13)(40, "div", 19), M("click", function () {
+                        }), d(35, "mat-icon", 22), m(36, " content_paste "), h(), d(37, "div", 18), m(38, "3"), h()()(), d(39, "div", 15)(40, "div", 23), M("click", function () {
                             return n.activityService.loadActivityLoop()
-                        }), d(41, "mat-icon", 15), m(42, " content_paste_go "), h(), d(43, "div", 16), m(44, "1"), h()(), d(45, "div", 20), M("click", function () {
+                        }), d(41, "mat-icon", 24), m(42, " content_paste_go "), h(), d(43, "div", 18), m(44, "1"), h()(), d(45, "div", 25), M("click", function () {
                             return n.activityService.loadActivityLoop(2)
-                        }), d(46, "mat-icon", 15), m(47, " content_paste_go "), h(), d(48, "div", 16), m(49, "2"), h()(), d(50, "div", 21), M("click", function () {
+                        }), d(46, "mat-icon", 26), m(47, " content_paste_go "), h(), d(48, "div", 18), m(49, "2"), h()(), d(50, "div", 27), M("click", function () {
                             return n.activityService.loadActivityLoop(3)
-                        }), d(51, "mat-icon", 15), m(52, " content_paste_go "), h(), d(53, "div", 16), m(54, "3"), h()()(), d(55, "mat-icon", 22), M("click", function () {
+                        }), d(51, "mat-icon", 28), m(52, " content_paste_go "), h(), d(53, "div", 18), m(54, "3"), h()()(), d(55, "mat-icon", 29), M("click", function () {
                             return n.activityService.activityLoop = []
                         }), m(56, " delete_sweep "), h()()()), 2 & e && (g(6), b("ngClass", Ye(14, Sa, n.mainLoopService.pause)), g(2), b("ngClass", Ye(16, Sa, 40 === n.mainLoopService.tickDivider && !n.mainLoopService.pause)), g(2), ui("matTooltip", "Standard Game Speed (", Ge(11, 11, n.mainLoopService.getTPS(10), "1.0-2"), " days/sec).\n      Hotkey: Alt-2"), b("ngClass", Ye(18, Sa, 10 === n.mainLoopService.tickDivider && !n.mainLoopService.pause)), g(3), b("ngIf", n.mainLoopService.unlockFastSpeed), g(1), b("ngIf", n.mainLoopService.unlockFasterSpeed), g(1), b("ngIf", n.mainLoopService.unlockFastestSpeed), g(1), b("ngIf", n.activityService.autoRestart), g(1), b("ngIf", n.mainLoopService.bankedTicks > 0), g(3), b("ngForOf", n.activityService.activityLoop), g(1), b("ngIf", n.characterService.characterState.manaUnlocked))
                     },
@@ -29403,12 +29459,12 @@
                         [4, "ngFor", "ngForOf"],
                         ["matTooltip", "Your followers can aid you in many ways. Each has a specific skill that they will use to your benefit. Followers must be taken care of, so having them will cost you some money each day, and more powerful followers will have more expensive needs you will have to take care of."],
                         [3, "ngClass", 4, "ngIf"],
-                        ["class", "iconButton optionsIcon", "matTooltip", "Manage your followers.", 3, "click", 4, "ngIf"],
+                        ["class", "iconButton optionsIcon", "aria-label", "Manage Followers", "matTooltip", "Manage your followers.", 3, "click", 4, "ngIf"],
                         ["class", "followerPanel", 4, "ngIf"],
                         [3, "matTooltip", 4, "ngIf"],
                         [3, "matTooltip"],
                         [3, "ngClass"],
-                        ["matTooltip", "Manage your followers.", 1, "iconButton", "optionsIcon", 3, "click"],
+                        ["aria-label", "Manage Followers", "matTooltip", "Manage your followers.", 1, "iconButton", "optionsIcon", 3, "click"],
                         [1, "followerPanel"],
                         ["class", "attributeLine", 4, "ngFor", "ngForOf"],
                         [1, "attributeLine"],
@@ -29672,7 +29728,7 @@
                     },
                     directives: [st, Nt, Ti, At, si],
                     pipes: [un, jr],
-                    styles: [".furnitureModal[_ngcontent-%COMP%]{overflow:hidden}.itemSlot[_ngcontent-%COMP%]{width:75px;height:75px;background-color:var(--storeButtonColor);line-height:12px}.ownedItem[_ngcontent-%COMP%]{background-color:var(--storeButtonDisabledColor)!important;border:1px solid var(--storeButtonDisabledColor)!important}.inventoryGrid[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:1em;text-align:center;justify-content:center}hr[_ngcontent-%COMP%]{margin-top:2px}button[_ngcontent-%COMP%]{width:90%;display:inline-block;margin-top:4px}"]
+                    styles: [".furnitureModal[_ngcontent-%COMP%]{overflow-x:hidden;overflow-y:scroll;max-height:600px}.itemSlot[_ngcontent-%COMP%]{width:75px;height:75px;background-color:var(--storeButtonColor);line-height:12px}.ownedItem[_ngcontent-%COMP%]{background-color:var(--storeButtonDisabledColor)!important;border:1px solid var(--storeButtonDisabledColor)!important}.inventoryGrid[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:1em;text-align:center;justify-content:center}hr[_ngcontent-%COMP%]{margin-top:2px}button[_ngcontent-%COMP%]{width:90%;display:inline-block;margin-top:4px}"]
                 }), i
             })();
 
@@ -29709,9 +29765,9 @@
                     consts: [
                         [1, "darkMode"],
                         [1, "yieldText"],
-                        [1, "iconButton", 3, "matTooltip", "click"],
-                        ["matTooltip", "Plow a field. Converts a plot of land to a field. You'll need to work at farming it to make it produce much food. Once the harvest is over, you will get the food you've grown and the land will be available again. Shift-click to plow 10 fields, Ctrl-click to plow all your land.", 1, "iconButton", "rightFloat", 3, "click"],
-                        ["matTooltip", "Clear a field. Converts a the field back into an open plot of land. Shift-click to clear 10 fields, Ctrl-click to clear all your fields.", 1, "iconButton", "rightFloat", 3, "click"],
+                        ["aria-label", "Buy Land", 1, "iconButton", 3, "matTooltip", "click"],
+                        ["aria-label", "Plow Field", "matTooltip", "Plow a field. Converts a plot of land to a field. You'll need to work at farming it to make it produce much food. Once the harvest is over, you will get the food you've grown and the land will be available again. Shift-click to plow 10 fields, Ctrl-click to plow all your land.", 1, "iconButton", "rightFloat", 3, "click"],
+                        ["aria-label", "Clear Field", "matTooltip", "Clear a field. Converts a the field back into an open plot of land. Shift-click to clear 10 fields, Ctrl-click to clear all your fields.", 1, "iconButton", "rightFloat", 3, "click"],
                         [1, "farmGrid"],
                         [4, "ngFor", "ngForOf"],
                         [1, "itemSlot", 3, "matTooltip"]
@@ -29765,7 +29821,7 @@
             function r8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 11), M("click", function () {
+                    d(0, "mat-icon", 25), M("click", function () {
                         return E(e), w(2).homeService.upgradeToNextHome()
                     }), m(1, " add_business "), h()
                 }
@@ -29775,21 +29831,21 @@
             function o8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 25), M("click", function () {
+                    d(0, "mat-icon", 26), M("click", function () {
                         return E(e), w(2).storeClicked()
                     }), m(1, " shopping_cart "), h()
                 }
             }
 
             function a8(i, t) {
-                if (1 & i && (d(0, "div", 26), B(1, "span"), h()), 2 & i) {
+                if (1 & i && (d(0, "div", 27), B(1, "span"), h()), 2 & i) {
                     const e = w(2);
                     ze("value", e.buildTimeYears()), g(1), Ft("width", 100 * e.homeService.houseBuildingProgress, "%")
                 }
             }
 
             function s8(i, t) {
-                1 & i && B(0, "span", 27)
+                1 & i && B(0, "span", 28)
             }
 
             function l8(i, t) {
@@ -29818,7 +29874,7 @@
                         }
                         storeClicked() {
                             this.storeService.setStoreInventory(), this.dialog.open(Jq, {
-                                width: "510px",
+                                width: "600px",
                                 data: {
                                     someField: "foo"
                                 }
@@ -29860,13 +29916,13 @@
                             ["class", "furnitureSlots", 4, "ngIf"],
                             [1, "buttons"],
                             [1, "button-group"],
-                            [1, "iconButton", 3, "matTooltip", "click"],
-                            ["class", "iconButton", 3, "matTooltip", "click", 4, "ngIf"],
-                            ["class", "iconButton", "matTooltip", "Buy Furniture", 3, "click", 4, "ngIf"],
+                            ["aria-label", "Buy Land", 1, "iconButton", 3, "matTooltip", "click"],
+                            ["class", "iconButton", "aria-label", "Upgrade Home", 3, "matTooltip", "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Buy Furniture", "matTooltip", "Buy Furniture", 3, "click", 4, "ngIf"],
                             ["class", "progress-bar", "style", "height:20px;", "matTooltip", "Upgrading your home.", 4, "ngIf"],
                             ["style", "margin-left: 4px;", 4, "ngIf"],
-                            ["matTooltip", "View your farm.", 1, "iconButton", 3, "click"],
-                            ["matTooltip", "Plow a field. Converts a plot of land to a field. You'll need to work at farming it to make it produce much food. Once the harvest is over, you will get the food you've grown and the land will be available again. Shift-click to plow 10 fields, Ctrl-click to plow all your land.", 1, "iconButton", 3, "click"],
+                            ["matTooltip", "View your farm.", "aria-label", "View Farm", 1, "iconButton", 3, "click"],
+                            ["aria-label", "Plow Field", "matTooltip", "Plow a field. Converts a plot of land to a field. You'll need to work at farming it to make it produce much food. Once the harvest is over, you will get the food you've grown and the land will be available again. Shift-click to plow 10 fields, Ctrl-click to plow all your land.", 1, "iconButton", 3, "click"],
                             [1, "furnitureSlots"],
                             [4, "ngFor", "ngForOf"],
                             ["class", "itemSlot", 3, "matTooltip", 4, "ngIf"],
@@ -29874,7 +29930,8 @@
                             [1, "itemSlot", 3, "matTooltip"],
                             [1, "itemSlot", "textOverflow", 3, "matTooltip"],
                             [1, "mouseWarning"],
-                            ["matTooltip", "Buy Furniture", 1, "iconButton", 3, "click"],
+                            ["aria-label", "Upgrade Home", 1, "iconButton", 3, "matTooltip", "click"],
+                            ["aria-label", "Buy Furniture", "matTooltip", "Buy Furniture", 1, "iconButton", 3, "click"],
                             ["matTooltip", "Upgrading your home.", 1, "progress-bar", 2, "height", "20px"],
                             [2, "margin-left", "4px"]
                         ],
@@ -29885,7 +29942,7 @@
                         },
                         directives: [si, At, st, Nt],
                         pipes: [Kt, un],
-                        styles: [".homeContainer[_ngcontent-%COMP%]{display:flex;flex-direction:column;height:100%;padding-left:2px}.homeInfo[_ngcontent-%COMP%]{font-size:12px;margin-top:-2px;margin-bottom:-4px}.mouseWarning[_ngcontent-%COMP%]{font-size:12px;margin:6px}.buttons[_ngcontent-%COMP%]{border-top:1px solid var(--panelBorder);display:flex;justify-content:space-between}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin-top:2px;margin-bottom:2px;vertical-align:middle}.furnitureSlots[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:2px}.itemSlot[_ngcontent-%COMP%]{width:50px;height:50px}.progress-bar[_ngcontent-%COMP%]{width:195px;margin-left:4px;vertical-align:middle}.overflow[_ngcontent-%COMP%]{overflow:auto}.panelHeader[_ngcontent-%COMP%]{display:flex;gap:4px}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
+                        styles: [".homeContainer[_ngcontent-%COMP%]{display:flex;flex-direction:column;height:100%;padding-left:2px}.homeInfo[_ngcontent-%COMP%]{font-size:12px;margin-top:-2px;margin-bottom:-4px}.mouseWarning[_ngcontent-%COMP%]{font-size:12px;margin:6px}.buttons[_ngcontent-%COMP%]{border-top:1px solid var(--panelBorder);display:flex;justify-content:space-between;white-space:nowrap}.button-group[_ngcontent-%COMP%]{white-space:nowrap}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin-top:2px;margin-bottom:2px;vertical-align:middle}.furnitureSlots[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:2px}.itemSlot[_ngcontent-%COMP%]{width:50px;height:50px}.progress-bar[_ngcontent-%COMP%]{width:180px;margin-left:4px;vertical-align:middle}.overflow[_ngcontent-%COMP%]{overflow:auto}.panelHeader[_ngcontent-%COMP%]{display:flex;gap:4px}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                     }), i
                 })(),
                 u8 = (() => {
@@ -29973,7 +30030,7 @@
                     consts: [
                         [1, "log"],
                         [1, "panelHeader"],
-                        ["matTooltip", "Manage Log Filters", 1, "iconButton", "optionsIcon", 3, "click"],
+                        ["aria-label", "Filter Log", "matTooltip", "Manage Log Filters", 1, "iconButton", "optionsIcon", 3, "click"],
                         [1, "headerNote"],
                         [1, "logBox"],
                         [4, "ngFor", "ngForOf"],
@@ -30045,7 +30102,7 @@
             function y8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 27), M("click", function () {
+                    d(0, "mat-icon", 31), M("click", function () {
                         return E(e), w(2).sell(1)
                     }), m(1, " attach_money "), h()
                 }
@@ -30058,7 +30115,7 @@
             function _8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 27), M("click", function () {
+                    d(0, "mat-icon", 32), M("click", function () {
                         return E(e), w(2).sellStack()
                     }), m(1, " paid "), h()
                 }
@@ -30071,7 +30128,7 @@
             function b8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 27), M("click", function () {
+                    d(0, "mat-icon", 33), M("click", function () {
                         return E(e), w(2).sellAll()
                     }), m(1, " shopping_basket "), h()
                 }
@@ -30081,7 +30138,7 @@
             function S8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 28), M("click", function () {
+                    d(0, "mat-icon", 34), M("click", function () {
                         return E(e), w(2).autoSell()
                     }), m(1, " currency_exchange "), h()
                 }
@@ -30090,7 +30147,7 @@
             function w8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 27), M("click", function () {
+                    d(0, "mat-icon", 35), M("click", function () {
                         return E(e), w(2).use()
                     }), m(1, " auto_awesome "), h()
                 }
@@ -30103,7 +30160,7 @@
             function C8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 27), M("click", function () {
+                    d(0, "mat-icon", 36), M("click", function () {
                         return E(e), w(2).autoUse()
                     }), m(1, " auto_mode "), h()
                 }
@@ -30116,7 +30173,7 @@
             function k8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 29), M("click", function () {
+                    d(0, "mat-icon", 37), M("click", function () {
                         return E(e), w(2).autoBalance()
                     }), m(1, " balance "), h()
                 }
@@ -30125,7 +30182,7 @@
             function M8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 30), M("click", function () {
+                    d(0, "mat-icon", 38), M("click", function () {
                         return E(e), w(2).equip()
                     }), m(1, " shield "), h()
                 }
@@ -30134,14 +30191,14 @@
             function x8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 31), M("click", function () {
+                    d(0, "mat-icon", 39), M("click", function () {
                         return E(e), w(2).mergeSpiritGem()
                     }), m(1, " diamond "), h()
                 }
             }
 
             function T8(i, t) {
-                if (1 & i && (d(0, "div", 21), x(1, y8, 2, 2, "mat-icon", 22), x(2, _8, 2, 2, "mat-icon", 22), x(3, b8, 2, 1, "mat-icon", 22), x(4, S8, 2, 0, "mat-icon", 23), x(5, w8, 2, 2, "mat-icon", 22), x(6, C8, 2, 2, "mat-icon", 22), x(7, k8, 2, 0, "mat-icon", 24), x(8, M8, 2, 0, "mat-icon", 25), x(9, x8, 2, 0, "mat-icon", 26), h()), 2 & i) {
+                if (1 & i && (d(0, "div", 21), x(1, y8, 2, 2, "mat-icon", 22), x(2, _8, 2, 2, "mat-icon", 23), x(3, b8, 2, 1, "mat-icon", 24), x(4, S8, 2, 0, "mat-icon", 25), x(5, w8, 2, 2, "mat-icon", 26), x(6, C8, 2, 2, "mat-icon", 27), x(7, k8, 2, 0, "mat-icon", 28), x(8, M8, 2, 0, "mat-icon", 29), x(9, x8, 2, 0, "mat-icon", 30), h()), 2 & i) {
                     const e = w();
                     g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value)), g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value)), g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value)), g(1), b("ngIf", e.inventoryService.autoSellUnlocked && e.isFinite(e.inventoryService.selectedItem.item.value) && !e.instanceOfEquipment(e.inventoryService.selectedItem.item)), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel && e.inventoryService.autoUseUnlocked), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel && e.inventoryService.autoBalanceUnlocked && e.isFinite(e.inventoryService.selectedItem.item.value)), g(1), b("ngIf", "equipment" === e.inventoryService.selectedItem.item.type), g(1), b("ngIf", "spiritGem" === e.inventoryService.selectedItem.item.type)
                 }
@@ -30256,7 +30313,7 @@
                             [1, "moneyColumn"],
                             ["matTooltip", "Money usable only in hell. Note that this is not transferrable between hells.", "class", "moneyColumn", 4, "ngIf"],
                             ["class", "noFood", 3, "matTooltip", 4, "ngIf"],
-                            ["matTooltip", "Click to sort your inventory. Shift-click to toggle autosort. Ctrl-click to toggle descending.", 1, "iconButton", 3, "ngClass", "click"],
+                            ["matTooltip", "Click to sort your inventory. Shift-click to toggle autosort. Ctrl-click to toggle descending.", "aria-label", "Sort Inventory", 1, "iconButton", 3, "ngClass", "click"],
                             [1, "overflow"],
                             [1, "inventoryGrid"],
                             ["draggable", "true", 3, "dragover", "drop", "dragstart", 4, "ngFor", "ngForOf"],
@@ -30269,16 +30326,24 @@
                             ["class", "itemQuantity", 4, "ngIf"],
                             [1, "itemQuantity"],
                             [1, "inventoryButtons"],
-                            ["class", "iconButton", 3, "matTooltip", "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Sell", 3, "matTooltip", "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Sell Stack", 3, "matTooltip", "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Sell All", 3, "matTooltip", "click", 4, "ngIf"],
                             ["class", "iconButton", "matTooltip", "Automatically sell this kind of item whenever you get one. Ctrl-right-click items to autosell.", 3, "click", 4, "ngIf"],
-                            ["class", "iconButton", "matTooltip", "Balance between automatically using and selling this item.", 3, "click", 4, "ngIf"],
-                            ["class", "iconButton", "matTooltip", "Equip this. Double-click weapons or armor to equip.", 3, "click", 4, "ngIf"],
-                            ["class", "iconButton", "matTooltip", "Merge 10 of these into a higher grade gem.", 3, "click", 4, "ngIf"],
-                            [1, "iconButton", 3, "matTooltip", "click"],
+                            ["class", "iconButton", "aria-label", "Use", 3, "matTooltip", "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Auto Use", 3, "matTooltip", "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Balance", "matTooltip", "Balance between automatically using and selling this item.", 3, "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Equip", "matTooltip", "Equip this. Double-click weapons or armor to equip.", 3, "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Merge Gem", "matTooltip", "Merge 10 of these into a higher grade gem.", 3, "click", 4, "ngIf"],
+                            ["aria-label", "Sell", 1, "iconButton", 3, "matTooltip", "click"],
+                            ["aria-label", "Sell Stack", 1, "iconButton", 3, "matTooltip", "click"],
+                            ["aria-label", "Sell All", 1, "iconButton", 3, "matTooltip", "click"],
                             ["matTooltip", "Automatically sell this kind of item whenever you get one. Ctrl-right-click items to autosell.", 1, "iconButton", 3, "click"],
-                            ["matTooltip", "Balance between automatically using and selling this item.", 1, "iconButton", 3, "click"],
-                            ["matTooltip", "Equip this. Double-click weapons or armor to equip.", 1, "iconButton", 3, "click"],
-                            ["matTooltip", "Merge 10 of these into a higher grade gem.", 1, "iconButton", 3, "click"]
+                            ["aria-label", "Use", 1, "iconButton", 3, "matTooltip", "click"],
+                            ["aria-label", "Auto Use", 1, "iconButton", 3, "matTooltip", "click"],
+                            ["aria-label", "Balance", "matTooltip", "Balance between automatically using and selling this item.", 1, "iconButton", 3, "click"],
+                            ["aria-label", "Equip", "matTooltip", "Equip this. Double-click weapons or armor to equip.", 1, "iconButton", 3, "click"],
+                            ["aria-label", "Merge Gem", "matTooltip", "Merge 10 of these into a higher grade gem.", 1, "iconButton", 3, "click"]
                         ],
                         template: function (e, n) {
                             1 & e && (d(0, "div", 0)(1, "h3", 1)(2, "div", 2)(3, "mat-icon", 3), m(4, " help "), h(), m(5, " Inventory -\xa0 "), h(), d(6, "div", 4), m(7, "Money: "), h(), d(8, "div", 5)(9, "div", 6)(10, "span"), m(11), I(12, "bigNumber"), h()(), x(13, f8, 3, 3, "div", 7), h(), d(14, "div"), x(15, p8, 2, 1, "mat-icon", 8), h(), d(16, "div")(17, "mat-icon", 9), M("click", function (o) {
@@ -30312,7 +30377,7 @@
                         template: function (e, n) {
                             1 & e && (d(0, "div", 0)(1, "h3"), m(2), h(), B(3, "hr"), d(4, "div", 1)(5, "span"), m(6), h()()()), 2 & e && (g(2), se(n.titleText), g(4), F(" ", n.bodyText, " "))
                         },
-                        styles: [".textDiv[_ngcontent-%COMP%]{max-height:500px;overflow-y:auto;white-space:pre-line}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
+                        styles: [".textDiv[_ngcontent-%COMP%]{max-height:600px;overflow-y:auto;white-space:pre-line}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                     }), i
                 })();
 
@@ -30385,7 +30450,7 @@
                 if (2 & i) {
                     const e = w().$implicit,
                         n = w();
-                    b("ngClass", Bn(8, B8, e.projectionOnly, !e.unlocked)), g(3), ve("matTooltip", n.getActivityTooltip(e)), g(1), F(" ", e.name[e.level], " "), g(1), b("ngIf", e.skipApprenticeshipLevel > 0), g(2), F(" ", e.description[e.level], " "), g(2), xi(" ", e.consequenceDescription[e.level], " ", e.projectionOnly ? "This activity can only be performed by a spiritual projection of yourself back in the mortal realm." : "", " "), g(1), b("ngIf", e.lastIncome && e.lastIncome > 0)
+                    b("ngClass", Bn(8, B8, e.projectionOnly, !e.unlocked)), g(3), ve("matTooltip", n.getActivityTooltip(e)), g(1), F(" ", e.name[e.level], " "), g(1), b("ngIf", e.skipApprenticeshipLevel > 0 && !n.activityService.completedApprenticeships.includes(e.activityType)), g(2), F(" ", e.description[e.level], " "), g(2), xi(" ", e.consequenceDescription[e.level], " ", e.projectionOnly ? "This activity can only be performed by a spiritual projection of yourself back in the mortal realm." : "", " "), g(1), b("ngIf", e.lastIncome && e.lastIncome > 0)
                 }
             }
 
@@ -30401,7 +30466,7 @@
                         this.gameStateService = e, this.activityService = n, this.characterService = r, this.hellService = o, this.inventoryService = a, this.followerService = s, this.impossibleTaskService = l, this.dialog = c, this.camelToTitle = new ba, this.Math = Math, this.character = r.characterState
                     }
                     JoinTheGodsClick() {
-                        confirm("你确定你准备好了吗？ 当你离开这个凡人领域时，你需要把所有的钱、大部分的追随者和财产留在身后。") && this.dialog.open(A8, {
+                        confirm("Are you sure you are ready for this? You will need to leave all your money and most of your followers and possessions behind as you leave this mortal realm.") && this.dialog.open(A8, {
                             width: "700px",
                             data: {
                                 titleText: "Joining the Gods",
@@ -30922,7 +30987,7 @@
                             [1, "battleContainer"],
                             ["class", "clashTable", 4, "ngIf"],
                             [4, "ngFor", "ngForOf"],
-                            ["matTooltip", "Options", 1, "iconButton", 3, "click"],
+                            ["matTooltip", "Options", "aria-label", "Battle Settings", 1, "iconButton", 3, "click"],
                             [3, "click"],
                             ["type", "checkbox", "id", "autoTroubleCheckbox", 3, "checked", "change"],
                             ["for", "autoTroubleCheckbox"],
@@ -31041,7 +31106,7 @@
                         }
                     }],
                     imports: [
-                        [M0, VN, IV, S5, Cs, ...b6], C1, gM, z1, K1
+                        [M0, VN, IV, S4, Cs, ...b6], C1, gM, z1, K1
                     ]
                 }), i
             })();
@@ -31051,7 +31116,7 @@
         },
         147: Ma => {
             Ma.exports = {
-                i8: "1.0.60"
+                i8: "1.0.61"
             }
         }
     },
