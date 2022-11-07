@@ -27223,7 +27223,7 @@
                             if (e.preventDefault(), e.stopPropagation(), this.characterService.characterState.easyMode) this.characterService.characterState.easyMode = !1;
                             else {
                                 if (!this.gameStateService.easyModeEver) {
-                                    if (!confirm("This will enable easy mode and mark your save permanently. Are you sure?")) return void(e.target.checked = !1);
+                                    if (!confirm("这将启用轻松模式并永久标记保存。你确定吗？")) return void(e.target.checked = !1);
                                     this.gameStateService.easyModeEver = !0
                                 }
                                 this.characterService.characterState.easyMode = !0, this.activityService.reloadActivities()
@@ -28758,7 +28758,7 @@
                             this.gameStateService.loadFromLocalStorage(), this.mainLoopService.start()
                         }
                         hardResetClicked(e) {
-                            e.preventDefault(), confirm("This will reset everything permanently. Are you sure?") && this.gameStateService.hardReset()
+                            e.preventDefault(), confirm("这将永久重置所有内容。你确定吗？") && this.gameStateService.hardReset()
                         }
                         saveClicked(e) {
                             e.preventDefault(), e.stopPropagation(), (e.ctrlKey || e.metaKey) && (e.shiftKey || e.altKey) ? this.gameStateService.loadFromLocalStorage(!0) : e.shiftKey || e.altKey ? this.dialog.open(K5, {
@@ -28797,7 +28797,7 @@
                             })
                         }
                         rebirthClicked(e) {
-                            e.preventDefault(), confirm("This will end your current life. Are you sure?") && this.gameStateService.rebirth()
+                            e.preventDefault(), confirm("这将结束你现在的生活。你确定吗？") && this.gameStateService.rebirth()
                         }
                         ascensionStoreClicked() {
                             this.storeService.updateAscensions(), this.dialog.open(nM, {
@@ -30564,7 +30564,7 @@
                         this.gameStateService = e, this.activityService = n, this.characterService = r, this.hellService = o, this.inventoryService = a, this.followerService = s, this.impossibleTaskService = l, this.dialog = c, this.camelToTitle = new Sa, this.Math = Math, this.character = r.characterState
                     }
                     JoinTheGodsClick() {
-                        confirm("Are you sure you are ready for this? You will need to leave all your money and most of your followers and possessions behind as you leave this mortal realm.") && this.dialog.open(A8, {
+                        confirm("你确定你准备好了吗？当你离开这个凡人的王国时，你需要把你所有的钱、大部分的追随者和财产都留下来。") && this.dialog.open(A8, {
                             width: "700px",
                             data: {
                                 titleText: "Joining the Gods",
