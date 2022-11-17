@@ -27223,7 +27223,7 @@
                             if (e.preventDefault(), e.stopPropagation(), this.characterService.characterState.easyMode) this.characterService.characterState.easyMode = !1;
                             else {
                                 if (!this.gameStateService.easyModeEver) {
-                                    if (!confirm("This will enable easy mode and mark your save permanently. Are you sure?")) return void(e.target.checked = !1);
+                                    if (!confirm("这将启用简单模式并永久标记您的存档。 你确定吗？")) return void(e.target.checked = !1);
                                     this.gameStateService.easyModeEver = !0
                                 }
                                 this.characterService.characterState.easyMode = !0, this.activityService.reloadActivities()
@@ -28462,7 +28462,7 @@
                         template: function (e, n) {
                             if (1 & e) {
                                 const r = V();
-                                d(0, "div", 0)(1, "h3"), m(2, "Import/Export Save File"), h(), B(3, "hr"), d(4, "div")(5, "textarea", 1, 2), m(7, "To export a game, press the Export button then copy and paste the contents of this box to wherever you want to store the save data. To import a game, paste save data into this box and press the Import button. Make sure that the only thing in the box is your save data or the save may be corrupted. The best way to do this is have the game data in your clipboard, then click on this box and press Ctrl-a then Ctrl-v."), h()(), d(8, "button", 3), M("click", function () {
+                                d(0, "div", 0)(1, "h3"), m(2, "Import/Export Save File"), h(), B(3, "hr"), d(4, "div")(5, "textarea", 1, 2), m(7, "要导出游戏，请按“导出”按钮，然后将此框的内容复制并粘贴到您要存储保存数据的任何位置。 要导入游戏，请将保存数据粘贴到此框中，然后按导入按钮。 确保框中唯一的内容是您的保存数据，否则保存可能已损坏。 最好的方法是在剪贴板中保存游戏数据，然后单击此框并按 Ctrl-a 然后按 Ctrl-v。"), h()(), d(8, "button", 3), M("click", function () {
                                     E(r);
                                     const a = Rt(6);
                                     return n.importClick(a.value)
@@ -28758,7 +28758,7 @@
                             this.gameStateService.loadFromLocalStorage(), this.mainLoopService.start()
                         }
                         hardResetClicked(e) {
-                            e.preventDefault(), confirm("This will reset everything permanently. Are you sure?") && this.gameStateService.hardReset()
+                            e.preventDefault(), confirm("这将永久重置所有内容。 你确定吗？") && this.gameStateService.hardReset()
                         }
                         saveClicked(e) {
                             e.preventDefault(), e.stopPropagation(), (e.ctrlKey || e.metaKey) && (e.shiftKey || e.altKey) ? this.gameStateService.loadFromLocalStorage(!0) : e.shiftKey || e.altKey ? this.dialog.open(K5, {
@@ -28797,7 +28797,7 @@
                             })
                         }
                         rebirthClicked(e) {
-                            e.preventDefault(), confirm("This will end your current life. Are you sure?") && this.gameStateService.rebirth()
+                            e.preventDefault(), confirm("这将结束你现在的生活。 你确定吗？") && this.gameStateService.rebirth()
                         }
                         ascensionStoreClicked() {
                             this.storeService.updateAscensions(), this.dialog.open(nM, {
@@ -30564,7 +30564,7 @@
                         this.gameStateService = e, this.activityService = n, this.characterService = r, this.hellService = o, this.inventoryService = a, this.followerService = s, this.impossibleTaskService = l, this.dialog = c, this.camelToTitle = new Sa, this.Math = Math, this.character = r.characterState
                     }
                     JoinTheGodsClick() {
-                        confirm("Are you sure you are ready for this? You will need to leave all your money and most of your followers and possessions behind as you leave this mortal realm.") && this.dialog.open(A8, {
+                        confirm("你确定你准备好了吗？ 当你离开这个凡人领域时，你将需要留下你所有的钱和你的大部分追随者和财产。") && this.dialog.open(A8, {
                             width: "700px",
                             data: {
                                 titleText: "Joining the Gods",
