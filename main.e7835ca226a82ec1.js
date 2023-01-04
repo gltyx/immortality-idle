@@ -22,7 +22,7 @@
                     0 <= e && i.splice(e, 1)
                 }
             }
-            class Xe {
+            class Ze {
                 constructor(t) {
                     this.initialTeardown = t, this.closed = !1, this._parentage = null, this._finalizers = null
                 }
@@ -64,7 +64,7 @@
                     if (t && t !== this)
                         if (this.closed) ng(t);
                         else {
-                            if (t instanceof Xe) {
+                            if (t instanceof Ze) {
                                 if (t.closed || t._hasParent(this)) return;
                                 t._addParent(this)
                             }(this._finalizers = null !== (e = this._finalizers) && void 0 !== e ? e : []).push(t)
@@ -92,17 +92,17 @@
                     const {
                         _finalizers: e
                     } = this;
-                    e && il(e, t), t instanceof Xe && t._removeParent(this)
+                    e && il(e, t), t instanceof Ze && t._removeParent(this)
                 }
             }
-            Xe.EMPTY = (() => {
-                const i = new Xe;
+            Ze.EMPTY = (() => {
+                const i = new Ze;
                 return i.closed = !0, i
             })();
-            const tg = Xe.EMPTY;
+            const tg = Ze.EMPTY;
 
             function ig(i) {
-                return i instanceof Xe || i && "closed" in i && Ae(i.remove) && Ae(i.add) && Ae(i.unsubscribe)
+                return i instanceof Ze || i && "closed" in i && Ae(i.remove) && Ae(i.add) && Ae(i.unsubscribe)
             }
 
             function ng(i) {
@@ -168,7 +168,7 @@
                     }
                 } else i()
             }
-            class Ku extends Xe {
+            class Ku extends Ze {
                 constructor(t) {
                     super(), this.isStopped = !1, t ? (this.destination = t, ig(t) && t.add(this)) : this.destination = DM
                 }
@@ -294,7 +294,7 @@
             function Xn(i) {
                 return i
             }
-            let We = (() => {
+            let $e = (() => {
                 class i {
                     constructor(e) {
                         e && (this._subscribe = e)
@@ -371,7 +371,7 @@
                 i(this), this.name = "ObjectUnsubscribedError", this.message = "object unsubscribed"
             });
             let re = (() => {
-                class i extends We {
+                class i extends $e {
                     constructor() {
                         super(), this.closed = !1, this.currentObservers = null, this.observers = [], this.isStopped = !1, this.hasError = !1, this.thrownError = null
                     }
@@ -431,7 +431,7 @@
                             isStopped: r,
                             observers: o
                         } = this;
-                        return n || r ? tg : (this.currentObservers = null, o.push(e), new Xe(() => {
+                        return n || r ? tg : (this.currentObservers = null, o.push(e), new Ze(() => {
                             this.currentObservers = null, il(o, e)
                         }))
                     }
@@ -444,7 +444,7 @@
                         n ? e.error(r) : o && e.complete()
                     }
                     asObservable() {
-                        const e = new We;
+                        const e = new $e;
                         return e.source = this, e
                     }
                 }
@@ -489,7 +489,7 @@
                 }
             }
 
-            function et(i, t, e, n, r) {
+            function Xe(i, t, e, n, r) {
                 return new IM(i, t, e, n, r)
             }
             class IM extends Ku {
@@ -532,7 +532,7 @@
             function me(i, t) {
                 return lt((e, n) => {
                     let r = 0;
-                    e.subscribe(et(n, o => {
+                    e.subscribe(Xe(n, o => {
                         n.next(i.call(t, o, r++))
                     }))
                 })
@@ -664,24 +664,24 @@
                 return Ae(null == i ? void 0 : i.getReader)
             }
 
-            function vi(i) {
-                if (i instanceof We) return i;
+            function yi(i) {
+                if (i instanceof $e) return i;
                 if (null != i) {
                     if (fg(i)) return function HM(i) {
-                        return new We(t => {
+                        return new $e(t => {
                             const e = i[Zu]();
                             if (Ae(e.subscribe)) return e.subscribe(t);
                             throw new TypeError("Provided object does not correctly implement Symbol.observable")
                         })
                     }(i);
                     if (eh(i)) return function VM(i) {
-                        return new We(t => {
+                        return new $e(t => {
                             for (let e = 0; e < i.length && !t.closed; e++) t.next(i[e]);
                             t.complete()
                         })
                     }(i);
                     if (dg(i)) return function UM(i) {
-                        return new We(t => {
+                        return new $e(t => {
                             i.then(e => {
                                 t.closed || (t.next(e), t.complete())
                             }, e => t.error(e)).then(null, rg)
@@ -689,7 +689,7 @@
                     }(i);
                     if (pg(i)) return bg(i);
                     if (vg(i)) return function jM(i) {
-                        return new We(t => {
+                        return new $e(t => {
                             for (const e of i)
                                 if (t.next(e), t.closed) return;
                             t.complete()
@@ -703,7 +703,7 @@
             }
 
             function bg(i) {
-                return new We(t => {
+                return new $e(t => {
                     (function YM(i, t) {
                         var e, n, r, o;
                         return function OM(i, t, e, n) {
@@ -762,7 +762,7 @@
             }
 
             function _t(i, t, e = 1 / 0) {
-                return Ae(t) ? _t((n, r) => me((o, a) => t(n, o, r, a))(vi(i(n, r))), e) : ("number" == typeof t && (e = t), lt((n, r) => function zM(i, t, e, n, r, o, a, s) {
+                return Ae(t) ? _t((n, r) => me((o, a) => t(n, o, r, a))(yi(i(n, r))), e) : ("number" == typeof t && (e = t), lt((n, r) => function zM(i, t, e, n, r, o, a, s) {
                     const l = [];
                     let c = 0,
                         u = 0,
@@ -773,13 +773,13 @@
                         v = C => c < n ? y(C) : l.push(C),
                         y = C => {
                             o && t.next(C), c++;
-                            let x = !1;
-                            vi(e(C, u++)).subscribe(et(t, D => {
+                            let M = !1;
+                            yi(e(C, u++)).subscribe(Xe(t, D => {
                                 null == r || r(D), o ? v(D) : t.next(D)
                             }, () => {
-                                x = !0
+                                M = !0
                             }, void 0, () => {
-                                if (x) try {
+                                if (M) try {
                                     for (c--; l.length && c < n;) {
                                         const D = l.shift();
                                         a ? Dn(t, a, () => y(D)) : y(D)
@@ -790,7 +790,7 @@
                                 }
                             }))
                         };
-                    return i.subscribe(et(t, v, () => {
+                    return i.subscribe(Xe(t, v, () => {
                         f = !0, p()
                     })), () => {
                         null == s || s()
@@ -801,7 +801,7 @@
             function Ta(i = 1 / 0) {
                 return _t(Xn, i)
             }
-            const En = new We(i => i.complete());
+            const En = new $e(i => i.complete());
 
             function Sg(i) {
                 return i && Ae(i.schedule)
@@ -821,7 +821,7 @@
 
             function Cg(i, t = 0) {
                 return lt((e, n) => {
-                    e.subscribe(et(n, r => Dn(n, i, () => n.next(r), t), () => Dn(n, i, () => n.complete(), t), r => Dn(n, i, () => n.error(r), t)))
+                    e.subscribe(Xe(n, r => Dn(n, i, () => n.next(r), t), () => Dn(n, i, () => n.complete(), t), r => Dn(n, i, () => n.error(r), t)))
                 })
             }
 
@@ -833,7 +833,7 @@
 
             function Mg(i, t) {
                 if (!i) throw new Error("Iterable cannot be null");
-                return new We(e => {
+                return new $e(e => {
                     Dn(e, t, () => {
                         const n = i[Symbol.asyncIterator]();
                         Dn(e, t, () => {
@@ -849,10 +849,10 @@
                 return t ? function XM(i, t) {
                     if (null != i) {
                         if (fg(i)) return function WM(i, t) {
-                            return vi(i).pipe(kg(t), Cg(t))
+                            return yi(i).pipe(kg(t), Cg(t))
                         }(i, t);
                         if (eh(i)) return function JM(i, t) {
-                            return new We(e => {
+                            return new $e(e => {
                                 let n = 0;
                                 return t.schedule(function () {
                                     n === i.length ? e.complete() : (e.next(i[n++]), e.closed || this.schedule())
@@ -860,11 +860,11 @@
                             })
                         }(i, t);
                         if (dg(i)) return function KM(i, t) {
-                            return vi(i).pipe(kg(t), Cg(t))
+                            return yi(i).pipe(kg(t), Cg(t))
                         }(i, t);
                         if (pg(i)) return Mg(i, t);
                         if (vg(i)) return function QM(i, t) {
-                            return new We(e => {
+                            return new $e(e => {
                                 let n;
                                 return Dn(e, t, () => {
                                     n = i[gg](), Dn(e, t, () => {
@@ -887,7 +887,7 @@
                         }(i, t)
                     }
                     throw mg(i)
-                }(i, t) : vi(i)
+                }(i, t) : yi(i)
             }
 
             function Ea(...i) {
@@ -896,13 +896,13 @@
                         return "number" == typeof th(i) ? i.pop() : t
                     }(i, 1 / 0),
                     n = i;
-                return n.length ? 1 === n.length ? vi(n[0]) : Ta(e)(Tt(n, t)) : En
+                return n.length ? 1 === n.length ? yi(n[0]) : Ta(e)(Tt(n, t)) : En
             }
 
-            function Jt(i) {
+            function Qt(i) {
                 return i <= 0 ? () => En : lt((t, e) => {
                     let n = 0;
-                    t.subscribe(et(e, r => {
+                    t.subscribe(Xe(e, r => {
                         ++n <= i && (e.next(r), i <= n && e.complete())
                     }))
                 })
@@ -932,12 +932,12 @@
                             const C = a;
                             v(), null == C || C.unsubscribe()
                         };
-                    return lt((C, x) => {
+                    return lt((C, M) => {
                         c++, !f && !u && p();
                         const D = l = null != l ? l : t();
-                        x.add(() => {
+                        M.add(() => {
                             c--, 0 === c && !f && !u && (s = ih(y, r))
-                        }), D.subscribe(x), a || (a = new ol({
+                        }), D.subscribe(M), a || (a = new ol({
                             next: k => D.next(k),
                             error: k => {
                                 f = !0, p(), s = ih(v, e, k), D.error(k)
@@ -951,7 +951,7 @@
             }
 
             function ih(i, t, ...e) {
-                return !0 === t ? (i(), null) : !1 === t ? null : t(...e).pipe(Jt(1)).subscribe(() => i())
+                return !0 === t ? (i(), null) : !1 === t ? null : t(...e).pipe(Qt(1)).subscribe(() => i())
             }
 
             function Ne(i) {
@@ -1008,17 +1008,17 @@
                 return "string" == typeof i ? i : null == i ? "" : String(i)
             }
 
-            function Qt(i) {
+            function Zt(i) {
                 return "function" == typeof i ? i.name || i.toString() : "object" == typeof i && null != i && "function" == typeof i.type ? i.type.name || i.type.toString() : oe(i)
             }
 
             function sl(i, t) {
                 const e = t ? ` in ${t}` : "";
-                throw new G(-201, `No provider for ${Qt(i)} found${e}`)
+                throw new G(-201, `No provider for ${Zt(i)} found${e}`)
             }
 
-            function _i(i, t) {
-                null == i && function Ke(i, t, e, n) {
+            function bi(i, t) {
+                null == i && function We(i, t, e, n) {
                     throw new Error(`ASSERTION ERROR: ${i}` + (null == n ? "" : ` [Expected=> ${e} ${n} ${t} <=Actual]`))
                 }(t, i, null, "!=")
             }
@@ -1159,7 +1159,7 @@
             }
 
             function Og(i) {
-                return Yt(i) || function ir(i) {
+                return Gt(i) || function ir(i) {
                     return i[ch] || null
                 }(i)
             }
@@ -1171,7 +1171,7 @@
             }
             const Fg = {};
 
-            function je(i) {
+            function qe(i) {
                 return tr(() => {
                     const t = {
                         type: i.type,
@@ -1199,7 +1199,7 @@
             }
             const Y = se;
 
-            function It(i) {
+            function Ot(i) {
                 return {
                     type: i.type,
                     name: i.name,
@@ -1209,7 +1209,7 @@
                 }
             }
 
-            function Yt(i) {
+            function Gt(i) {
                 return i[cl] || null
             }
 
@@ -1259,7 +1259,7 @@
                 }
             }
 
-            function Si() {
+            function wi() {
                 return Bg
             }
 
@@ -1292,7 +1292,7 @@
                     l = a[s];
                 o[s] = new bx(l && l.currentValue, t, a === uo), i[n] = t
             }
-            Si.ngInherit = !0;
+            wi.ngInherit = !0;
             const Hg = "__ngSimpleChanges__";
 
             function Vg(i) {
@@ -1300,7 +1300,7 @@
             }
             let yh;
 
-            function rt(i) {
+            function nt(i) {
                 return !!i.listen
             }
             const Ug = {
@@ -1330,7 +1330,7 @@
                 return i[t]
             }
 
-            function wi(i, t) {
+            function Ci(i, t) {
                 const e = t[i];
                 return hn(e) ? e : e[0]
             }
@@ -1367,7 +1367,7 @@
                 return ne.bindingsEnabled
             }
 
-            function O() {
+            function I() {
                 return ne.lFrame.lView
             }
 
@@ -1410,7 +1410,7 @@
                 ne.isInCheckNoChangesMode = i
             }
 
-            function Zt() {
+            function Xt() {
                 const i = ne.lFrame;
                 let t = i.bindingRootIndex;
                 return -1 === t && (t = i.bindingRootIndex = i.tView.bindingStartIndex), t
@@ -1513,7 +1513,7 @@
                 i.isParent = !0, i.tView = null, i.selectedIndex = -1, i.contextLView = null, i.elementDepthCount = 0, i.currentDirectiveIndex = -1, i.currentNamespace = null, i.bindingRootIndex = -1, i.bindingIndex = -1, i.currentQueryIndex = 0
             }
 
-            function Xt() {
+            function ei() {
                 return ne.lFrame.selectedIndex
             }
 
@@ -1521,7 +1521,7 @@
                 ne.lFrame.selectedIndex = i
             }
 
-            function ot() {
+            function rt() {
                 const i = ne.lFrame;
                 return bh(i.tView, i.selectedIndex)
             }
@@ -1585,7 +1585,7 @@
             }
 
             function Cl(i, t, e) {
-                const n = rt(i);
+                const n = nt(i);
                 let r = 0;
                 for (; r < e.length;) {
                     const o = e[r];
@@ -1779,7 +1779,7 @@
             const uv = {};
 
             function oT() {
-                return new So(bt(), O())
+                return new So(bt(), I())
             }
 
             function aT(i, t, e, n, r, o) {
@@ -1817,7 +1817,7 @@
                     a.resolving && function tx(i, t) {
                         const e = t ? `. Dependency path: ${t.join(" > ")} > ${i}` : "";
                         throw new G(-200, `Circular dependency in DI detected for ${i}${e}`)
-                    }(Qt(o[e]));
+                    }(Zt(o[e]));
                     const s = Ml(a.canSeeViewProviders);
                     a.resolving = !0;
                     const l = a.injectImpl ? er(a.injectImpl) : null;
@@ -1858,7 +1858,7 @@
                 }
             }
 
-            function Ot(i) {
+            function Rt(i) {
                 return tr(() => {
                     const t = i.prototype.constructor,
                         e = t[Pn] || Rh(t),
@@ -1973,7 +1973,7 @@
                 return e
             }
 
-            function Ci(i, t, e) {
+            function ki(i, t, e) {
                 let n = To(i, t);
                 return n >= 0 ? i[1 | n] = e : (n = ~n, function dT(i, t, e, n) {
                     let r = i.length;
@@ -2025,12 +2025,12 @@
                 return null === qa ? Pg(i, void 0, t) : qa.get(i, t & ie.Optional ? null : void 0, t)
             }
 
-            function S(i, t = ie.Default) {
+            function w(i, t = ie.Default) {
                 return (function lx() {
                     return lh
                 }() || wT)(ce(i), t)
             }
-            const Il = S;
+            const Il = w;
 
             function Vh(i) {
                 const t = [];
@@ -2044,8 +2044,8 @@
                                 l = CT(s);
                             "number" == typeof l ? -1 === l ? r = s.token : o |= l : r = s
                         }
-                        t.push(S(r, o))
-                    } else t.push(S(n))
+                        t.push(w(r, o))
+                    } else t.push(w(n))
                 }
                 return t
             }
@@ -2111,7 +2111,7 @@
                 }
             }
 
-            function ki(i) {
+            function Mi(i) {
                 return i instanceof Or ? i.changingThisBreaksApplicationSecurity : i
             }
 
@@ -2295,7 +2295,7 @@
             var Pe = (() => ((Pe = Pe || {})[Pe.NONE = 0] = "NONE", Pe[Pe.HTML = 1] = "HTML", Pe[Pe.STYLE = 2] = "STYLE", Pe[Pe.SCRIPT = 3] = "SCRIPT", Pe[Pe.URL = 4] = "URL", Pe[Pe.RESOURCE_URL = 5] = "RESOURCE_URL", Pe))();
             const Vv = "__ngContext__";
 
-            function Gt(i, t) {
+            function Wt(i, t) {
                 i[Vv] = t
             }
 
@@ -2339,7 +2339,7 @@
             function gn(i) {
                 return i instanceof Function ? i() : i
             }
-            var Mi = (() => ((Mi = Mi || {})[Mi.Important = 1] = "Important", Mi[Mi.DashCase = 2] = "DashCase", Mi))();
+            var xi = (() => ((xi = xi || {})[xi.Important = 1] = "Important", xi[xi.DashCase = 2] = "DashCase", xi))();
 
             function ed(i, t) {
                 return undefined(i, t)
@@ -2371,7 +2371,7 @@
                     0 === i && null !== e ? null == r ? iy(t, e, s) : Rr(t, e, s, r || null, !0) : 1 === i && null !== e ? Rr(t, e, s, r || null, !0) : 2 === i ? function cy(i, t, e) {
                         const n = Bl(i, t);
                         n && function UD(i, t, e, n) {
-                            rt(i) ? i.removeChild(t, e, n) : t.removeChild(e)
+                            nt(i) ? i.removeChild(t, e, n) : t.removeChild(e)
                         }(i, n, t, e)
                     }(t, s, a) : 3 === i && t.destroyNode(s), null != o && function YD(i, t, e, n, r) {
                         const o = e[7];
@@ -2385,7 +2385,7 @@
             }
 
             function rd(i, t, e) {
-                if (rt(i)) return i.createElement(t, e); {
+                if (nt(i)) return i.createElement(t, e); {
                     const n = null !== e ? function Tx(i) {
                         const t = i.toLowerCase();
                         return "svg" === t ? "http://www.w3.org/2000/svg" : "math" === t ? "http://www.w3.org/1998/MathML/" : null
@@ -2421,7 +2421,7 @@
             function Xv(i, t) {
                 if (!(256 & t[2])) {
                     const e = t[11];
-                    rt(e) && e.destroyNode && Qa(i, t, e, 3, null, null),
+                    nt(e) && e.destroyNode && Qa(i, t, e, 3, null, null),
                         function LD(i) {
                             let t = i[13];
                             if (!t) return ad(i[1], i);
@@ -2484,7 +2484,7 @@
                                 for (let o = r + 1; o < n.length; o++) n[o]();
                                 t[7] = null
                             }
-                        }(i, t), 1 === t[1].type && rt(t[11]) && t[11].destroy();
+                        }(i, t), 1 === t[1].type && nt(t[11]) && t[11].destroy();
                     const e = t[17];
                     if (null !== e && Zi(t[3])) {
                         e !== t[3] && Zv(e, t);
@@ -2508,11 +2508,11 @@
             }
 
             function Rr(i, t, e, n, r) {
-                rt(i) ? i.insertBefore(t, e, n, r) : t.insertBefore(e, n, r)
+                nt(i) ? i.insertBefore(t, e, n, r) : t.insertBefore(e, n, r)
             }
 
             function iy(i, t, e) {
-                rt(i) ? i.appendChild(t, e) : t.appendChild(e)
+                nt(i) ? i.appendChild(t, e) : t.appendChild(e)
             }
 
             function ny(i, t, e, n, r) {
@@ -2520,7 +2520,7 @@
             }
 
             function Bl(i, t) {
-                return rt(i) ? i.parentNode(t) : t.parentNode
+                return nt(i) ? i.parentNode(t) : t.parentNode
             }
 
             function ry(i, t, e) {
@@ -2578,7 +2578,7 @@
                 for (; null != e;) {
                     const s = n[e.index],
                         l = e.type;
-                    if (a && 0 === t && (s && Gt(ft(s), n), e.flags |= 4), 64 != (64 & e.flags))
+                    if (a && 0 === t && (s && Wt(ft(s), n), e.flags |= 4), 64 != (64 & e.flags))
                         if (8 & l) cd(i, t, e.child, n, r, o, !1), Io(t, i, r, s, o);
                         else if (32 & l) {
                         const c = ed(e, n);
@@ -2603,11 +2603,11 @@
             }
 
             function hy(i, t, e) {
-                rt(i) ? i.setAttribute(t, "style", e) : t.style.cssText = e
+                nt(i) ? i.setAttribute(t, "style", e) : t.style.cssText = e
             }
 
             function ud(i, t, e) {
-                rt(i) ? "" === e ? i.removeAttribute(t, "class") : i.setAttribute(t, "class", e) : t.className = e
+                nt(i) ? "" === e ? i.removeAttribute(t, "class") : i.setAttribute(t, "class", e) : t.className = e
             }
 
             function dy(i, t, e) {
@@ -2785,7 +2785,7 @@
             const ae = {};
 
             function g(i) {
-                vy(Me(), O(), Xt() + i, gl())
+                vy(Me(), I(), ei() + i, gl())
             }
 
             function vy(i, t, e, n) {
@@ -3013,7 +3013,7 @@
             }
 
             function Ey(i, t, e, n, r) {
-                const o = Xt(),
+                const o = ei(),
                     a = 2 & n;
                 try {
                     rr(-1), a && t.length > 20 && vy(i, t, 20, gl()), e(n, r)
@@ -3036,14 +3036,14 @@
                 !Yg() || (function ME(i, t, e, n) {
                     const r = e.directiveStart,
                         o = e.directiveEnd;
-                    i.firstCreatePass || Na(e, t), Gt(n, t);
+                    i.firstCreatePass || Na(e, t), Wt(n, t);
                     const a = e.initialInputs;
                     for (let s = r; s < o; s++) {
                         const l = i.data[s],
                             c = Xi(l);
                         c && AE(t, e, l);
                         const u = Ba(t, i, s, e);
-                        Gt(u, t), null !== a && PE(0, s - r, u, l, 0, a), c && (wi(e.index, t)[8] = u)
+                        Wt(u, t), null !== a && PE(0, s - r, u, l, 0, a), c && (Ci(e.index, t)[8] = u)
                     }
                 }(i, t, e, Hi(e, t)), 128 == (128 & e.flags) && function xE(i, t, e) {
                     const n = e.directiveStart,
@@ -3138,15 +3138,15 @@
                     } return e
             }
 
-            function xi(i, t, e, n, r, o, a, s) {
+            function Ti(i, t, e, n, r, o, a, s) {
                 const l = Hi(t, e);
                 let u, c = t.inputs;
                 !s && null != c && (u = c[n]) ? (Wy(i, e, u, n, r), fl(t) && function SE(i, t) {
-                    const e = wi(t, i);
+                    const e = Ci(t, i);
                     16 & e[2] || (e[2] |= 64)
                 }(e, t.index)) : 3 & t.type && (n = function bE(i) {
                     return "class" === i ? "className" : "for" === i ? "htmlFor" : "formaction" === i ? "formAction" : "innerHtml" === i ? "innerHTML" : "readonly" === i ? "readOnly" : "tabindex" === i ? "tabIndex" : i
-                }(n), r = null != a ? a(r, t.value || "", n) : r, rt(o) ? o.setProperty(l, n, r) : Ah(n) || (l.setProperty ? l.setProperty(n, r) : l[n] = r))
+                }(n), r = null != a ? a(r, t.value || "", n) : r, nt(o) ? o.setProperty(l, n, r) : Ah(n) || (l.setProperty ? l.setProperty(n, r) : l[n] = r))
             }
 
             function Md(i, t, e, n) {
@@ -3264,10 +3264,10 @@
             function vn(i, t, e, n, r, o) {
                 const a = Hi(i, t);
                 ! function xd(i, t, e, n, r, o, a) {
-                    if (null == o) rt(i) ? i.removeAttribute(t, r, e) : t.removeAttribute(r);
+                    if (null == o) nt(i) ? i.removeAttribute(t, r, e) : t.removeAttribute(r);
                     else {
                         const s = null == a ? oe(o) : a(o, n || "", r);
-                        rt(i) ? i.setAttribute(t, r, s, e) : e ? t.setAttributeNS(e, r, s) : t.setAttribute(r, s)
+                        nt(i) ? i.setAttribute(t, r, s, e) : e ? t.setAttributeNS(e, r, s) : t.setAttribute(r, s)
                     }
                 }(t[11], a, o, i.value, e, n, r)
             }
@@ -3305,7 +3305,7 @@
             }
 
             function FE(i, t) {
-                const e = wi(t, i);
+                const e = Ci(t, i);
                 if (Sh(e)) {
                     const n = e[1];
                     80 & e[2] ? Fo(n, e, n.template, e[8]) : e[5] > 0 && Td(e)
@@ -3324,13 +3324,13 @@
                 const e = i[1].components;
                 if (null !== e)
                     for (let n = 0; n < e.length; n++) {
-                        const r = wi(e[n], i);
+                        const r = Ci(e[n], i);
                         Sh(r) && r[5] > 0 && Td(r)
                     }
             }
 
             function LE(i, t) {
-                const e = wi(t, i),
+                const e = Ci(t, i),
                     n = e[1];
                 (function NE(i, t) {
                     for (let e = t.length; e < i.blueprint.length; e++) t.push(i.blueprint[e])
@@ -3416,7 +3416,7 @@
             function Fn(i, t, e) {
                 const n = ml(t, i);
                 ! function Qv(i, t, e) {
-                    rt(i) ? i.setValue(t, e) : t.textContent = e
+                    nt(i) ? i.setValue(t, e) : t.textContent = e
                 }(i[11], n, e)
             }
 
@@ -3624,7 +3624,7 @@
                     }(i)) n = () => i.useFactory(...Vh(i.deps || []));
                 else if (function WE(i) {
                         return !(!i || !i.useExisting)
-                    }(i)) n = () => S(ce(i.useExisting));
+                    }(i)) n = () => w(ce(i.useExisting));
                 else {
                     const r = ce(i && (i.useClass || i.provide));
                     if (! function QE(i) {
@@ -3667,7 +3667,7 @@
                 return i.THROW_IF_NOT_FOUND = ja, i.NULL = new Ky, i.\u0275prov = N({
                     token: i,
                     providedIn: "any",
-                    factory: () => S(Id)
+                    factory: () => w(Id)
                 }), i.__NG_ELEMENT_ID__ = -1, i
             })();
 
@@ -3773,13 +3773,13 @@
                 return i[t] = e
             }
 
-            function $t(i, t, e) {
+            function Kt(i, t, e) {
                 return !Object.is(i[t], e) && (i[t] = e, !0)
             }
 
             function Fr(i, t, e, n) {
-                const r = $t(i, t, e);
-                return $t(i, t + 1, n) || r
+                const r = Kt(i, t, e);
+                return Kt(i, t + 1, n) || r
             }
 
             function Ui(i, t, e, n, r, o) {
@@ -3787,13 +3787,13 @@
                 return Fr(i, t + 2, r, o) || a
             }
 
-            function Ye(i, t, e, n) {
-                const r = O();
-                return $t(r, yo(), t) && (Me(), vn(ot(), r, i, t, e, n)), Ye
+            function ze(i, t, e, n) {
+                const r = I();
+                return Kt(r, yo(), t) && (Me(), vn(rt(), r, i, t, e, n)), ze
             }
 
             function Vo(i, t, e, n) {
-                return $t(i, yo(), e) ? t + oe(e) + n : ae
+                return Kt(i, yo(), e) ? t + oe(e) + n : ae
             }
 
             function Uo(i, t, e, n, r, o) {
@@ -3804,13 +3804,13 @@
             function jo(i, t, e, n, r, o, a, s) {
                 const c = function Wl(i, t, e, n, r) {
                     const o = Fr(i, t, e, n);
-                    return $t(i, t + 2, r) || o
+                    return Kt(i, t + 2, r) || o
                 }(i, In(), e, r, a);
                 return On(3), c ? t + oe(e) + n + oe(r) + o + oe(a) + s : ae
             }
 
-            function T(i, t, e, n, r, o, a, s) {
-                const l = O(),
+            function x(i, t, e, n, r, o, a, s) {
+                const l = I(),
                     c = Me(),
                     u = i + 20,
                     f = c.firstCreatePass ? function yA(i, t, e, n, r, o, a, s, l) {
@@ -3822,18 +3822,18 @@
                     }(u, c, l, t, e, n, r, o, a) : c.data[u];
                 dn(f, !1);
                 const p = l[11].createComment("");
-                Hl(c, l, p, f), Gt(p, l), zl(l, l[u] = jy(p, l, p, f)), pl(f) && Cd(c, l, f), null != a && kd(l, f, s)
+                Hl(c, l, p, f), Wt(p, l), zl(l, l[u] = jy(p, l, p, f)), pl(f) && Cd(c, l, f), null != a && kd(l, f, s)
             }
 
-            function Rt(i) {
+            function Ft(i) {
                 return vo(function Bx() {
                     return ne.lFrame.contextLView
                 }(), 20 + i)
             }
 
             function _(i, t = ie.Default) {
-                const e = O();
-                return null === e ? S(i, t) : cv(bt(), e, ce(i), t)
+                const e = I();
+                return null === e ? w(i, t) : cv(bt(), e, ce(i), t)
             }
 
             function ns() {
@@ -3841,8 +3841,8 @@
             }
 
             function b(i, t, e) {
-                const n = O();
-                return $t(n, yo(), t) && xi(Me(), ot(), n, i, t, n[11], e, !1), b
+                const n = I();
+                return Kt(n, yo(), t) && Ti(Me(), rt(), n, i, t, n[11], e, !1), b
             }
 
             function Yd(i, t, e, n, r) {
@@ -3851,7 +3851,7 @@
             }
 
             function d(i, t, e, n) {
-                const r = O(),
+                const r = I(),
                     o = Me(),
                     a = 20 + i,
                     s = r[11],
@@ -3871,7 +3871,7 @@
                 const p = c.styles;
                 return null !== p && hy(s, l, p), 64 != (64 & c.flags) && Hl(o, r, l, c), 0 === function Ox() {
                         return ne.lFrame.elementDepthCount
-                    }() && Gt(l, r),
+                    }() && Wt(l, r),
                     function Rx() {
                         ne.lFrame.elementDepthCount++
                     }(), pl(c) && (Cd(o, r, c), Ay(o, c, r)), null !== n && kd(r, c), d
@@ -3887,9 +3887,9 @@
                 const e = Me();
                 return e.firstCreatePass && (bl(e, i), fh(i) && e.queries.elementEnd(i)), null != t.classesWithoutHost && function Xx(i) {
                     return 0 != (16 & i.flags)
-                }(t) && Yd(e, t, O(), t.classesWithoutHost, !0), null != t.stylesWithoutHost && function eT(i) {
+                }(t) && Yd(e, t, I(), t.classesWithoutHost, !0), null != t.stylesWithoutHost && function eT(i) {
                     return 0 != (32 & i.flags)
-                }(t) && Yd(e, t, O(), t.stylesWithoutHost, !1), h
+                }(t) && Yd(e, t, I(), t.stylesWithoutHost, !1), h
             }
 
             function B(i, t, e, n) {
@@ -3897,7 +3897,7 @@
             }
 
             function cr(i, t, e) {
-                const n = O(),
+                const n = I(),
                     r = Me(),
                     o = i + 20,
                     a = r.firstCreatePass ? function VA(i, t, e, n, r) {
@@ -3908,7 +3908,7 @@
                     }(o, r, n, t, e) : r.data[o];
                 dn(a, !0);
                 const s = n[o] = n[11].createComment("");
-                return Hl(r, n, s, a), Gt(s, n), pl(a) && (Cd(r, n, a), Ay(r, a, n)), null != e && kd(n, a), cr
+                return Hl(r, n, s, a), Wt(s, n), pl(a) && (Cd(r, n, a), Ay(r, a, n)), null != e && kd(n, a), cr
             }
 
             function ur() {
@@ -3918,7 +3918,7 @@
             }
 
             function V() {
-                return O()
+                return I()
             }
 
             function rs(i) {
@@ -3930,16 +3930,16 @@
             }
             const zd = O_;
 
-            function M(i, t, e, n) {
-                const r = O(),
+            function T(i, t, e, n) {
+                const r = I(),
                     o = Me(),
                     a = bt();
-                return R_(o, r, r[11], a, i, t, !!e, n), M
+                return R_(o, r, r[11], a, i, t, !!e, n), T
             }
 
             function Jl(i, t) {
                 const e = bt(),
-                    n = O(),
+                    n = I(),
                     r = Me();
                 return R_(r, n, Gy(xh(r.data), e, n), e, i, t, !1), Jl
             }
@@ -3951,11 +3951,11 @@
                     p = Yy(t);
                 let v = !0;
                 if (3 & n.type || s) {
-                    const x = Hi(n, t),
-                        D = s ? s(x) : x,
+                    const M = Hi(n, t),
+                        D = s ? s(M) : M,
                         k = p.length,
                         A = s ? P => s(ft(P[n.index])) : n.index;
-                    if (rt(e)) {
+                    if (nt(e)) {
                         let P = null;
                         if (!s && l && (P = function UA(i, t, e, n) {
                                 const r = i.cleanup;
@@ -3981,9 +3981,9 @@
                 const y = n.outputs;
                 let C;
                 if (v && null !== y && (C = y[r])) {
-                    const x = C.length;
-                    if (x)
-                        for (let D = 0; D < x; D += 2) {
+                    const M = C.length;
+                    if (M)
+                        for (let D = 0; D < M; D += 2) {
                             const ke = t[C[D]][C[D + 1]].subscribe(o),
                                 de = p.length;
                             p.push(o, ke), u && u.push(r, n.index, de, -(de + 1))
@@ -4002,7 +4002,7 @@
             function Gd(i, t, e, n, r) {
                 return function o(a) {
                     if (a === Function) return n;
-                    const s = 2 & i.flags ? wi(i.index, t) : t;
+                    const s = 2 & i.flags ? Ci(i.index, t) : t;
                     0 == (32 & t[2]) && Dd(s);
                     let l = F_(t, 0, n, a),
                         c = o.__ngNextListenerFn__;
@@ -4011,7 +4011,7 @@
                 }
             }
 
-            function w(i = 1) {
+            function S(i = 1) {
                 return function qx(i) {
                     return (ne.lFrame.contextLView = function Yx(i, t) {
                         for (; i > 0;) t = t[15], i--;
@@ -4040,7 +4040,7 @@
             }
 
             function os(i) {
-                const t = O()[16][6];
+                const t = I()[16][6];
                 if (!t.projection) {
                     const n = t.projection = Ua(i ? i.length : 1, null),
                         r = n.slice();
@@ -4053,7 +4053,7 @@
             }
 
             function as(i, t = 0, e) {
-                const n = O(),
+                const n = I(),
                     r = Me(),
                     o = Oo(r, 20 + i, 16, null, e || null);
                 null === o.projection && (o.projection = t), kh(), 64 != (64 & o.flags) && function qD(i, t, e) {
@@ -4062,35 +4062,35 @@
             }
 
             function ve(i, t, e) {
-                return ui(i, "", t, "", e), ve
+                return hi(i, "", t, "", e), ve
             }
 
-            function ui(i, t, e, n, r) {
-                const o = O(),
+            function hi(i, t, e, n, r) {
+                const o = I(),
                     a = Vo(o, t, e, n);
-                return a !== ae && xi(Me(), ot(), o, i, a, o[11], r, !1), ui
+                return a !== ae && Ti(Me(), rt(), o, i, a, o[11], r, !1), hi
             }
 
             function Lr(i, t, e, n, r, o, a) {
-                const s = O(),
+                const s = I(),
                     l = Uo(s, t, e, n, r, o);
-                return l !== ae && xi(Me(), ot(), s, i, l, s[11], a, !1), Lr
+                return l !== ae && Ti(Me(), rt(), s, i, l, s[11], a, !1), Lr
             }
 
             function Ql(i, t, e, n, r, o, a, s, l) {
-                const c = O(),
+                const c = I(),
                     u = jo(c, t, e, n, r, o, a, s);
-                return u !== ae && xi(Me(), ot(), c, i, u, c[11], l, !1), Ql
+                return u !== ae && Ti(Me(), rt(), c, i, u, c[11], l, !1), Ql
             }
 
-            function $d(i, t, e, n, r, o, a, s, l, c, u, f, p, v, y, C, x, D, k) {
-                const A = O(),
-                    P = function $o(i, t, e, n, r, o, a, s, l, c, u, f, p, v, y, C, x, D) {
+            function $d(i, t, e, n, r, o, a, s, l, c, u, f, p, v, y, C, M, D, k) {
+                const A = I(),
+                    P = function $o(i, t, e, n, r, o, a, s, l, c, u, f, p, v, y, C, M, D) {
                         const k = In();
                         let A = Ui(i, k, e, r, a, l);
-                        return A = Ui(i, k + 4, u, p, y, x) || A, On(8), A ? t + oe(e) + n + oe(r) + o + oe(a) + s + oe(l) + c + oe(u) + f + oe(p) + v + oe(y) + C + oe(x) + D : ae
-                    }(A, t, e, n, r, o, a, s, l, c, u, f, p, v, y, C, x, D);
-                return P !== ae && xi(Me(), ot(), A, i, P, A[11], k, !1), $d
+                        return A = Ui(i, k + 4, u, p, y, M) || A, On(8), A ? t + oe(e) + n + oe(r) + o + oe(a) + s + oe(l) + c + oe(u) + f + oe(p) + v + oe(y) + C + oe(M) + D : ae
+                    }(A, t, e, n, r, o, a, s, l, c, u, f, p, v, y, C, M, D);
+                return P !== ae && Ti(Me(), rt(), A, i, P, A[11], k, !1), $d
             }
 
             function U_(i, t, e, n, r) {
@@ -4109,8 +4109,8 @@
                 return null === i || null == t || (Array.isArray(i) ? i[1] : i) === t || !(!Array.isArray(i) || "string" != typeof t) && To(i, t) >= 0
             }
 
-            function Ft(i, t, e) {
-                return on(i, t, e, !1), Ft
+            function Lt(i, t, e) {
+                return on(i, t, e, !1), Lt
             }
 
             function Ct(i, t) {
@@ -4118,13 +4118,13 @@
             }
 
             function on(i, t, e, n) {
-                const r = O(),
+                const r = I(),
                     o = Me(),
                     a = On(2);
                 o.firstUpdatePass && function K_(i, t, e, n) {
                     const r = i.data;
                     if (null === r[e + 1]) {
-                        const o = r[Xt()],
+                        const o = r[ei()],
                             a = function W_(i, t) {
                                 return t >= i.expandoStartIndex
                             }(i, e);
@@ -4179,7 +4179,7 @@
                                     }(t, u, i, n, o), a = Ul(s, l), o ? t.classBindings = a : t.styleBindings = a
                             }(r, o, t, e, a, n)
                     }
-                }(o, i, a, n), t !== ae && $t(r, a, t) && function Q_(i, t, e, n, r, o, a, s) {
+                }(o, i, a, n), t !== ae && Kt(r, a, t) && function Q_(i, t, e, n, r, o, a, s) {
                     if (!(3 & t.type)) return;
                     const l = i.data,
                         c = l[s + 1];
@@ -4188,19 +4188,19 @@
                     }(c) ? Z_(l, t, e, r, Rn(c), a) : void 0) || (Zl(o) || function _y(i) {
                         return 2 == (2 & i)
                     }(c) && (o = Z_(l, null, e, r, s, a)), function zD(i, t, e, n, r) {
-                        const o = rt(i);
+                        const o = nt(i);
                         if (t) r ? o ? i.addClass(e, n) : e.classList.add(n) : o ? i.removeClass(e, n) : e.classList.remove(n);
                         else {
-                            let a = -1 === n.indexOf("-") ? void 0 : Mi.DashCase;
+                            let a = -1 === n.indexOf("-") ? void 0 : xi.DashCase;
                             if (null == r) o ? i.removeStyle(e, n, a) : e.style.removeProperty(n);
                             else {
                                 const s = "string" == typeof r && r.endsWith("!important");
-                                s && (r = r.slice(0, -10), a |= Mi.Important), o ? i.setStyle(e, n, r, a) : e.style.setProperty(n, r, s ? "important" : "")
+                                s && (r = r.slice(0, -10), a |= xi.Important), o ? i.setStyle(e, n, r, a) : e.style.setProperty(n, r, s ? "important" : "")
                             }
                         }
-                    }(n, a, ml(Xt(), e), r, o))
-                }(o, o.data[Xt()], r, r[11], i, r[a + 1] = function aP(i, t) {
-                    return null == i || ("string" == typeof t ? i += t : "object" == typeof i && (i = Fe(ki(i)))), i
+                    }(n, a, ml(ei(), e), r, o))
+                }(o, o.data[ei()], r, r[11], i, r[a + 1] = function aP(i, t) {
+                    return null == i || ("string" == typeof t ? i += t : "object" == typeof i && (i = Fe(Mi(i)))), i
                 }(t, e), n, a)
             }
 
@@ -4218,7 +4218,7 @@
                 if (null !== t)
                     for (let o = 0; o < t.length; o++) {
                         const a = t[o];
-                        "number" == typeof a ? r = a : r === n && (Array.isArray(i) || (i = void 0 === i ? [] : ["", i]), Ci(i, a, !!e || t[++o]))
+                        "number" == typeof a ? r = a : r === n && (Array.isArray(i) || (i = void 0 === i ? [] : ["", i]), ki(i, a, !!e || t[++o]))
                     }
                 return void 0 === i ? null : i
             }
@@ -4250,12 +4250,12 @@
             }
 
             function m(i, t = "") {
-                const e = O(),
+                const e = I(),
                     n = Me(),
                     r = i + 20,
                     o = n.firstCreatePass ? Oo(n, r, 1, t, null) : n.data[r],
                     a = e[r] = function nd(i, t) {
-                        return rt(i) ? i.createText(t) : i.createTextNode(t)
+                        return nt(i) ? i.createText(t) : i.createTextNode(t)
                     }(e[11], t);
                 Hl(n, e, a, o), dn(o, !1)
             }
@@ -4265,34 +4265,34 @@
             }
 
             function F(i, t, e) {
-                const n = O(),
+                const n = I(),
                     r = Vo(n, i, t, e);
-                return r !== ae && Fn(n, Xt(), r), F
+                return r !== ae && Fn(n, ei(), r), F
             }
 
-            function Ti(i, t, e, n, r) {
-                const o = O(),
+            function Di(i, t, e, n, r) {
+                const o = I(),
                     a = Uo(o, i, t, e, n, r);
-                return a !== ae && Fn(o, Xt(), a), Ti
+                return a !== ae && Fn(o, ei(), a), Di
             }
 
             function ls(i, t, e, n, r, o, a) {
-                const s = O(),
+                const s = I(),
                     l = jo(s, i, t, e, n, r, o, a);
-                return l !== ae && Fn(s, Xt(), l), ls
+                return l !== ae && Fn(s, ei(), l), ls
             }
 
             function Kd(i, t, e) {
-                const n = O();
-                return $t(n, yo(), t) && xi(Me(), ot(), n, i, t, n[11], e, !0), Kd
+                const n = I();
+                return Kt(n, yo(), t) && Ti(Me(), rt(), n, i, t, n[11], e, !0), Kd
             }
 
             function Xl(i, t, e) {
-                const n = O();
-                if ($t(n, yo(), t)) {
+                const n = I();
+                if (Kt(n, yo(), t)) {
                     const o = Me(),
-                        a = ot();
-                    xi(o, a, n, i, t, Gy(xh(o.data), a, n), e, !0)
+                        a = rt();
+                    Ti(o, a, n, i, t, Gy(xh(o.data), a, n), e, !0)
                 }
                 return Xl
             }
@@ -4331,7 +4331,7 @@
             ];
             let Jo = {};
 
-            function ti(i) {
+            function ii(i) {
                 const t = function TP(i) {
                     return i.toLowerCase().replace(/_/g, "-")
                 }(i);
@@ -4355,7 +4355,7 @@
                     for (let o = 0; o < i.length; o++) Zd(i[o], t, e, n, r);
                 else {
                     const o = Me(),
-                        a = O();
+                        a = I();
                     let s = No(i) ? i : ce(i.provide),
                         l = Xy(i);
                     const c = bt(),
@@ -4369,16 +4369,16 @@
                         const v = ef(s, t, u + p, f),
                             y = ef(s, t, u, u + p),
                             C = v >= 0 && e[v],
-                            x = y >= 0 && e[y];
-                        if (r && !x || !r && !C) {
+                            M = y >= 0 && e[y];
+                        if (r && !M || !r && !C) {
                             Tl(Na(c, a), o, s);
                             const D = function MI(i, t, e, n, r) {
                                 const o = new Fa(i, e, _);
                                 return o.multi = [], o.index = t, o.componentProviders = 0, Ub(o, r, n && !e), o
                             }(r ? kI : CI, e.length, r, n, l);
-                            !r && x && (e[y].providerFactory = D), Xd(o, i, t.length, 0), t.push(s), c.directiveStart++, c.directiveEnd++, r && (c.providerIndexes += 1048576), e.push(D), a.push(D)
+                            !r && M && (e[y].providerFactory = D), Xd(o, i, t.length, 0), t.push(s), c.directiveStart++, c.directiveEnd++, r && (c.providerIndexes += 1048576), e.push(D), a.push(D)
                         } else Xd(o, i, v > -1 ? v : y, Ub(e[r ? y : v], l, !r && n));
-                        !r && n && x && e[y].componentProviders++
+                        !r && n && M && e[y].componentProviders++
                     }
                 }
             }
@@ -4456,7 +4456,7 @@
             })();
 
             function EI() {
-                return Zo(bt(), O())
+                return Zo(bt(), I())
             }
 
             function Zo(i, t) {
@@ -4478,8 +4478,8 @@
             let Ln = (() => {
                     class i {}
                     return i.__NG_ELEMENT_ID__ = () => function II() {
-                        const i = O(),
-                            e = wi(bt().index, i);
+                        const i = I(),
+                            e = Ci(bt().index, i);
                         return function PI(i) {
                             return i[11]
                         }(hn(e) ? e : i)
@@ -4625,7 +4625,7 @@
                     super(), this.ngModule = t
                 }
                 resolveComponentFactory(t) {
-                    const e = Yt(t);
+                    const e = Gt(t);
                     return new rf(e, this.ngModule)
                 }
             }
@@ -4664,7 +4664,7 @@
                         l = a.createRenderer(null, this.componentDef),
                         c = this.componentDef.selectors[0][0] || "div",
                         u = n ? function Oy(i, t, e) {
-                            if (rt(i)) return i.selectRootElement(t, e === Ji.ShadowDom);
+                            if (nt(i)) return i.selectRootElement(t, e === Ji.ShadowDom);
                             let n = "string" == typeof t ? i.querySelector(t) : t;
                             return n.textContent = "", n
                         }(l, n, this.componentDef.encapsulation) : rd(a.createRenderer(null, this.componentDef), c, function LI(i) {
@@ -4683,7 +4683,7 @@
                         }(),
                         v = Yl(0, null, null, 1, 0, null, null, null, null, null),
                         y = Za(null, v, p, f, null, null, a, l, s, o);
-                    let C, x;
+                    let C, M;
                     yl(y);
                     try {
                         const D = function c_(i, t, e, n, r, o) {
@@ -4722,8 +4722,8 @@
                                     }
                                 }(this.componentDef.selectors[0]);
                                 k && Cl(l, u, k), A && A.length > 0 && ud(l, u, A.join(" "))
-                            } if (x = bh(v, 20), void 0 !== e) {
-                            const k = x.projection = [];
+                            } if (M = bh(v, 20), void 0 !== e) {
+                            const k = M.projection = [];
                             for (let A = 0; A < this.ngContentSelectors.length; A++) {
                                 const P = e[A];
                                 k.push(null != P ? Array.from(P) : null)
@@ -4735,9 +4735,9 @@
                                     const n = bt();
                                     i.firstCreatePass && (e.providersResolver && e.providersResolver(e), Uy(i, n, t, Ro(i, t, 1, null), e));
                                     const r = Ba(t, i, n.directiveStart, n);
-                                    Gt(r, t);
+                                    Wt(r, t);
                                     const o = Hi(n, t);
-                                    return o && Gt(o, t), r
+                                    return o && Wt(o, t), r
                                 }(o, e, t);
                             if (n.components.push(a), i[8] = a, r && r.forEach(l => l(a, t)), t.contentQueries) {
                                 const l = bt();
@@ -4749,7 +4749,7 @@
                     } finally {
                         _l()
                     }
-                    return new HI(this.componentType, C, Zo(x, y), y, x)
+                    return new HI(this.componentType, C, Zo(M, y), y, M)
                 }
             }
             class HI extends class xI {} {
@@ -4812,12 +4812,12 @@
                 }
             }
 
-            function ze(i, t, e, n) {
-                return Jb(O(), Zt(), i, t, e, n)
+            function je(i, t, e, n) {
+                return Jb(I(), Xt(), i, t, e, n)
             }
 
             function Bn(i, t, e, n, r) {
-                return Qb(O(), Zt(), i, t, e, n, r)
+                return Qb(I(), Xt(), i, t, e, n, r)
             }
 
             function ms(i, t) {
@@ -4827,7 +4827,7 @@
 
             function Jb(i, t, e, n, r, o) {
                 const a = t + e;
-                return $t(i, a, r) ? yn(i, a + 1, o ? n.call(o, r) : n(r)) : ms(i, a + 1)
+                return Kt(i, a, r) ? yn(i, a + 1, o ? n.call(o, r) : n(r)) : ms(i, a + 1)
             }
 
             function Qb(i, t, e, n, r, o, a) {
@@ -4835,7 +4835,7 @@
                 return Fr(i, s, r, o) ? yn(i, s + 2, a ? n.call(a, r, o) : n(r, o)) : ms(i, s + 2)
             }
 
-            function I(i, t) {
+            function O(i, t) {
                 const e = Me();
                 let n;
                 const r = i + 20;
@@ -4854,7 +4854,7 @@
                     return Ml(s),
                         function _A(i, t, e, n) {
                             e >= i.data.length && (i.data[e] = null, i.blueprint[e] = null), t[e] = n
-                        }(e, O(), r, l), l
+                        }(e, I(), r, l), l
                 } finally {
                     er(a)
                 }
@@ -4862,16 +4862,16 @@
 
             function H(i, t, e) {
                 const n = i + 20,
-                    r = O(),
+                    r = I(),
                     o = vo(r, n);
-                return gs(r, n) ? Jb(r, Zt(), t, o.transform, e, o) : o.transform(e)
+                return gs(r, n) ? Jb(r, Xt(), t, o.transform, e, o) : o.transform(e)
             }
 
-            function Ge(i, t, e, n) {
+            function at(i, t, e, n) {
                 const r = i + 20,
-                    o = O(),
+                    o = I(),
                     a = vo(o, r);
-                return gs(o, r) ? Qb(o, Zt(), t, a.transform, e, n, a) : a.transform(e, n)
+                return gs(o, r) ? Qb(o, Xt(), t, a.transform, e, n, a) : a.transform(e, n)
             }
 
             function gs(i, t) {
@@ -4905,7 +4905,7 @@
                         error: l,
                         complete: c
                     });
-                    return t instanceof Xe && t.add(u), u
+                    return t instanceof Ze && t.add(u), u
                 }
             };
 
@@ -4974,11 +4974,11 @@
                 }
             }
             Symbol;
-            let ii = (() => {
+            let ni = (() => {
                 class i {}
                 return i.__NG_ELEMENT_ID__ = rO, i
             })();
-            const iO = ii,
+            const iO = ni,
                 nO = class extends iO {
                     constructor(t, e, n) {
                         super(), this._declarationLView = t, this._declarationTContainer = e, this.elementRef = n
@@ -4993,21 +4993,21 @@
                 };
 
             function rO() {
-                return ac(bt(), O())
+                return ac(bt(), I())
             }
 
             function ac(i, t) {
                 return 4 & i.type ? new nO(t, i, Zo(i, t)) : null
             }
-            let Lt = (() => {
+            let Nt = (() => {
                 class i {}
                 return i.__NG_ELEMENT_ID__ = oO, i
             })();
 
             function oO() {
-                return nS(bt(), O())
+                return nS(bt(), I())
             }
-            const aO = Lt,
+            const aO = Nt,
                 tS = class extends aO {
                     constructor(t, e, n) {
                         super(), this._lContainer = t, this._hostTNode = e, this._hostLView = n
@@ -5051,7 +5051,7 @@
                             const f = e || {};
                             s = f.index, n = f.injector, r = f.projectableNodes, o = f.ngModuleRef
                         }
-                        const l = a ? t : new rf(Yt(t)),
+                        const l = a ? t : new rf(Gt(t)),
                             c = n || this.parentInjector;
                         if (!o && null == l.ngModule) {
                             const p = (a ? c : this.parentInjector).get(Nn, null);
@@ -5137,7 +5137,7 @@
                         r = o.createComment("");
                         const a = Hi(i, t);
                         Rr(o, Bl(o, a), r, function jD(i, t) {
-                            return rt(i) ? i.nextSibling(t) : t.nextSibling
+                            return nt(i) ? i.nextSibling(t) : t.nextSibling
                         }(o, a), !1)
                     }
                     t[i.index] = e = jy(n, t, r, i), zl(t, e)
@@ -5250,13 +5250,13 @@
                         for (let r = 0; r < n.length; r++) {
                             const o = n[r];
                             this.matchTNodeWithReadOption(t, e, cO(e, o)), this.matchTNodeWithReadOption(t, e, Dl(e, t, o, !1, !1))
-                        } else n === ii ? 4 & e.type && this.matchTNodeWithReadOption(t, e, -1) : this.matchTNodeWithReadOption(t, e, Dl(e, t, n, !1, !1))
+                        } else n === ni ? 4 & e.type && this.matchTNodeWithReadOption(t, e, -1) : this.matchTNodeWithReadOption(t, e, Dl(e, t, n, !1, !1))
                 }
                 matchTNodeWithReadOption(t, e, n) {
                     if (null !== n) {
                         const r = this.metadata.read;
                         if (null !== r)
-                            if (r === xe || r === Lt || r === ii && 4 & e.type) this.addMatch(e.index, -2);
+                            if (r === xe || r === Nt || r === ni && 4 & e.type) this.addMatch(e.index, -2);
                             else {
                                 const o = Dl(e, t, r, !1, !1);
                                 null !== o && this.addMatch(e.index, o)
@@ -5281,7 +5281,7 @@
                 return -1 === e ? function uO(i, t) {
                     return 11 & i.type ? Zo(i, t) : 4 & i.type ? ac(i, t) : null
                 }(t, i) : -2 === e ? function dO(i, t, e) {
-                    return e === xe ? Zo(t, i) : e === ii ? ac(t, i) : e === Lt ? nS(t, i) : void 0
+                    return e === xe ? Zo(t, i) : e === ni ? ac(t, i) : e === Nt ? nS(t, i) : void 0
                 }(i, t, n) : Ba(i, i[1], e, t)
             }
 
@@ -5329,7 +5329,7 @@
             }
 
             function ut(i) {
-                const t = O(),
+                const t = I(),
                     e = Me(),
                     n = Wg();
                 Th(n + 1);
@@ -5345,9 +5345,9 @@
                 return !1
             }
 
-            function ni(i, t, e) {
+            function ri(i, t, e) {
                 const n = Me();
-                n.firstCreatePass && (sS(n, new rS(i, t, e), -1), 2 == (2 & t) && (n.staticViewQueries = !0)), aS(n, O(), t)
+                n.firstCreatePass && (sS(n, new rS(i, t, e), -1), 2 == (2 & t) && (n.staticViewQueries = !0)), aS(n, I(), t)
             }
 
             function Hr(i, t, e, n) {
@@ -5360,13 +5360,13 @@
                             t !== (e.length ? e[e.length - 1] : -1) && e.push(i.queries.length - 1, t)
                         }(r, i), 2 == (2 & e) && (r.staticContentQueries = !0)
                 }
-                aS(r, O(), e)
+                aS(r, I(), e)
             }
 
             function ht() {
                 return function fO(i, t) {
                     return i[19].queries[t].queryList
-                }(O(), Wg())
+                }(I(), Wg())
             }
 
             function aS(i, t, e) {
@@ -5423,7 +5423,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(_f, 8))
+                    return new(e || i)(w(_f, 8))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -5485,7 +5485,7 @@
                     compileModuleAndAllComponentsSync(e) {
                         const n = this.compileModuleSync(e),
                             o = gn(Li(e).declarations).reduce((a, s) => {
-                                const l = Yt(s);
+                                const l = Gt(s);
                                 return l && a.push(new rf(l)), a
                             }, []);
                         return new RO(n, o)
@@ -5715,7 +5715,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(pe))
+                        return new(e || i)(w(pe))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac
@@ -5860,7 +5860,7 @@
                                 }(f, s, () => {
                                     const p = u.injector.get(bf);
                                     return p.runInitializers(), p.donePromise.then(() => (function PP(i) {
-                                        _i(i, "Expected localeId to be defined"), "string" == typeof i && (vb = i.toLowerCase().replace(/_/g, "-"))
+                                        bi(i, "Expected localeId to be defined"), "string" == typeof i && (vb = i.toLowerCase().replace(/_/g, "-"))
                                     }(u.injector.get(Hn, ec) || ec), this._moduleDoBootstrap(u), u))
                                 })
                         })
@@ -5896,7 +5896,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Se))
+                    return new(e || i)(w(Se))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -5917,12 +5917,12 @@
                                 })
                             }
                         });
-                        const a = new We(l => {
+                        const a = new $e(l => {
                                 this._stable = this._zone.isStable && !this._zone.hasPendingMacrotasks && !this._zone.hasPendingMicrotasks, this._zone.runOutsideAngular(() => {
                                     l.next(this._stable), l.complete()
                                 })
                             }),
-                            s = new We(l => {
+                            s = new $e(l => {
                                 let c;
                                 this._zone.runOutsideAngular(() => {
                                     c = this._zone.onStable.subscribe(() => {
@@ -5987,7 +5987,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(pe), S(Se), S(ar), S(bf))
+                    return new(e || i)(w(pe), w(Se), w(ar), w(bf))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -6000,7 +6000,7 @@
                 e > -1 && i.splice(e, 1)
             }
             let BS = !0,
-                oi = (() => {
+                ai = (() => {
                     class i {}
                     return i.__NG_ELEMENT_ID__ = eR, i
                 })();
@@ -6008,11 +6008,11 @@
             function eR(i) {
                 return function tR(i, t, e) {
                     if (fl(i) && !e) {
-                        const n = wi(i.index, t);
+                        const n = Ci(i.index, t);
                         return new ps(n, n)
                     }
                     return 47 & i.type ? new ps(t[16], t) : null
-                }(bt(), O(), 16 == (16 & i))
+                }(bt(), I(), 16 == (16 & i))
             }
             class qS {
                 constructor() {}
@@ -6405,8 +6405,8 @@
                         constructor(e) {}
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(uc))
-                    }, i.\u0275mod = je({
+                        return new(e || i)(w(uc))
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({}), i
                 })(),
@@ -6428,7 +6428,7 @@
                     token: i,
                     factory: function () {
                         return function _R() {
-                            return S(KS)
+                            return w(KS)
                         }()
                     },
                     providedIn: "platform"
@@ -6498,12 +6498,12 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(fe))
+                    return new(e || i)(w(fe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: function () {
                         return function SR() {
-                            return new KS(S(fe))
+                            return new KS(w(fe))
                         }()
                     },
                     providedIn: "platform"
@@ -6542,8 +6542,8 @@
                     token: i,
                     factory: function () {
                         return function wR(i) {
-                            const t = S(fe).location;
-                            return new ZS(S(Ur), t && t.origin || "")
+                            const t = w(fe).location;
+                            return new ZS(w(Ur), t && t.origin || "")
                         }()
                     },
                     providedIn: "root"
@@ -6593,7 +6593,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Ur), S(Rf, 8))
+                        return new(e || i)(w(Ur), w(Rf, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac
@@ -6641,7 +6641,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Ur), S(Rf, 8))
+                        return new(e || i)(w(Ur), w(Rf, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac
@@ -6711,12 +6711,12 @@
                         }
                     }
                     return i.normalizeQueryParams = Vn, i.joinWithSlash = Of, i.stripTrailingSlash = QS, i.\u0275fac = function (e) {
-                        return new(e || i)(S(ia), S(Ur))
+                        return new(e || i)(w(ia), w(Ur))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: function () {
                             return function kR() {
-                                return new bs(S(ia), S(Ur))
+                                return new bs(w(ia), w(Ur))
                             }()
                         },
                         providedIn: "root"
@@ -6726,11 +6726,11 @@
             function XS(i) {
                 return i.replace(/\/index.html$/, "")
             }
-            var hi = (() => ((hi = hi || {})[hi.Decimal = 0] = "Decimal", hi[hi.Percent = 1] = "Percent", hi[hi.Currency = 2] = "Currency", hi[hi.Scientific = 3] = "Scientific", hi))(),
+            var di = (() => ((di = di || {})[di.Decimal = 0] = "Decimal", di[di.Percent = 1] = "Percent", di[di.Currency = 2] = "Currency", di[di.Scientific = 3] = "Scientific", di))(),
                 Q = (() => ((Q = Q || {})[Q.Decimal = 0] = "Decimal", Q[Q.Group = 1] = "Group", Q[Q.List = 2] = "List", Q[Q.PercentSign = 3] = "PercentSign", Q[Q.PlusSign = 4] = "PlusSign", Q[Q.MinusSign = 5] = "MinusSign", Q[Q.Exponential = 6] = "Exponential", Q[Q.SuperscriptingExponent = 7] = "SuperscriptingExponent", Q[Q.PerMille = 8] = "PerMille", Q[Q.Infinity = 9] = "Infinity", Q[Q.NaN = 10] = "NaN", Q[Q.TimeSeparator = 11] = "TimeSeparator", Q[Q.CurrencyDecimal = 12] = "CurrencyDecimal", Q[Q.CurrencyGroup = 13] = "CurrencyGroup", Q))();
 
             function ji(i, t) {
-                const e = ti(i),
+                const e = ii(i),
                     n = e[j.NumberSymbols][t];
                 if (void 0 === n) {
                     if (t === Q.CurrencyDecimal) return e[j.NumberSymbols][Q.Decimal];
@@ -6740,7 +6740,7 @@
             }
 
             function Ff(i, t) {
-                return ti(i)[j.NumberFormats][t]
+                return ii(i)[j.NumberFormats][t]
             }
             const QR = /^(\d+)?\.((\d+)(-(\d+))?)?$/;
 
@@ -6810,13 +6810,13 @@
                     let v = c.digits,
                         y = c.integerLen;
                     const C = c.exponent;
-                    let x = [];
+                    let M = [];
                     for (l = v.every(k => !k); y < u; y++) v.unshift(0);
                     for (; y < 0; y++) v.unshift(0);
-                    y > 0 ? x = v.splice(y, v.length) : (x = v, v = [0]);
+                    y > 0 ? M = v.splice(y, v.length) : (M = v, v = [0]);
                     const D = [];
                     for (v.length >= t.lgSize && D.unshift(v.splice(-t.lgSize, v.length).join("")); v.length > t.gSize;) D.unshift(v.splice(-t.gSize, v.length).join(""));
-                    v.length && D.unshift(v.join("")), s = D.join(ji(e, n)), x.length && (s += ji(e, r) + x.join("")), C && (s += ji(e, Q.Exponential) + "+" + C)
+                    v.length && D.unshift(v.join("")), s = D.join(ji(e, n)), M.length && (s += ji(e, r) + M.join("")), C && (s += ji(e, Q.Exponential) + "+" + C)
                 } else s = ji(e, Q.Infinity);
                 return s = i < 0 && !l ? t.negPre + s + t.negSuf : t.posPre + s + t.posSuf, s
             }
@@ -6858,7 +6858,7 @@
                 if (isNaN(t)) throw new Error("Invalid integer literal when parsing " + i);
                 return t
             }
-            let Di = (() => {
+            let fi = (() => {
                 class i {
                     constructor(e, n, r, o) {
                         this._iterableDiffers = e, this._keyValueDiffers = n, this._ngEl = r, this._renderer = o, this._iterableDiffer = null, this._keyValueDiffer = null, this._initialClasses = [], this._rawClass = null
@@ -6931,7 +6931,7 @@
                     return !this.even
                 }
             }
-            let Nt = (() => {
+            let Bt = (() => {
                 class i {
                     constructor(e, n, r) {
                         this._viewContainer = e, this._template = n, this._differs = r, this._ngForOf = null, this._ngForOfDirty = !0, this._differ = null
@@ -6982,7 +6982,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Lt), _(ii), _(fc))
+                    return new(e || i)(_(Nt), _(ni), _(fc))
                 }, i.\u0275dir = Y({
                     type: i,
                     selectors: [
@@ -7021,7 +7021,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Lt), _(ii))
+                    return new(e || i)(_(Nt), _(ni))
                 }, i.\u0275dir = Y({
                     type: i,
                     selectors: [
@@ -7101,8 +7101,8 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(oi, 16))
-                }, i.\u0275pipe = It({
+                    return new(e || i)(_(ai, 16))
+                }, i.\u0275pipe = Ot({
                     name: "async",
                     type: i,
                     pure: !1
@@ -7119,7 +7119,7 @@
                     }
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275pipe = It({
+                    }, i.\u0275pipe = Ot({
                         name: "titlecase",
                         type: i,
                         pure: !0
@@ -7147,7 +7147,7 @@
                     }
                     return i.\u0275fac = function (e) {
                         return new(e || i)(_(_s, 16))
-                    }, i.\u0275pipe = It({
+                    }, i.\u0275pipe = Ot({
                         name: "keyvalue",
                         type: i,
                         pure: !1
@@ -7179,7 +7179,7 @@
                             r = r || this._locale;
                             try {
                                 return function nF(i, t, e) {
-                                    return Vf(i, Uf(Ff(t, hi.Decimal), ji(t, Q.MinusSign)), t, Q.Group, Q.Decimal, e)
+                                    return Vf(i, Uf(Ff(t, di.Decimal), ji(t, Q.MinusSign)), t, Q.Group, Q.Decimal, e)
                                 }($f(e), r, n)
                             } catch (o) {
                                 throw cn()
@@ -7188,7 +7188,7 @@
                     }
                     return i.\u0275fac = function (e) {
                         return new(e || i)(_(Hn, 16))
-                    }, i.\u0275pipe = It({
+                    }, i.\u0275pipe = Ot({
                         name: "number",
                         type: i,
                         pure: !0
@@ -7204,7 +7204,7 @@
                             r = r || this._locale;
                             try {
                                 return function iF(i, t, e) {
-                                    return Vf(i, Uf(Ff(t, hi.Percent), ji(t, Q.MinusSign)), t, Q.Group, Q.Decimal, e, !0).replace(new RegExp("%", "g"), ji(t, Q.PercentSign))
+                                    return Vf(i, Uf(Ff(t, di.Percent), ji(t, Q.MinusSign)), t, Q.Group, Q.Decimal, e, !0).replace(new RegExp("%", "g"), ji(t, Q.PercentSign))
                                 }($f(e), r, n)
                             } catch (o) {
                                 throw cn()
@@ -7213,7 +7213,7 @@
                     }
                     return i.\u0275fac = function (e) {
                         return new(e || i)(_(Hn, 16))
-                    }, i.\u0275pipe = It({
+                    }, i.\u0275pipe = Ot({
                         name: "percent",
                         type: i,
                         pure: !0
@@ -7233,7 +7233,7 @@
                 class i {}
                 return i.\u0275fac = function (e) {
                     return new(e || i)
-                }, i.\u0275mod = je({
+                }, i.\u0275mod = qe({
                     type: i
                 }), i.\u0275inj = He({}), i
             })();
@@ -7243,7 +7243,7 @@
                 return i.\u0275prov = N({
                     token: i,
                     providedIn: "root",
-                    factory: () => new BF(S(fe), window)
+                    factory: () => new BF(w(fe), window)
                 }), i
             })();
             class BF {
@@ -7466,7 +7466,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Tc), S(pe))
+                    return new(e || i)(w(Tc), w(pe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -7534,7 +7534,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(fe))
+                        return new(e || i)(w(fe))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac
@@ -7595,7 +7595,7 @@
                     end() {}
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Dc), S(Ms), S(ys))
+                    return new(e || i)(w(Dc), w(Ms), w(ys))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -7655,10 +7655,10 @@
                     t.classList.remove(e)
                 }
                 setStyle(t, e, n, r) {
-                    r & (Mi.DashCase | Mi.Important) ? t.style.setProperty(e, n, r & Mi.Important ? "important" : "") : t.style[e] = n
+                    r & (xi.DashCase | xi.Important) ? t.style.setProperty(e, n, r & xi.Important ? "important" : "") : t.style[e] = n
                 }
                 removeStyle(t, e, n) {
-                    n & Mi.DashCase ? t.style.removeProperty(e) : t.style[e] = ""
+                    n & xi.DashCase ? t.style.removeProperty(e) : t.style[e] = ""
                 }
                 setProperty(t, e, n) {
                     t[e] = n
@@ -7734,7 +7734,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(fe))
+                    return new(e || i)(w(fe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -7830,7 +7830,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(fe))
+                    return new(e || i)(w(fe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -7919,8 +7919,8 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(i, 12))
-                }, i.\u0275mod = je({
+                    return new(e || i)(w(i, 12))
+                }, i.\u0275mod = qe({
                     type: i
                 }), i.\u0275inj = He({
                     providers: uL,
@@ -7936,7 +7936,7 @@
                         token: i,
                         factory: function (e) {
                             let n = null;
-                            return n = e ? new(e || i) : S(E0), n
+                            return n = e ? new(e || i) : w(E0), n
                         },
                         providedIn: "root"
                     }), i
@@ -7952,16 +7952,16 @@
                                 case Pe.NONE:
                                     return n;
                                 case Pe.HTML:
-                                    return pn(n, "HTML") ? ki(n) : Nv(this._doc, String(n)).toString();
+                                    return pn(n, "HTML") ? Mi(n) : Nv(this._doc, String(n)).toString();
                                 case Pe.STYLE:
-                                    return pn(n, "Style") ? ki(n) : n;
+                                    return pn(n, "Style") ? Mi(n) : n;
                                 case Pe.SCRIPT:
-                                    if (pn(n, "Script")) return ki(n);
+                                    if (pn(n, "Script")) return Mi(n);
                                     throw new Error("unsafe value used in a script context");
                                 case Pe.URL:
-                                    return Ev(n), pn(n, "URL") ? ki(n) : Ga(String(n));
+                                    return Ev(n), pn(n, "URL") ? Mi(n) : Ga(String(n));
                                 case Pe.RESOURCE_URL:
-                                    if (pn(n, "ResourceURL")) return ki(n);
+                                    if (pn(n, "ResourceURL")) return Mi(n);
                                     throw new Error("unsafe value used in a resource URL context (see https://g.co/ng/security#xss)");
                                 default:
                                     throw new Error(`Unexpected SecurityContext ${e} (see https://g.co/ng/security#xss)`)
@@ -7994,14 +7994,14 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(fe))
+                        return new(e || i)(w(fe))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: function (e) {
                             let n = null;
                             return n = e ? new e : function bL(i) {
                                 return new E0(i.get(fe))
-                            }(S(Se)), n
+                            }(w(Se)), n
                         },
                         providedIn: "root"
                     }), i
@@ -8086,7 +8086,7 @@
                         keys: r
                     } = A0(i);
                 if (0 === n.length) return Tt([], t);
-                const o = new We(function DL(i, t, e = Xn) {
+                const o = new $e(function DL(i, t, e = Xn) {
                     return n => {
                         O0(t, () => {
                             const {
@@ -8097,7 +8097,7 @@
                             for (let l = 0; l < r; l++) O0(t, () => {
                                 const c = Tt(i[l], t);
                                 let u = !1;
-                                c.subscribe(et(n, f => {
+                                c.subscribe(Xe(n, f => {
                                     o[l] = f, u || (u = !0, s--), s || n.next(e(o.slice()))
                                 }, () => {
                                     --a || n.complete()
@@ -8116,7 +8116,7 @@
             function xs(i, t) {
                 const e = Ae(i) ? i : () => i,
                     n = r => r.error(e());
-                return new We(t ? r => t.schedule(n, 0, r) : n)
+                return new $e(t ? r => t.schedule(n, 0, r) : n)
             }
             const Pc = zu(i => function () {
                 i(this), this.name = "EmptyError", this.message = "no elements in sequence"
@@ -8129,8 +8129,8 @@
             }
 
             function ip(i) {
-                return new We(t => {
-                    vi(i()).subscribe(t)
+                return new $e(t => {
+                    yi(i()).subscribe(t)
                 })
             }
 
@@ -8138,7 +8138,7 @@
                 return lt((i, t) => {
                     let e = null;
                     i._refCount++;
-                    const n = et(t, void 0, void 0, void 0, () => {
+                    const n = Xe(t, void 0, void 0, void 0, () => {
                         if (!i || i._refCount <= 0 || 0 < --i._refCount) return void(e = null);
                         const r = i._connection,
                             o = e;
@@ -8147,7 +8147,7 @@
                     i.subscribe(n), n.closed || (e = i.connect())
                 })
             }
-            class AL extends We {
+            class AL extends $e {
                 constructor(t, e) {
                     super(), this.source = t, this.subjectFactory = e, this._subject = null, this._refCount = 0, this._connection = null, lg(t) && (this.lift = t.lift)
                 }
@@ -8168,13 +8168,13 @@
                 connect() {
                     let t = this._connection;
                     if (!t) {
-                        t = this._connection = new Xe;
+                        t = this._connection = new Ze;
                         const e = this.getSubject();
-                        t.add(this.source.subscribe(et(e, void 0, () => {
+                        t.add(this.source.subscribe(Xe(e, void 0, () => {
                             this._teardown(), e.complete()
                         }, n => {
                             this._teardown(), e.error(n)
-                        }, () => this._teardown()))), t.closed && (this._connection = null, t = Xe.EMPTY)
+                        }, () => this._teardown()))), t.closed && (this._connection = null, t = Ze.EMPTY)
                     }
                     return t
                 }
@@ -8189,11 +8189,11 @@
                         o = 0,
                         a = !1;
                     const s = () => a && !r && n.complete();
-                    e.subscribe(et(n, l => {
+                    e.subscribe(Xe(n, l => {
                         null == r || r.unsubscribe();
                         let c = 0;
                         const u = o++;
-                        vi(i(l, u)).subscribe(r = et(n, f => n.next(t ? t(l, f, u, c++) : f), () => {
+                        yi(i(l, u)).subscribe(r = Xe(n, f => n.next(t ? t(l, f, u, c++) : f), () => {
                             r = null, s()
                         }))
                     }, () => {
@@ -8214,7 +8214,7 @@
                     let s = e,
                         l = t,
                         c = 0;
-                    o.subscribe(et(a, u => {
+                    o.subscribe(Xe(a, u => {
                         const f = c++;
                         l = s ? i(l, u, f) : (s = !0, u), n && a.next(l)
                     }, r && (() => {
@@ -8227,10 +8227,10 @@
                 return lt(PL(i, t, arguments.length >= 2, !0))
             }
 
-            function di(i, t) {
+            function pi(i, t) {
                 return lt((e, n) => {
                     let r = 0;
-                    e.subscribe(et(n, o => i.call(t, o, r++) && n.next(o)))
+                    e.subscribe(Xe(n, o => i.call(t, o, r++) && n.next(o)))
                 })
             }
 
@@ -8238,8 +8238,8 @@
                 return lt((t, e) => {
                     let o, n = null,
                         r = !1;
-                    n = t.subscribe(et(e, void 0, void 0, a => {
-                        o = vi(i(a, jn(i)(t))), n ? (n.unsubscribe(), n = null, o.subscribe(e)) : r = !0
+                    n = t.subscribe(Xe(e, void 0, void 0, a => {
+                        o = yi(i(a, jn(i)(t))), n ? (n.unsubscribe(), n = null, o.subscribe(e)) : r = !0
                     })), r && (n.unsubscribe(), n = null, o.subscribe(e))
                 })
             }
@@ -8251,7 +8251,7 @@
             function np(i) {
                 return i <= 0 ? () => En : lt((t, e) => {
                     let n = [];
-                    t.subscribe(et(e, r => {
+                    t.subscribe(Xe(e, r => {
                         n.push(r), i < n.length && n.shift()
                     }, () => {
                         for (const r of n) e.next(r);
@@ -8265,7 +8265,7 @@
             function L0(i = IL) {
                 return lt((t, e) => {
                     let n = !1;
-                    t.subscribe(et(e, r => {
+                    t.subscribe(Xe(e, r => {
                         n = !0, e.next(r)
                     }, () => n ? e.complete() : e.error(i())))
                 })
@@ -8278,7 +8278,7 @@
             function N0(i) {
                 return lt((t, e) => {
                     let n = !1;
-                    t.subscribe(et(e, r => {
+                    t.subscribe(Xe(e, r => {
                         n = !0, e.next(r)
                     }, () => {
                         n || e.next(i), e.complete()
@@ -8288,10 +8288,10 @@
 
             function ra(i, t) {
                 const e = arguments.length >= 2;
-                return n => n.pipe(i ? di((r, o) => i(r, o, n)) : Xn, Jt(1), e ? N0(t) : L0(() => new Pc))
+                return n => n.pipe(i ? pi((r, o) => i(r, o, n)) : Xn, Qt(1), e ? N0(t) : L0(() => new Pc))
             }
 
-            function Bt(i, t, e) {
+            function Ht(i, t, e) {
                 const n = Ae(i) || t || e ? {
                     next: i,
                     error: t,
@@ -8301,7 +8301,7 @@
                     var a;
                     null === (a = n.subscribe) || void 0 === a || a.call(n);
                     let s = !0;
-                    r.subscribe(et(o, l => {
+                    r.subscribe(Xe(o, l => {
                         var c;
                         null === (c = n.next) || void 0 === c || c.call(n, l), o.next(l)
                     }, () => {
@@ -8540,7 +8540,7 @@
                 return i.length > 0 ? i[i.length - 1] : null
             }
 
-            function Ht(i, t) {
+            function Vt(i, t) {
                 for (const e in i) i.hasOwnProperty(e) && t(i[e], e)
             }
 
@@ -8607,7 +8607,7 @@
             }
             class we {
                 constructor(t, e) {
-                    this.segments = t, this.children = e, this.parent = null, Ht(e, (n, r) => n.parent = this)
+                    this.segments = t, this.children = e, this.parent = null, Vt(e, (n, r) => n.parent = this)
                 }
                 hasChildren() {
                     return this.numberOfChildren > 0
@@ -8663,15 +8663,15 @@
                 if (t) {
                     const e = i.children[ye] ? As(i.children[ye], !1) : "",
                         n = [];
-                    return Ht(i.children, (r, o) => {
+                    return Vt(i.children, (r, o) => {
                         o !== ye && n.push(`${o}:${As(r,!1)}`)
                     }), n.length > 0 ? `${e}(${n.join("//")})` : e
                 } {
                     const e = function XL(i, t) {
                         let e = [];
-                        return Ht(i.children, (n, r) => {
+                        return Vt(i.children, (n, r) => {
                             r === ye && (e = e.concat(t(n, r)))
-                        }), Ht(i.children, (n, r) => {
+                        }), Vt(i.children, (n, r) => {
                             r !== ye && (e = e.concat(t(n, r)))
                         }), e
                     }(i, (n, r) => r === ye ? [As(i.children[ye], !1)] : [`${r}:${As(n,!1)}`]);
@@ -9048,7 +9048,7 @@
 
             function dp(i, t, e, n, r) {
                 let o = {};
-                if (n && Ht(n, (s, l) => {
+                if (n && Vt(n, (s, l) => {
                         o[l] = Array.isArray(s) ? s.map(c => `${c}`) : `${s}`
                     }), i === t) return new Yr(e, o, r);
                 const a = cw(i, t, e);
@@ -9057,7 +9057,7 @@
 
             function cw(i, t, e) {
                 const n = {};
-                return Ht(i.children, (r, o) => {
+                return Vt(i.children, (r, o) => {
                     n[o] = r === t ? e : cw(r, t, e)
                 }), new we(i.segments, n)
             }
@@ -9126,9 +9126,9 @@
                             }
                         }(e),
                         r = {};
-                    return Ht(n, (o, a) => {
+                    return Vt(n, (o, a) => {
                         "string" == typeof o && (o = [o]), null !== o && (r[a] = hw(i.children[a], t, o))
-                    }), Ht(i.children, (o, a) => {
+                    }), Vt(i.children, (o, a) => {
                         void 0 === n[a] && (r[a] = o)
                     }), new we(i.segments, r)
                 }
@@ -9156,14 +9156,14 @@
 
             function w2(i) {
                 const t = {};
-                return Ht(i, (e, n) => {
+                return Vt(i, (e, n) => {
                     "string" == typeof e && (e = [e]), null !== e && (t[n] = pp(new we([], {}), 0, e))
                 }), t
             }
 
             function dw(i) {
                 const t = {};
-                return Ht(i, (e, n) => t[n] = `${e}`), t
+                return Vt(i, (e, n) => t[n] = `${e}`), t
             }
 
             function fw(i, t, e) {
@@ -9183,7 +9183,7 @@
                     t.children.forEach(o => {
                         const a = o.value.outlet;
                         this.deactivateRoutes(o, r[a], n), delete r[a]
-                    }), Ht(r, (o, a) => {
+                    }), Vt(r, (o, a) => {
                         this.deactivateRouteAndItsChildren(o, n)
                     })
                 }
@@ -9272,10 +9272,10 @@
             const Os = Symbol("INITIAL_VALUE");
 
             function Rs() {
-                return qr(i => I0(i.map(t => t.pipe(Jt(1), Ts(Os)))).pipe(F0((t, e) => {
+                return qr(i => I0(i.map(t => t.pipe(Qt(1), Ts(Os)))).pipe(F0((t, e) => {
                     let n = !1;
                     return e.reduce((r, o, a) => r !== Os ? r : (o === Os && (n = !0), n || !1 !== o && a !== e.length - 1 && !Gr(o) ? r : o), t)
-                }, Os), di(t => t !== Os), me(t => Gr(t) ? t : !0 === t), Jt(1)))
+                }, Os), pi(t => t !== Os), me(t => Gr(t) ? t : !0 === t), Qt(1)))
             }
             class P2 {
                 constructor() {
@@ -9362,7 +9362,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Fs), _(Lt), _(hr), wo("name"), _(oi))
+                    return new(e || i)(_(Fs), _(Nt), _(hr), wo("name"), _(ai))
                 }, i.\u0275dir = Y({
                     type: i,
                     selectors: [
@@ -9455,7 +9455,7 @@
                 const o = (t.matcher || GL)(e, i, t);
                 if (!o) return Object.assign({}, yw);
                 const a = {};
-                Ht(o.posParams, (l, c) => {
+                Vt(o.posParams, (l, c) => {
                     a[c] = l.path
                 });
                 const s = o.consumed.length > 0 ? Object.assign(Object.assign({}, a), o.consumed[o.consumed.length - 1].parameters) : a;
@@ -9579,7 +9579,7 @@
                         })))
                     }), F0((o, a) => (o[a.outlet] = a.segment, o), {}), function OL(i, t) {
                         const e = arguments.length >= 2;
-                        return n => n.pipe(i ? di((r, o) => i(r, o, n)) : Xn, np(1), e ? N0(t) : L0(() => new Pc))
+                        return n => n.pipe(i ? pi((r, o) => i(r, o, n)) : Xn, np(1), e ? N0(t) : L0(() => new Pc))
                     }())
                 }
                 expandSegment(t, e, n, r, o, a) {
@@ -9632,8 +9632,8 @@
                             C = new we(v.segments, v.children);
                         if (0 === y.length && C.hasChildren()) return this.expandChildren(f, p, C).pipe(me(A => new we(s, A)));
                         if (0 === p.length && 0 === y.length) return Z(new we(s, {}));
-                        const x = zi(n) === o;
-                        return this.expandSegment(f, C, p, y, x ? ye : o, !0).pipe(me(k => new we(s.concat(k.segments), k.children)))
+                        const M = zi(n) === o;
+                        return this.expandSegment(f, C, p, y, M ? ye : o, !0).pipe(me(k => new we(s.concat(k.segments), k.children)))
                     })) : Ls(e)
                 }
                 getChildConfig(t, e, n) {
@@ -9654,7 +9654,7 @@
                             l = s(e, n)
                         }
                         return Cn(l)
-                    })).pipe(Rs(), Bt(a => {
+                    })).pipe(Rs(), Ht(a => {
                         if (!Gr(a)) return;
                         const s = op(`Redirecting to "${this.urlSerializer.serialize(a)}"`);
                         throw s.url = a, s
@@ -9678,7 +9678,7 @@
                 }
                 createQueryParams(t, e) {
                     const n = {};
-                    return Ht(t, (r, o) => {
+                    return Vt(t, (r, o) => {
                         if ("string" == typeof r && r.startsWith(":")) {
                             const s = r.substring(1);
                             n[o] = e[s]
@@ -9688,7 +9688,7 @@
                 createSegmentGroup(t, e, n, r) {
                     const o = this.createSegments(t, e.segments, n, r);
                     let a = {};
-                    return Ht(e.children, (s, l) => {
+                    return Vt(e.children, (s, l) => {
                         a[l] = this.createSegmentGroup(t, s, n, r)
                     }), new we(o, a)
                 }
@@ -9784,20 +9784,20 @@
                             l ? r.canActivateChecks.push(new Cw(n)) : (o.data = a.data, o._resolvedData = a._resolvedData), Ns(i, t, o.component ? s ? s.children : null : e, n, r), l && s && s.outlet && s.outlet.isActivated && r.canDeactivateChecks.push(new zc(s.outlet.component, a))
                         } else a && Bs(t, s, r), r.canActivateChecks.push(new Cw(n)), Ns(i, null, o.component ? s ? s.children : null : e, n, r)
                     })(a, o[a.value.outlet], e, n.concat([a.value]), r), delete o[a.value.outlet]
-                }), Ht(o, (a, s) => Bs(a, e.getContext(s), r)), r
+                }), Vt(o, (a, s) => Bs(a, e.getContext(s), r)), r
             }
 
             function Bs(i, t, e) {
                 const n = aa(i),
                     r = i.value;
-                Ht(n, (o, a) => {
+                Vt(n, (o, a) => {
                     Bs(o, r.component ? t ? t.children.getContext(a) : null : t, e)
                 }), e.canDeactivateChecks.push(new zc(r.component && t && t.outlet && t.outlet.isActivated ? t.outlet.component : null, r))
             }
             class rN {}
 
             function kw(i) {
-                return new We(t => t.error(i))
+                return new $e(t => t.error(i))
             }
             class aN {
                 constructor(t, e, n, r, o, a) {
@@ -10037,12 +10037,12 @@
                     }
                     setupNavigations(e) {
                         const n = this.events;
-                        return e.pipe(di(r => 0 !== r.id), me(r => Object.assign(Object.assign({}, r), {
+                        return e.pipe(pi(r => 0 !== r.id), me(r => Object.assign(Object.assign({}, r), {
                             extractedUrl: this.urlHandlingStrategy.extract(r.rawUrl)
                         })), qr(r => {
                             let o = !1,
                                 a = !1;
-                            return Z(r).pipe(Bt(s => {
+                            return Z(r).pipe(Ht(s => {
                                 this.currentNavigation = {
                                     id: s.id,
                                     initialUrl: s.currentRawUrl,
@@ -10065,7 +10065,7 @@
                                     }(i, t, e, r.extractedUrl, n).pipe(me(o => Object.assign(Object.assign({}, r), {
                                         urlAfterRedirects: o
                                     }))))
-                                }(this.ngModule.injector, this.configLoader, this.urlSerializer, this.config), Bt(f => {
+                                }(this.ngModule.injector, this.configLoader, this.urlSerializer, this.config), Ht(f => {
                                     this.currentNavigation = Object.assign(Object.assign({}, this.currentNavigation), {
                                         finalUrl: f.urlAfterRedirects
                                     })
@@ -10080,7 +10080,7 @@
                                     }(i, t, o.urlAfterRedirects, e(o.urlAfterRedirects), n, r).pipe(me(a => Object.assign(Object.assign({}, o), {
                                         targetSnapshot: a
                                     }))))
-                                }(this.rootComponentType, this.config, f => this.serializeUrl(f), this.paramsInheritanceStrategy, this.relativeLinkResolution), Bt(f => {
+                                }(this.rootComponentType, this.config, f => this.serializeUrl(f), this.paramsInheritanceStrategy, this.relativeLinkResolution), Ht(f => {
                                     if ("eager" === this.urlUpdateStrategy) {
                                         if (!f.extras.skipLocationChange) {
                                             const v = this.urlHandlingStrategy.merge(f.urlAfterRedirects, f.rawUrl);
@@ -10097,14 +10097,14 @@
                                         extractedUrl: v,
                                         source: y,
                                         restoredState: C,
-                                        extras: x
+                                        extras: M
                                     } = s, D = new rp(p, this.serializeUrl(v), y, C);
                                     n.next(D);
                                     const k = ow(v, this.rootComponentType).snapshot;
                                     return Z(Object.assign(Object.assign({}, s), {
                                         targetSnapshot: k,
                                         urlAfterRedirects: v,
-                                        extras: Object.assign(Object.assign({}, x), {
+                                        extras: Object.assign(Object.assign({}, M), {
                                             skipLocationChange: !1,
                                             replaceUrl: !1
                                         })
@@ -10129,7 +10129,7 @@
                                     skipLocationChange: !!p,
                                     replaceUrl: !!v
                                 })
-                            }), Bt(s => {
+                            }), Ht(s => {
                                 const l = new LL(s.id, this.serializeUrl(s.extractedUrl), this.serializeUrl(s.urlAfterRedirects), s.targetSnapshot);
                                 this.triggerEvent(l)
                             }), me(s => Object.assign(Object.assign({}, s), {
@@ -10211,15 +10211,15 @@
                                         guardsResult: s
                                     })))
                                 })
-                            }(this.ngModule.injector, s => this.triggerEvent(s)), Bt(s => {
+                            }(this.ngModule.injector, s => this.triggerEvent(s)), Ht(s => {
                                 if (Gr(s.guardsResult)) {
                                     const c = op(`Redirecting to "${this.serializeUrl(s.guardsResult)}"`);
                                     throw c.url = s.guardsResult, c
                                 }
                                 const l = new NL(s.id, this.serializeUrl(s.extractedUrl), this.serializeUrl(s.urlAfterRedirects), s.targetSnapshot, !!s.guardsResult);
                                 this.triggerEvent(l)
-                            }), di(s => !!s.guardsResult || (this.restoreHistory(s), this.cancelNavigationTransition(s, ""), !1)), yp(s => {
-                                if (s.guards.canActivateChecks.length) return Z(s).pipe(Bt(l => {
+                            }), pi(s => !!s.guardsResult || (this.restoreHistory(s), this.cancelNavigationTransition(s, ""), !1)), yp(s => {
+                                if (s.guards.canActivateChecks.length) return Z(s).pipe(Ht(l => {
                                     const c = new BL(l.id, this.serializeUrl(l.extractedUrl), this.serializeUrl(l.urlAfterRedirects), l.targetSnapshot);
                                     this.triggerEvent(c)
                                 }), qr(l => {
@@ -10242,19 +10242,19 @@
                                                     return Tt(r).pipe(_t(a => function pN(i, t, e, n) {
                                                         const r = Gc(i, t, n);
                                                         return Cn(r.resolve ? r.resolve(t, e) : r(t, e))
-                                                    }(i[a], t, e, n).pipe(Bt(s => {
+                                                    }(i[a], t, e, n).pipe(Ht(s => {
                                                         o[a] = s
                                                     }))), np(1), _t(() => Aw(o).length === r.length ? Z(o) : En))
                                                 }(i._resolve, i, t, n).pipe(me(o => (i._resolvedData = o, i.data = Object.assign(Object.assign({}, i.data), aw(i, e).resolve), null)))
-                                            }(a.route, n, i, t)), Bt(() => o++), np(1), _t(a => o === r.length ? Z(e) : En))
+                                            }(a.route, n, i, t)), Ht(() => o++), np(1), _t(a => o === r.length ? Z(e) : En))
                                         })
-                                    }(this.paramsInheritanceStrategy, this.ngModule.injector), Bt({
+                                    }(this.paramsInheritanceStrategy, this.ngModule.injector), Ht({
                                         next: () => c = !0,
                                         complete: () => {
                                             c || (this.restoreHistory(l), this.cancelNavigationTransition(l, "At least one route resolver didn't emit any value."))
                                         }
                                     }))
-                                }), Bt(l => {
+                                }), Ht(l => {
                                     const c = new HL(l.id, this.serializeUrl(l.extractedUrl), this.serializeUrl(l.urlAfterRedirects), l.targetSnapshot);
                                     this.triggerEvent(c)
                                 }))
@@ -10284,9 +10284,9 @@
                                 return Object.assign(Object.assign({}, s), {
                                     targetRouterState: l
                                 })
-                            }), Bt(s => {
+                            }), Ht(s => {
                                 this.currentUrlTree = s.urlAfterRedirects, this.rawUrlTree = this.urlHandlingStrategy.merge(s.urlAfterRedirects, s.rawUrl), this.routerState = s.targetRouterState, "deferred" === this.urlUpdateStrategy && (s.extras.skipLocationChange || this.setBrowserUrl(this.rawUrlTree, s), this.browserUrlTree = s.urlAfterRedirects)
-                            }), ((i, t, e) => me(n => (new k2(t, n.targetRouterState, n.currentRouterState, e).activate(i), n)))(this.rootContexts, this.routeReuseStrategy, s => this.triggerEvent(s)), Bt({
+                            }), ((i, t, e) => me(n => (new k2(t, n.targetRouterState, n.currentRouterState, e).activate(i), n)))(this.rootContexts, this.routeReuseStrategy, s => this.triggerEvent(s)), Ht({
                                 next() {
                                     o = !0
                                 },
@@ -10406,7 +10406,7 @@
                                         if ("object" == typeof o && null != o) {
                                             if (o.outlets) {
                                                 const s = {};
-                                                return Ht(o.outlets, (l, c) => {
+                                                return Vt(o.outlets, (l, c) => {
                                                     s[c] = "string" == typeof l ? l.split("/") : l
                                                 }), [...r, {
                                                     outlets: s
@@ -10570,7 +10570,7 @@
                             this.router = e, this.injector = r, this.preloadingStrategy = o, this.loader = new Pw(r, n, l => e.triggerEvent(new V0(l)), l => e.triggerEvent(new U0(l)))
                         }
                         setUpPreloading() {
-                            this.subscription = this.router.events.pipe(di(e => e instanceof Ds), na(() => this.preload())).subscribe(() => {})
+                            this.subscription = this.router.events.pipe(pi(e => e instanceof Ds), na(() => this.preload())).subscribe(() => {})
                         }
                         preload() {
                             const e = this.injector.get(Nn);
@@ -10593,7 +10593,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Ei), S(ES), S(Se), S(Rw))
+                        return new(e || i)(w(Ei), w(ES), w(Se), w(Rw))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac
@@ -10727,8 +10727,8 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Nw, 8), S(Ei, 8))
-                }, i.\u0275mod = je({
+                    return new(e || i)(w(Nw, 8), w(Ei, 8))
+                }, i.\u0275mod = qe({
                     type: i
                 }), i.\u0275inj = He({}), i
             })();
@@ -10784,7 +10784,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Se))
+                    return new(e || i)(w(Se))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -10804,7 +10804,7 @@
                 class i {}
                 return i.\u0275fac = function (e) {
                     return new(e || i)
-                }, i.\u0275mod = je({
+                }, i.\u0275mod = qe({
                     type: i
                 }), i.\u0275inj = He({
                     imports: [
@@ -10863,9 +10863,9 @@
                 }(i) ? GN.map(jw(i, t)) : function JN(i) {
                     return Ae(i.on) && Ae(i.off)
                 }(i) ? WN.map(jw(i, t)) : [];
-                if (!r && eh(i)) return _t(a => fa(a, t, e))(vi(i));
+                if (!r && eh(i)) return _t(a => fa(a, t, e))(yi(i));
                 if (!r) throw new TypeError("Invalid event target");
-                return new We(a => {
+                return new $e(a => {
                     const s = (...l) => a.next(1 < l.length ? l : l[0]);
                     return r(s), () => o(s)
                 })
@@ -10874,7 +10874,7 @@
             function jw(i, t) {
                 return e => n => i[e](t, n)
             }
-            class ZN extends Xe {
+            class ZN extends Ze {
                 constructor(t, e) {
                     super()
                 }
@@ -10954,7 +10954,7 @@
                         const r = t(o => {
                             e = void 0, i(o)
                         });
-                        return new Xe(() => null == e ? void 0 : e(r))
+                        return new Ze(() => null == e ? void 0 : e(r))
                     },
                     requestAnimationFrame(...i) {
                         const {
@@ -11103,7 +11103,7 @@
 
             function zw(i = 0, t, e = cB) {
                 let n = -1;
-                return null != t && (Sg(t) ? e = t : n = t), new We(r => {
+                return null != t && (Sg(t) ? e = t : n = t), new $e(r => {
                     let o = function hB(i) {
                         return i instanceof Date && !isNaN(i)
                     }(i) ? +i - e.now() : i;
@@ -11133,8 +11133,8 @@
                             l = () => {
                                 o = null, a && e.complete()
                             };
-                        t.subscribe(et(e, c => {
-                            n = !0, r = c, o || vi(i(c)).subscribe(o = et(e, s, l))
+                        t.subscribe(Xe(e, c => {
+                            n = !0, r = c, o || yi(i(c)).subscribe(o = Xe(e, s, l))
                         }, () => {
                             a = !0, (!n || !o || o.closed) && e.complete()
                         }))
@@ -11147,7 +11147,7 @@
             } catch (i) {
                 Dp = !1
             }
-            let Us, Jr, Ep, Vt = (() => {
+            let Us, Jr, Ep, Ut = (() => {
                 class i {
                     constructor(e) {
                         this._platformId = e, this.isBrowser = this._platformId ? function LF(i) {
@@ -11156,7 +11156,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(wf))
+                    return new(e || i)(w(wf))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -11229,7 +11229,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(gB, 8))
+                        return new(e || i)(w(gB, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -11240,7 +11240,7 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({}), i
                 })(),
@@ -11257,7 +11257,7 @@
                             n && (n.unsubscribe(), this.scrollContainers.delete(e))
                         }
                         scrolled(e = 20) {
-                            return this._platform.isBrowser ? new We(n => {
+                            return this._platform.isBrowser ? new $e(n => {
                                 this._globalSubscription || this._addGlobalListener();
                                 const r = e > 0 ? this._scrolled.pipe(Gw(e)).subscribe(n) : this._scrolled.subscribe(n);
                                 return this._scrolledCount++, () => {
@@ -11270,7 +11270,7 @@
                         }
                         ancestorScrolled(e, n) {
                             const r = this.getAncestorScrollContainers(e);
-                            return this.scrolled(n).pipe(di(o => !o || r.indexOf(o) > -1))
+                            return this.scrolled(n).pipe(pi(o => !o || r.indexOf(o) > -1))
                         }
                         getAncestorScrollContainers(e) {
                             const n = [];
@@ -11297,7 +11297,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(pe), S(Vt), S(fe, 8))
+                        return new(e || i)(w(pe), w(Ut), w(fe, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -11379,7 +11379,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Vt), S(pe), S(fe, 8))
+                        return new(e || i)(w(Ut), w(pe), w(fe, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -11390,7 +11390,7 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({}), i
                 })(),
@@ -11398,7 +11398,7 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [
@@ -11506,7 +11506,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(ii), _(Lt))
+                        return new(e || i)(_(ni), _(Nt))
                     }, i.\u0275dir = Y({
                         type: i,
                         selectors: [
@@ -11560,7 +11560,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(hr), _(Lt), _(fe))
+                        return new(e || i)(_(hr), _(Nt), _(fe))
                     }, i.\u0275dir = Y({
                         type: i,
                         selectors: [
@@ -11580,14 +11580,14 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({}), i
                 })();
 
             function Et(i) {
                 return lt((t, e) => {
-                    vi(i).subscribe(et(e, () => e.complete(), $u)), !e.closed && t.subscribe(e)
+                    yi(i).subscribe(Xe(e, () => e.complete(), $u)), !e.closed && t.subscribe(e)
                 })
             }
             const Jw = fB();
@@ -11699,7 +11699,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Ww), S(Ys), S(pe), S(fe))
+                    return new(e || i)(w(Ww), w(Ys), w(pe), w(fe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -11721,7 +11721,7 @@
             }
             class AB {
                 constructor(t, e, n, r, o, a, s, l, c) {
-                    this._portalOutlet = t, this._host = e, this._pane = n, this._config = r, this._ngZone = o, this._keyboardDispatcher = a, this._document = s, this._location = l, this._outsideClickDispatcher = c, this._backdropElement = null, this._backdropClick = new re, this._attachments = new re, this._detachments = new re, this._locationChanges = Xe.EMPTY, this._backdropClickHandler = u => this._backdropClick.next(u), this._backdropTransitionendHandler = u => {
+                    this._portalOutlet = t, this._host = e, this._pane = n, this._config = r, this._ngZone = o, this._keyboardDispatcher = a, this._document = s, this._location = l, this._outsideClickDispatcher = c, this._backdropElement = null, this._backdropClick = new re, this._attachments = new re, this._detachments = new re, this._locationChanges = Ze.EMPTY, this._backdropClickHandler = u => this._backdropClick.next(u), this._backdropTransitionendHandler = u => {
                         this._disposeBackdrop(u.target)
                     }, this._keydownEvents = new re, this._outsidePointerEvents = new re, r.scrollStrategy && (this._scrollStrategy = r.scrollStrategy, this._scrollStrategy.attach(this)), this._positionStrategy = r.positionStrategy
                 }
@@ -11736,7 +11736,7 @@
                 }
                 attach(t) {
                     let e = this._portalOutlet.attach(t);
-                    return !this._host.parentElement && this._previousHostParent && this._previousHostParent.appendChild(this._host), this._positionStrategy && this._positionStrategy.attach(this), this._updateStackingOrder(), this._updateElementSize(), this._updateElementDirection(), this._scrollStrategy && this._scrollStrategy.enable(), this._ngZone.onStable.pipe(Jt(1)).subscribe(() => {
+                    return !this._host.parentElement && this._previousHostParent && this._previousHostParent.appendChild(this._host), this._positionStrategy && this._positionStrategy.attach(this), this._updateStackingOrder(), this._updateElementSize(), this._updateElementDirection(), this._scrollStrategy && this._scrollStrategy.enable(), this._ngZone.onStable.pipe(Qt(1)).subscribe(() => {
                         this.hasAttached() && this.updatePosition()
                     }), this._togglePointerEvents(!0), this._config.hasBackdrop && this._attachBackdrop(), this._config.panelClass && this._toggleClasses(this._pane, this._config.panelClass, !0), this._attachments.next(), this._keyboardDispatcher.add(this), this._config.disposeOnNavigation && (this._locationChanges = this._location.subscribe(() => this.dispose())), this._outsideClickDispatcher.add(this), e
                 }
@@ -11871,7 +11871,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(fe), S(Vt))
+                    return new(e || i)(w(fe), w(Ut))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -11885,7 +11885,7 @@
                     this._viewportRuler = e, this._document = n, this._platform = r, this._overlayContainer = o, this._lastBoundingBoxSize = {
                         width: 0,
                         height: 0
-                    }, this._isPushed = !1, this._canPush = !0, this._growAfterOpen = !1, this._hasFlexibleDimensions = !0, this._positionLocked = !1, this._viewportMargin = 0, this._scrollables = [], this._preferredPositions = [], this._positionChanges = new re, this._resizeSubscription = Xe.EMPTY, this._offsetX = 0, this._offsetY = 0, this._appliedPanelClasses = [], this.positionChanges = this._positionChanges, this.setOrigin(t)
+                    }, this._isPushed = !1, this._canPush = !0, this._growAfterOpen = !1, this._hasFlexibleDimensions = !0, this._positionLocked = !1, this._viewportMargin = 0, this._scrollables = [], this._preferredPositions = [], this._positionChanges = new re, this._resizeSubscription = Ze.EMPTY, this._offsetX = 0, this._offsetY = 0, this._appliedPanelClasses = [], this.positionChanges = this._positionChanges, this.setOrigin(t)
                 }
                 get positions() {
                     return this._preferredPositions
@@ -12023,10 +12023,10 @@
                         v = s + o.height - n.height,
                         y = this._subtractOverflows(o.width, 0 - a, a + o.width - n.width),
                         C = this._subtractOverflows(o.height, p, v),
-                        x = y * C;
+                        M = y * C;
                     return {
-                        visibleArea: x,
-                        isCompletelyWithinViewport: o.width * o.height === x,
+                        visibleArea: M,
+                        isCompletelyWithinViewport: o.width * o.height === M,
                         fitsInViewportVertically: C === o.height,
                         fitsInViewportHorizontally: y == o.width
                     }
@@ -12333,7 +12333,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Ys), S(fe), S(Vt), S(Lp))
+                        return new(e || i)(w(Ys), w(fe), w(Ut), w(Lp))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -12357,7 +12357,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(fe))
+                        return new(e || i)(w(fe))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -12385,7 +12385,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(fe), S(pe, 8))
+                        return new(e || i)(w(fe), w(pe, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -12428,7 +12428,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(fe), S(Vt), S(pe, 8))
+                        return new(e || i)(w(fe), w(Ut), w(pe, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -12464,7 +12464,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(DB), S(Lp), S(hr), S(RB), S(FB), S(Se), S(pe), S(fe), S(zn), S(bs), S(LB))
+                        return new(e || i)(w(DB), w(Lp), w(hr), w(RB), w(FB), w(Se), w(pe), w(fe), w(zn), w(bs), w(LB))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac
@@ -12481,7 +12481,7 @@
                 class i {}
                 return i.\u0275fac = function (e) {
                     return new(e || i)
-                }, i.\u0275mod = je({
+                }, i.\u0275mod = qe({
                     type: i
                 }), i.\u0275inj = He({
                     providers: [pr, VB],
@@ -12514,7 +12514,7 @@
                         if (u < c) return r = this.schedule(void 0, c - u), void n.add(r);
                         s()
                     }
-                    e.subscribe(et(n, c => {
+                    e.subscribe(Xe(n, c => {
                         o = c, a = t.now(), r || (r = t.schedule(l, i), n.add(r))
                     }, () => {
                         s(), n.complete()
@@ -12525,13 +12525,13 @@
             }
 
             function aC(i) {
-                return di((t, e) => i <= e)
+                return pi((t, e) => i <= e)
             }
 
             function sC(i, t = Xn) {
                 return i = null != i ? i : oH, lt((e, n) => {
                     let r, o = !0;
-                    e.subscribe(et(n, a => {
+                    e.subscribe(Xe(n, a => {
                         const s = t(a);
                         (o || !i(r, s)) && (o = !1, r = s, n.next(a))
                     }))
@@ -12565,7 +12565,7 @@
                         }
                         observe(e) {
                             const n = Kr(e);
-                            return new We(r => {
+                            return new $e(r => {
                                 const a = this._observeElement(n).subscribe(r);
                                 return () => {
                                     a.unsubscribe(), this._unobserveElement(n)
@@ -12603,7 +12603,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(lC))
+                        return new(e || i)(w(lC))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -12666,7 +12666,7 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         providers: [lC]
@@ -12764,7 +12764,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(fe), S(Vt))
+                        return new(e || i)(w(fe), w(Ut))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -12781,7 +12781,7 @@
             }
             class dH extends class hH {
                 constructor(t) {
-                    this._items = t, this._activeItemIndex = -1, this._activeItem = null, this._wrap = !1, this._letterKeyStream = new re, this._typeaheadSubscription = Xe.EMPTY, this._vertical = !0, this._allowedModifierKeys = [], this._homeAndEnd = !1, this._skipPredicateFn = e => e.disabled, this._pressedLetters = [], this.tabOut = new re, this.change = new re, t instanceof ea && t.changes.subscribe(e => {
+                    this._items = t, this._activeItemIndex = -1, this._activeItem = null, this._wrap = !1, this._letterKeyStream = new re, this._typeaheadSubscription = Ze.EMPTY, this._vertical = !0, this._allowedModifierKeys = [], this._homeAndEnd = !1, this._skipPredicateFn = e => e.disabled, this._pressedLetters = [], this.tabOut = new re, this.change = new re, t instanceof ea && t.changes.subscribe(e => {
                         if (this._activeItem) {
                             const r = e.toArray().indexOf(this._activeItem);
                             r > -1 && r !== this._activeItemIndex && (this._activeItemIndex = r)
@@ -12804,7 +12804,7 @@
                     return this._allowedModifierKeys = t, this
                 }
                 withTypeAhead(t = 200) {
-                    return this._typeaheadSubscription.unsubscribe(), this._typeaheadSubscription = this._letterKeyStream.pipe(Bt(e => this._pressedLetters.push(e)), Bp(t), di(() => this._pressedLetters.length > 0), me(() => this._pressedLetters.join(""))).subscribe(e => {
+                    return this._typeaheadSubscription.unsubscribe(), this._typeaheadSubscription = this._letterKeyStream.pipe(Ht(e => this._pressedLetters.push(e)), Bp(t), pi(() => this._pressedLetters.length > 0), me(() => this._pressedLetters.join(""))).subscribe(e => {
                         const n = this._getItemsArray();
                         for (let r = 1; r < n.length + 1; r++) {
                             const o = (this._activeItemIndex + r) % n.length,
@@ -12984,7 +12984,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Vt))
+                    return new(e || i)(w(Ut))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -13093,7 +13093,7 @@
                     this._startAnchor && this._endAnchor && (this._toggleAnchorTabIndex(t, this._startAnchor), this._toggleAnchorTabIndex(t, this._endAnchor))
                 }
                 _executeOnStable(t) {
-                    this._ngZone.isStable ? t() : this._ngZone.onStable.pipe(Jt(1)).subscribe(t)
+                    this._ngZone.isStable ? t() : this._ngZone.onStable.pipe(Qt(1)).subscribe(t)
                 }
             }
             let kH = (() => {
@@ -13106,7 +13106,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(pC), S(pe), S(fe))
+                    return new(e || i)(w(pC), w(pe), w(fe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -13152,7 +13152,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Vt), S(pe), S(fe), S(MH, 8))
+                    return new(e || i)(w(Ut), w(pe), w(fe), w(MH, 8))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -13194,7 +13194,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(DH, 8), S(pe), S(fe), S(AH, 8))
+                    return new(e || i)(w(DH, 8), w(pe), w(fe), w(AH, 8))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -13316,7 +13316,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(pe), S(Vt), S(TH), S(fe, 8), S(PH, 8))
+                        return new(e || i)(w(pe), w(Ut), w(TH), w(fe, 8), w(PH, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -13382,7 +13382,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Vt), S(fe))
+                        return new(e || i)(w(Ut), w(fe))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -13396,8 +13396,8 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(CC))
-                    }, i.\u0275mod = je({
+                        return new(e || i)(w(CC))
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [
@@ -13653,18 +13653,18 @@
                             v = p && c || {};
                         Object.keys(u).forEach(y => {
                             let C = y,
-                                x = u[y];
-                            if ("offset" !== y) switch (C = t.normalizePropertyName(C, a), x) {
+                                M = u[y];
+                            if ("offset" !== y) switch (C = t.normalizePropertyName(C, a), M) {
                                 case "!":
-                                    x = r[y];
+                                    M = r[y];
                                     break;
                                 case Gn:
-                                    x = o[y];
+                                    M = o[y];
                                     break;
                                 default:
-                                    x = t.normalizeStyleValue(y, C, x, a)
+                                    M = t.normalizeStyleValue(y, C, M, a)
                             }
-                            v[C] = x
+                            v[C] = M
                         }), p || s.push(v), c = v, l = f
                     }), a.length) throw function r3(i) {
                     return new G(3502, Ce)
@@ -14249,10 +14249,10 @@
                     const v = f - 1,
                         y = e.currentTime,
                         C = e.currentAnimateTimings,
-                        x = C.duration;
+                        M = C.duration;
                     return u.forEach((D, k) => {
                         const A = p > 0 ? k == v ? 1 : p * k : a[k],
-                            P = A * x;
+                            P = A * M;
                         e.currentTime = y + C.delay + P, C.duration = P, this._validateStyleAst(D, e), D.offset = A, n.styles.push(D)
                     }), n
                 }
@@ -14805,7 +14805,7 @@
                         p = this.ast.options && this.ast.options.params || am,
                         y = this.buildStyles(n, s && s.params || am, f),
                         C = l && l.params || am,
-                        x = this.buildStyles(r, C, f),
+                        M = this.buildStyles(r, C, f),
                         D = new Set,
                         k = new Map,
                         A = new Map,
@@ -14813,20 +14813,20 @@
                         z = {
                             params: Object.assign(Object.assign({}, p), C)
                         },
-                        ke = u ? [] : nm(t, e, this.ast.animation, o, a, y, x, z, c, f);
+                        ke = u ? [] : nm(t, e, this.ast.animation, o, a, y, M, z, c, f);
                     let de = 0;
                     if (ke.forEach(Je => {
                             de = Math.max(Je.duration + Je.delay, de)
-                        }), f.length) return XC(e, this._triggerName, n, r, P, y, x, [], [], k, A, de, f);
+                        }), f.length) return XC(e, this._triggerName, n, r, P, y, M, [], [], k, A, de, f);
                     ke.forEach(Je => {
                         const De = Je.element,
-                            gi = Ai(k, De, {});
-                        Je.preStyleProps.forEach(xt => gi[xt] = !0);
-                        const qt = Ai(A, De, {});
-                        Je.postStyleProps.forEach(xt => qt[xt] = !0), De !== e && D.add(De)
+                            vi = Ai(k, De, {});
+                        Je.preStyleProps.forEach(xt => vi[xt] = !0);
+                        const zt = Ai(A, De, {});
+                        Je.postStyleProps.forEach(xt => zt[xt] = !0), De !== e && D.add(De)
                     });
                     const Re = mu(D.values());
-                    return XC(e, this._triggerName, n, r, P, y, x, ke, Re, k, A, de)
+                    return XC(e, this._triggerName, n, r, P, y, M, ke, Re, k, A, de)
                 }
             }
             class Q3 {
@@ -15082,10 +15082,10 @@
                                 return !0
                             }(l.params, c.params)) {
                             const C = [],
-                                x = o.matchStyles(l.value, l.params, C),
+                                M = o.matchStyles(l.value, l.params, C),
                                 D = o.matchStyles(c.value, c.params, C);
                             C.length ? this._engine.reportError(C) : this._engine.afterFlush(() => {
-                                io(t, x), Mn(t, D)
+                                io(t, M), Mn(t, D)
                             })
                         }
                         return
@@ -15113,10 +15113,10 @@
                     })), a.onDone(() => {
                         let C = this.players.indexOf(a);
                         C >= 0 && this.players.splice(C, 1);
-                        const x = this._engine.playersByElement.get(t);
-                        if (x) {
-                            let D = x.indexOf(a);
-                            D >= 0 && x.splice(D, 1)
+                        const M = this._engine.playersByElement.get(t);
+                        if (M) {
+                            let D = M.indexOf(a);
+                            D >= 0 && M.splice(D, 1)
                         }
                     }), this.players.push(a), p.push(a), a
                 }
@@ -15446,13 +15446,13 @@
                         const te = Kp + C++;
                         y.set(K, te), $.forEach(Ee => $i(Ee, te))
                     });
-                    const x = [],
+                    const M = [],
                         D = new Set,
                         k = new Set;
                     for (let $ = 0; $ < this.collectedLeaveElements.length; $++) {
                         const K = this.collectedLeaveElements[$],
                             te = K[Gi];
-                        te && te.setForRemoval && (x.push(K), D.add(K), te.hasAnimation ? this.driver.query(K, ".ng-star-inserted", !0).forEach(Ee => D.add(Ee)) : k.add(K))
+                        te && te.setForRemoval && (M.push(K), D.add(K), te.hasAnimation ? this.driver.query(K, ".ng-star-inserted", !0).forEach(Ee => D.add(Ee)) : k.add(K))
                     }
                     const A = new Map,
                         P = s1(p, Array.from(D));
@@ -15466,7 +15466,7 @@
                         }), P.forEach(($, K) => {
                             const te = A.get(K);
                             $.forEach(Ee => ya(Ee, te))
-                        }), x.forEach($ => {
+                        }), M.forEach($ => {
                             this.processLeaveNode($)
                         })
                     });
@@ -15474,40 +15474,40 @@
                         ke = [];
                     for (let $ = this._namespaceList.length - 1; $ >= 0; $--) this._namespaceList[$].drainQueuedTransitions(e).forEach(te => {
                         const Ee = te.player,
-                            Pt = te.element;
+                            It = te.element;
                         if (z.push(Ee), this.collectedEnterElements.length) {
-                            const li = Pt[Gi];
-                            if (li && li.setForMove) {
-                                if (li.previousTriggersValues && li.previousTriggersValues.has(te.triggerName)) {
-                                    const lo = li.previousTriggersValues.get(te.triggerName),
+                            const ci = It[Gi];
+                            if (ci && ci.setForMove) {
+                                if (ci.previousTriggersValues && ci.previousTriggersValues.has(te.triggerName)) {
+                                    const lo = ci.previousTriggersValues.get(te.triggerName),
                                         kr = this.statesByElement.get(te.element);
                                     kr && kr[te.triggerName] && (kr[te.triggerName].value = lo)
                                 }
                                 return void Ee.destroy()
                             }
                         }
-                        const Tn = !f || !this.driver.containsElement(f, Pt),
-                            Fi = A.get(Pt),
-                            Cr = y.get(Pt),
-                            nt = this._buildInstruction(te, n, Cr, Fi, Tn);
-                        if (nt.errors && nt.errors.length) return void ke.push(nt);
-                        if (Tn) return Ee.onStart(() => io(Pt, nt.fromStyles)), Ee.onDestroy(() => Mn(Pt, nt.toStyles)), void r.push(Ee);
-                        if (te.isFallbackTransition) return Ee.onStart(() => io(Pt, nt.fromStyles)), Ee.onDestroy(() => Mn(Pt, nt.toStyles)), void r.push(Ee);
+                        const Tn = !f || !this.driver.containsElement(f, It),
+                            Fi = A.get(It),
+                            Cr = y.get(It),
+                            it = this._buildInstruction(te, n, Cr, Fi, Tn);
+                        if (it.errors && it.errors.length) return void ke.push(it);
+                        if (Tn) return Ee.onStart(() => io(It, it.fromStyles)), Ee.onDestroy(() => Mn(It, it.toStyles)), void r.push(Ee);
+                        if (te.isFallbackTransition) return Ee.onStart(() => io(It, it.fromStyles)), Ee.onDestroy(() => Mn(It, it.toStyles)), void r.push(Ee);
                         const bM = [];
-                        nt.timelines.forEach(li => {
-                            li.stretchStartingKeyframe = !0, this.disabledNodes.has(li.element) || bM.push(li)
-                        }), nt.timelines = bM, n.append(Pt, nt.timelines), a.push({
-                            instruction: nt,
+                        it.timelines.forEach(ci => {
+                            ci.stretchStartingKeyframe = !0, this.disabledNodes.has(ci.element) || bM.push(ci)
+                        }), it.timelines = bM, n.append(It, it.timelines), a.push({
+                            instruction: it,
                             player: Ee,
-                            element: Pt
-                        }), nt.queriedElements.forEach(li => Ai(s, li, []).push(Ee)), nt.preStyleProps.forEach((li, lo) => {
-                            const kr = Object.keys(li);
+                            element: It
+                        }), it.queriedElements.forEach(ci => Ai(s, ci, []).push(Ee)), it.preStyleProps.forEach((ci, lo) => {
+                            const kr = Object.keys(ci);
                             if (kr.length) {
                                 let co = l.get(lo);
                                 co || l.set(lo, co = new Set), kr.forEach(Zm => co.add(Zm))
                             }
-                        }), nt.postStyleProps.forEach((li, lo) => {
-                            const kr = Object.keys(li);
+                        }), it.postStyleProps.forEach((ci, lo) => {
+                            const kr = Object.keys(ci);
                             let co = c.get(lo);
                             co || c.set(lo, co = new Set), kr.forEach(Zm => co.add(Zm))
                         })
@@ -15531,17 +15531,17 @@
                             Ai(de, K, []).push(Ee), Ee.destroy()
                         })
                     });
-                    const Je = x.filter($ => c1($, l, c)),
+                    const Je = M.filter($ => c1($, l, c)),
                         De = new Map;
                     a1(De, this.driver, k, c, Gn).forEach($ => {
                         c1($, l, c) && Je.push($)
                     });
-                    const qt = new Map;
+                    const zt = new Map;
                     v.forEach(($, K) => {
-                        a1(qt, this.driver, new Set($), l, "!")
+                        a1(zt, this.driver, new Set($), l, "!")
                     }), Je.forEach($ => {
                         const K = De.get($),
-                            te = qt.get($);
+                            te = zt.get($);
                         De.set($, Object.assign(Object.assign({}, K), te))
                     });
                     const xt = [],
@@ -15555,24 +15555,24 @@
                         } = $;
                         if (n.has(K)) {
                             if (u.has(K)) return te.onDestroy(() => Mn(K, Ee.toStyles)), te.disabled = !0, te.overrideTotalTime(Ee.totalTime), void r.push(te);
-                            let Pt = Ma;
+                            let It = Ma;
                             if (Re.size > 1) {
                                 let Fi = K;
                                 const Cr = [];
                                 for (; Fi = Fi.parentNode;) {
-                                    const nt = Re.get(Fi);
-                                    if (nt) {
-                                        Pt = nt;
+                                    const it = Re.get(Fi);
+                                    if (it) {
+                                        It = it;
                                         break
                                     }
                                     Cr.push(Fi)
                                 }
-                                Cr.forEach(nt => Re.set(nt, Pt))
+                                Cr.forEach(it => Re.set(it, It))
                             }
-                            const Tn = this._buildAnimation(te.namespaceId, Ee, de, o, qt, De);
-                            if (te.setRealPlayer(Tn), Pt === Ma) xt.push(te);
+                            const Tn = this._buildAnimation(te.namespaceId, Ee, de, o, zt, De);
+                            if (te.setRealPlayer(Tn), It === Ma) xt.push(te);
                             else {
-                                const Fi = this.playersByElement.get(Pt);
+                                const Fi = this.playersByElement.get(It);
                                 Fi && Fi.length && (te.parentPlayer = mr(Fi)), r.push(te)
                             }
                         } else io(K, Ee.fromStyles), te.onDestroy(() => Mn(K, Ee.toStyles)), ka.push(te), u.has(K) && r.push(te)
@@ -15585,8 +15585,8 @@
                     }), r.forEach($ => {
                         $.parentPlayer ? $.syncPlayerEvents($.parentPlayer) : $.destroy()
                     });
-                    for (let $ = 0; $ < x.length; $++) {
-                        const K = x[$],
+                    for (let $ = 0; $ < M.length; $++) {
+                        const K = M[$],
                             te = K[Gi];
                         if (ya(K, uu), te && te.hasAnimation) continue;
                         let Ee = [];
@@ -15595,14 +15595,14 @@
                             Tn && Tn.length && Ee.push(...Tn);
                             let Fi = this.driver.query(K, Jp, !0);
                             for (let Cr = 0; Cr < Fi.length; Cr++) {
-                                let nt = s.get(Fi[Cr]);
-                                nt && nt.length && Ee.push(...nt)
+                                let it = s.get(Fi[Cr]);
+                                it && it.length && Ee.push(...it)
                             }
                         }
-                        const Pt = Ee.filter(Tn => !Tn.destroyed);
-                        Pt.length ? pV(this, K, Pt) : this.processLeaveNode(K)
+                        const It = Ee.filter(Tn => !Tn.destroyed);
+                        It.length ? pV(this, K, It) : this.processLeaveNode(K)
                     }
-                    return x.length = 0, xt.forEach($ => {
+                    return M.length = 0, xt.forEach($ => {
                         this.players.push($), $.onDone(() => {
                             $.destroy();
                             const K = this.players.indexOf($);
@@ -15661,8 +15661,8 @@
                         p = e.timelines.map(y => {
                             const C = y.element;
                             u.add(C);
-                            const x = C[Gi];
-                            if (x && x.removedBeforeQueried) return new Gs(y.duration, y.delay);
+                            const M = C[Gi];
+                            if (M && M.removedBeforeQueried) return new Gs(y.duration, y.delay);
                             const D = C !== l,
                                 k = function mV(i) {
                                     const t = [];
@@ -16094,7 +16094,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(fs), S(fe))
+                    return new(e || i)(w(fs), w(fe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -16214,7 +16214,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(fs), S(xu), S(pe))
+                    return new(e || i)(w(fs), w(xu), w(pe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -16331,7 +16331,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(fe), S(Wp), S(om))
+                    return new(e || i)(w(fe), w(Wp), w(om))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -16381,7 +16381,7 @@
                 }
                 return i.\u0275fac = function (e) {
                     return new(e || i)
-                }, i.\u0275mod = je({
+                }, i.\u0275mod = qe({
                     type: i
                 }), i.\u0275inj = He({
                     providers: m1,
@@ -16394,7 +16394,7 @@
                     return !0
                 }
             });
-            let fi = (() => {
+            let mi = (() => {
                 class i {
                     constructor(e, n, r) {
                         this._sanityChecks = n, this._document = r, this._hasDoneGlobalChecks = !1, e._applyBodyHighContrastModeCssClasses(), this._hasDoneGlobalChecks || (this._hasDoneGlobalChecks = !0)
@@ -16404,8 +16404,8 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(CC), S(RV, 8), S(fe))
-                }, i.\u0275mod = je({
+                    return new(e || i)(w(CC), w(RV, 8), w(fe))
+                }, i.\u0275mod = qe({
                     type: i
                 }), i.\u0275inj = He({
                     imports: [
@@ -16612,7 +16612,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(pe), _(Vt), _(UV, 8), _(Ii, 8))
+                        return new(e || i)(_(xe), _(pe), _(Ut), _(UV, 8), _(Ii, 8))
                     }, i.\u0275dir = Y({
                         type: i,
                         selectors: [
@@ -16640,11 +16640,11 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [
-                            [fi], fi
+                            [mi], mi
                         ]
                     }), i
                 })();
@@ -16740,11 +16740,11 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(kH), _(oi), _(fe, 8), _(mm), _(pC), _(pe), _(su))
+                        return new(e || i)(_(xe), _(kH), _(ai), _(fe, 8), _(mm), _(pC), _(pe), _(su))
                     }, i.\u0275dir = Y({
                         type: i,
                         viewQuery: function (e, n) {
-                            if (1 & e && ni(Zr, 7), 2 & e) {
+                            if (1 & e && ri(Zr, 7), 2 & e) {
                                 let r;
                                 ut(r = ht()) && (n._portalOutlet = r.first)
                             }
@@ -16791,7 +16791,7 @@
                     return i.\u0275fac = function () {
                         let t;
                         return function (n) {
-                            return (t || (t = Ot(i)))(n || i)
+                            return (t || (t = Rt(i)))(n || i)
                         }
                     }(), i.\u0275cmp = se({
                         type: i,
@@ -16805,7 +16805,7 @@
                                 return n._onAnimationStart(o)
                             })("@dialogContainer.done", function (o) {
                                 return n._onAnimationDone(o)
-                            }), 2 & e && (Kd("id", n._id), Ye("role", n._config.role)("aria-labelledby", n._config.ariaLabel ? null : n._ariaLabelledBy)("aria-label", n._config.ariaLabel)("aria-describedby", n._config.ariaDescribedBy || null), Xl("@dialogContainer", n._state))
+                            }), 2 & e && (Kd("id", n._id), ze("role", n._config.role)("aria-labelledby", n._config.ariaLabel ? null : n._ariaLabelledBy)("aria-label", n._config.ariaLabel)("aria-describedby", n._config.ariaDescribedBy || null), Xl("@dialogContainer", n._state))
                         },
                         features: [ee],
                         decls: 1,
@@ -16814,7 +16814,7 @@
                             ["cdkPortalOutlet", ""]
                         ],
                         template: function (e, n) {
-                            1 & e && T(0, jV, 0, 0, "ng-template", 0)
+                            1 & e && x(0, jV, 0, 0, "ng-template", 0)
                         },
                         directives: [Zr],
                         styles: [".mat-dialog-container{display:block;padding:24px;border-radius:4px;box-sizing:border-box;overflow:auto;outline:0;width:100%;height:100%;min-height:inherit;max-height:inherit}.cdk-high-contrast-active .mat-dialog-container{outline:solid 1px}.mat-dialog-content{display:block;margin:0 -24px;padding:0 24px;max-height:65vh;overflow:auto;-webkit-overflow-scrolling:touch}.mat-dialog-title{margin:0 0 20px;display:block}.mat-dialog-actions{padding:8px 0;display:flex;flex-wrap:wrap;min-height:52px;align-items:center;box-sizing:content-box;margin-bottom:-24px}.mat-dialog-actions[align=end]{justify-content:flex-end}.mat-dialog-actions[align=center]{justify-content:center}.mat-dialog-actions .mat-button-base+.mat-button-base,.mat-dialog-actions .mat-mdc-button-base+.mat-mdc-button-base{margin-left:8px}[dir=rtl] .mat-dialog-actions .mat-button-base+.mat-button-base,[dir=rtl] .mat-dialog-actions .mat-mdc-button-base+.mat-mdc-button-base{margin-left:0;margin-right:8px}\n"],
@@ -16827,20 +16827,20 @@
                 GV = 0;
             class $V {
                 constructor(t, e, n = "mat-dialog-" + GV++) {
-                    this._overlayRef = t, this._containerInstance = e, this.id = n, this.disableClose = this._containerInstance._config.disableClose, this._afterOpened = new re, this._afterClosed = new re, this._beforeClosed = new re, this._state = 0, e._id = n, e._animationStateChanged.pipe(di(r => "opened" === r.state), Jt(1)).subscribe(() => {
+                    this._overlayRef = t, this._containerInstance = e, this.id = n, this.disableClose = this._containerInstance._config.disableClose, this._afterOpened = new re, this._afterClosed = new re, this._beforeClosed = new re, this._state = 0, e._id = n, e._animationStateChanged.pipe(pi(r => "opened" === r.state), Qt(1)).subscribe(() => {
                         this._afterOpened.next(), this._afterOpened.complete()
-                    }), e._animationStateChanged.pipe(di(r => "closed" === r.state), Jt(1)).subscribe(() => {
+                    }), e._animationStateChanged.pipe(pi(r => "closed" === r.state), Qt(1)).subscribe(() => {
                         clearTimeout(this._closeFallbackTimeout), this._finishDialogClose()
                     }), t.detachments().subscribe(() => {
                         this._beforeClosed.next(this._result), this._beforeClosed.complete(), this._afterClosed.next(this._result), this._afterClosed.complete(), this.componentInstance = null, this._overlayRef.dispose()
-                    }), t.keydownEvents().pipe(di(r => 27 === r.keyCode && !this.disableClose && !nu(r))).subscribe(r => {
+                    }), t.keydownEvents().pipe(pi(r => 27 === r.keyCode && !this.disableClose && !nu(r))).subscribe(r => {
                         r.preventDefault(), w1(this, "keyboard")
                     }), t.backdropClick().subscribe(() => {
                         this.disableClose ? this._containerInstance._recaptureFocus() : w1(this, "mouse")
                     })
                 }
                 close(t) {
-                    this._result = t, this._containerInstance._animationStateChanged.pipe(di(e => "closing" === e.state), Jt(1)).subscribe(e => {
+                    this._result = t, this._containerInstance._animationStateChanged.pipe(pi(e => "closing" === e.state), Qt(1)).subscribe(e => {
                         this._beforeClosed.next(t), this._beforeClosed.complete(), this._overlayRef.detachBackdrop(), this._closeFallbackTimeout = setTimeout(() => this._finishDialogClose(), e.totalTime + 100)
                     }), this._state = 1, this._containerInstance._startExitAnimation()
                 }
@@ -16964,7 +16964,7 @@
                         }
                         _attachDialogContent(e, n, r, o) {
                             const a = new this._dialogRefConstructor(r, n, o.id);
-                            if (e instanceof ii) n.attachTemplatePortal(new zs(e, null, {
+                            if (e instanceof ni) n.attachTemplatePortal(new zs(e, null, {
                                 $implicit: o.data,
                                 dialogRef: a
                             }));
@@ -17032,7 +17032,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(pr), S(Se), S(bs, 8), S(WV, 8), S(C1), S(i, 12), S(Lp), S(Ii, 8))
+                        return new(e || i)(w(pr), w(Se), w(bs, 8), w(WV, 8), w(C1), w(i, 12), w(Lp), w(Ii, 8))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac
@@ -17042,12 +17042,12 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         providers: [Wi, JV],
                         imports: [
-                            [Np, iu, fi], fi
+                            [Np, iu, mi], mi
                         ]
                     }), i
                 })(),
@@ -17163,7 +17163,7 @@
                     reset() {
                         this.markPriorCompletions();
                         for (let e = this.tasks.length - 1; e >= 0; e--) this.taskProgress[e].progress < this.tasks[e].progressRequired && (this.taskProgress[e].complete ? this.taskProgress[e].progress = this.tasks[e].progressRequired : e !== J.BuildTower && (this.taskProgress[e].progress = 0));
-                        this.activeTaskIndex = -1, this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.reloadActivities()
+                        this.activeTaskIndex = -1, this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.reloadActivities()
                     }
                     getProperties() {
                         return {
@@ -17200,13 +17200,13 @@
                         }, {
                             progress: 0,
                             complete: !1
-                        }], this.impossibleTasksUnlocked = e.impossibleTasksUnlocked, this.activeTaskIndex = void 0 === e.activeTaskIndex ? -1 : e.activeTaskIndex, this.markPriorCompletions(), this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.reloadActivities()
+                        }], this.impossibleTasksUnlocked = e.impossibleTasksUnlocked, this.activeTaskIndex = void 0 === e.activeTaskIndex ? -1 : e.activeTaskIndex, this.markPriorCompletions(), this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.reloadActivities()
                     }
                     checkCompletion() {
                         this.activeTaskIndex < 0 || this.taskProgress[this.activeTaskIndex].progress >= this.tasks[this.activeTaskIndex].progressRequired && (this.taskProgress[this.activeTaskIndex].complete = !0, this.stopTask())
                     }
                     startTask() {
-                        this.activeTaskIndex = this.nextTask, this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.reloadActivities(), this.activeTaskIndex === J.OvercomeDeath && this.battleService.addEnemy({
+                        this.activeTaskIndex = this.nextTask, this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.reloadActivities(), this.activeTaskIndex === J.OvercomeDeath && this.battleService.addEnemy({
                             name: "Death itself",
                             health: 1e24,
                             maxHealth: 1e24,
@@ -17218,11 +17218,11 @@
                         })
                     }
                     stopTask() {
-                        this.activeTaskIndex === J.Swim && (this.taskProgress[this.activeTaskIndex].progress = 0), this.activeTaskIndex = -1, this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.reloadActivities()
+                        this.activeTaskIndex === J.Swim && (this.taskProgress[this.activeTaskIndex].progress = 0), this.activeTaskIndex = -1, this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.reloadActivities()
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Se), S(pi), S(Ie), S(Ri), S(yt), S(Jn), S(Wt))
+                    return new(e || i)(w(Se), w(gi), w(Oe), w(Ri), w(yt), w(Jn), w(jt))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -17431,19 +17431,19 @@
                                 pet: !0,
                                 totalPower: 0
                             }
-                        }, setTimeout(() => this.hellService = this.injector.get(Oe)), l.tickSubject.subscribe(() => {
-                            var f;
+                        }, setTimeout(() => this.hellService = this.injector.get(Ie)), l.tickSubject.subscribe(() => {
+                            var f, p, v;
                             if (this.followersUnlocked && !this.characterService.characterState.dead) {
                                 this.updateFollowerCap(), this.characterService.characterState.age % 18250 == 0 && !(null === (f = this.hellService) || void 0 === f ? void 0 : f.inHell) && this.generateFollower();
-                                for (let p = this.followers.length - 1; p >= 0; p--) {
-                                    const v = this.followers[p];
-                                    if (v.age++, v.age >= this.followers[p].lifespan) {
-                                        if (this.totalDied++, this.followers.splice(p, 1), this.autoReplaceUnlocked) {
-                                            const y = this.generateFollower(v.pet, v.job);
-                                            y && (y.power = Math.round(v.power / 2), y.cost = 100 * y.power, this.logService.addLogMessage("Your follower " + v.name + " passed away from old age but was replaced by their child " + (null == y ? void 0 : y.name) + ".", "STANDARD", "FOLLOWER")), this.logService.addLogMessage("Your follower " + v.name + " passed away from old age and was not replaced because of your choices in follower jobs.", "STANDARD", "FOLLOWER")
-                                        } else this.logService.addLogMessage("Your follower " + v.name + " passed away from old age.", "INJURY", "FOLLOWER");
+                                for (let y = this.followers.length - 1; y >= 0; y--) {
+                                    const C = this.followers[y];
+                                    if (C.age++, C.age >= this.followers[y].lifespan) {
+                                        if (this.totalDied++, this.followers.splice(y, 1), this.autoReplaceUnlocked) {
+                                            const M = this.generateFollower(C.pet, C.job);
+                                            M && (M.power = Math.round(C.power / 2), M.cost = 100 * M.power, this.logService.addLogMessage("Your follower " + C.name + " passed away from old age but was replaced by their child " + (null == M ? void 0 : M.name) + ".", "STANDARD", "FOLLOWER")), this.logService.addLogMessage("Your follower " + C.name + " passed away from old age and was not replaced because of your choices in follower jobs.", "STANDARD", "FOLLOWER")
+                                        } else this.logService.addLogMessage("Your follower " + C.name + " passed away from old age.", "INJURY", "FOLLOWER");
                                         this.updateFollowerTotalPower()
-                                    } else this.characterService.characterState.money < this.followers[p].cost ? (this.totalDismissed++, this.logService.addLogMessage("You didn't have enough money to suppport your follower " + this.followers[p].name + " so they left your service.", "INJURY", "FOLLOWER"), this.followers.splice(p, 1), this.updateFollowerTotalPower()) : this.characterService.characterState.money -= this.followers[p].cost
+                                    } else this.characterService.characterState.money < this.followers[y].cost && !(null === (p = this.hellService) || void 0 === p ? void 0 : p.inHell) ? (this.totalDismissed++, this.logService.addLogMessage("You didn't have enough money to suppport your follower " + this.followers[y].name + " so they left your service.", "INJURY", "FOLLOWER"), this.followers.splice(y, 1), this.updateFollowerTotalPower()) : (null === (v = this.hellService) || void 0 === v ? void 0 : v.inHell) || (this.characterService.characterState.money -= this.followers[y].cost)
                                 }
                                 this.followersWorks(), this.followersMaxed = this.followersMaxed = this.followers.length < this.followerCap ? "UNMAXED" : "MAXED"
                             }
@@ -17526,7 +17526,7 @@
                         const a = {
                             name: this.generateFollowerName(),
                             age: 0,
-                            lifespan: this.characterService.characterState.lifespan / o,
+                            lifespan: Math.min(this.characterService.characterState.lifespan / o, 365e3),
                             job: n,
                             power: 1,
                             cost: 100,
@@ -17586,7 +17586,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Se), S(pi), S(Ie), S(it), S(W), S(Ri), S(yt), S(Jn), S(Wt))
+                    return new(e || i)(w(Se), w(gi), w(Oe), w(tt), w(W), w(Ri), w(yt), w(Jn), w(jt))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -17696,7 +17696,7 @@
                                 home: new XV(this, this.homeService, this.characterService),
                                 land: new eU(this, this.homeService, this.characterService),
                                 furniture: new tU(this, this.homeService, this.characterService)
-                            }, setTimeout(() => this.hellService = this.injector.get(Oe)), o.tickSubject.subscribe(() => {
+                            }, setTimeout(() => this.hellService = this.injector.get(Ie)), o.tickSubject.subscribe(() => {
                                 this.characterService.characterState.dead || this.tick()
                             })
                         }
@@ -17742,7 +17742,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Se), S(Ie), S(it), S(yt))
+                        return new(e || i)(w(Se), w(Oe), w(tt), w(yt))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -17769,7 +17769,7 @@
                             [1, "body"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0), m(1), I(2, "bigNumber"), h()), 2 & e && (g(1), F("While you were away you earned ", H(2, 1, n.data.earnedTicks), " banked ticks."))
+                            1 & e && (d(0, "div", 0), m(1), O(2, "bigNumber"), h()), 2 & e && (g(1), F("While you were away you earned ", H(2, 1, n.data.earnedTicks), " banked ticks."))
                         },
                         styles: [".body[_ngcontent-%COMP%]{color:#cacaca}"]
                     }), i
@@ -17905,7 +17905,7 @@
                                 name: "Hoarder",
                                 description: "You really love holding vast amounts of materials and unlocked the " + this.itemRepoService.items.bestStorageManual.name,
                                 hint: "Just stop already, it's too much. Why would an aspiring immortal need this much?",
-                                check: () => this.inventoryService.maxStackSize >= 1e4,
+                                check: () => this.inventoryService.maxStackSize >= 1e4 && this.inventoryService.thrownAwayItems >= 1e6,
                                 effect: () => {
                                     this.storeService.unlockManual(this.itemRepoService.items.bestStorageManual)
                                 },
@@ -17996,8 +17996,8 @@
                                 description: "You wielded powerful weapons of both metal and wood and unlocked the " + this.itemRepoService.items.autoWeaponMergeManual.name,
                                 hint: "Left and right.",
                                 check: () => {
-                                    var y, C, x, D, k, A, P, z;
-                                    return !!((null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.rightHand) || void 0 === C ? void 0 : C.weaponStats) && (null === (D = null === (x = this.characterService.characterState.equipment) || void 0 === x ? void 0 : x.rightHand) || void 0 === D ? void 0 : D.weaponStats.baseDamage) >= 60 && (null === (A = null === (k = this.characterService.characterState.equipment) || void 0 === k ? void 0 : k.leftHand) || void 0 === A ? void 0 : A.weaponStats) && (null === (z = null === (P = this.characterService.characterState.equipment) || void 0 === P ? void 0 : P.leftHand) || void 0 === z ? void 0 : z.weaponStats.baseDamage) >= 60)
+                                    var y, C, M, D, k, A, P, z;
+                                    return !!((null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.rightHand) || void 0 === C ? void 0 : C.weaponStats) && (null === (D = null === (M = this.characterService.characterState.equipment) || void 0 === M ? void 0 : M.rightHand) || void 0 === D ? void 0 : D.weaponStats.baseDamage) >= 60 && (null === (A = null === (k = this.characterService.characterState.equipment) || void 0 === k ? void 0 : k.leftHand) || void 0 === A ? void 0 : A.weaponStats) && (null === (z = null === (P = this.characterService.characterState.equipment) || void 0 === P ? void 0 : P.leftHand) || void 0 === z ? void 0 : z.weaponStats.baseDamage) >= 60)
                                 },
                                 effect: () => {
                                     this.storeService.unlockManual(this.itemRepoService.items.autoWeaponMergeManual)
@@ -18008,8 +18008,8 @@
                                 description: "You equipped yourself with powerful armor and unlocked the " + this.itemRepoService.items.autoArmorMergeManual.name,
                                 hint: "Suit up.",
                                 check: () => {
-                                    var y, C, x, D, k, A, P, z, ke, de, Re, Je, De, gi, qt, xt;
-                                    return !!((null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.head) || void 0 === C ? void 0 : C.armorStats) && (null === (D = null === (x = this.characterService.characterState.equipment) || void 0 === x ? void 0 : x.head) || void 0 === D ? void 0 : D.armorStats.defense) >= 60 && (null === (A = null === (k = this.characterService.characterState.equipment) || void 0 === k ? void 0 : k.body) || void 0 === A ? void 0 : A.armorStats) && (null === (z = null === (P = this.characterService.characterState.equipment) || void 0 === P ? void 0 : P.body) || void 0 === z ? void 0 : z.armorStats.defense) >= 60 && (null === (de = null === (ke = this.characterService.characterState.equipment) || void 0 === ke ? void 0 : ke.legs) || void 0 === de ? void 0 : de.armorStats) && (null === (Je = null === (Re = this.characterService.characterState.equipment) || void 0 === Re ? void 0 : Re.legs) || void 0 === Je ? void 0 : Je.armorStats.defense) >= 60 && (null === (gi = null === (De = this.characterService.characterState.equipment) || void 0 === De ? void 0 : De.feet) || void 0 === gi ? void 0 : gi.armorStats) && (null === (xt = null === (qt = this.characterService.characterState.equipment) || void 0 === qt ? void 0 : qt.feet) || void 0 === xt ? void 0 : xt.armorStats.defense) >= 60)
+                                    var y, C, M, D, k, A, P, z, ke, de, Re, Je, De, vi, zt, xt;
+                                    return !!((null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.head) || void 0 === C ? void 0 : C.armorStats) && (null === (D = null === (M = this.characterService.characterState.equipment) || void 0 === M ? void 0 : M.head) || void 0 === D ? void 0 : D.armorStats.defense) >= 60 && (null === (A = null === (k = this.characterService.characterState.equipment) || void 0 === k ? void 0 : k.body) || void 0 === A ? void 0 : A.armorStats) && (null === (z = null === (P = this.characterService.characterState.equipment) || void 0 === P ? void 0 : P.body) || void 0 === z ? void 0 : z.armorStats.defense) >= 60 && (null === (de = null === (ke = this.characterService.characterState.equipment) || void 0 === ke ? void 0 : ke.legs) || void 0 === de ? void 0 : de.armorStats) && (null === (Je = null === (Re = this.characterService.characterState.equipment) || void 0 === Re ? void 0 : Re.legs) || void 0 === Je ? void 0 : Je.armorStats.defense) >= 60 && (null === (vi = null === (De = this.characterService.characterState.equipment) || void 0 === De ? void 0 : De.feet) || void 0 === vi ? void 0 : vi.armorStats) && (null === (xt = null === (zt = this.characterService.characterState.equipment) || void 0 === zt ? void 0 : zt.feet) || void 0 === xt ? void 0 : xt.armorStats.defense) >= 60)
                                 },
                                 effect: () => {
                                     this.storeService.unlockManual(this.itemRepoService.items.autoArmorMergeManual)
@@ -18126,8 +18126,8 @@
                                 description: "You wielded epic weapons of both metal and wood and unlocked the " + this.itemRepoService.items.bestWeaponManual.name,
                                 hint: "Power level 10,000!",
                                 check: () => {
-                                    var y, C, x, D, k, A, P, z;
-                                    return !!((null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.rightHand) || void 0 === C ? void 0 : C.weaponStats) && (null === (D = null === (x = this.characterService.characterState.equipment) || void 0 === x ? void 0 : x.rightHand) || void 0 === D ? void 0 : D.weaponStats.baseDamage) >= 8888 && (null === (A = null === (k = this.characterService.characterState.equipment) || void 0 === k ? void 0 : k.leftHand) || void 0 === A ? void 0 : A.weaponStats) && (null === (z = null === (P = this.characterService.characterState.equipment) || void 0 === P ? void 0 : P.leftHand) || void 0 === z ? void 0 : z.weaponStats.baseDamage) >= 8888)
+                                    var y, C, M, D, k, A, P, z;
+                                    return !!((null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.rightHand) || void 0 === C ? void 0 : C.weaponStats) && (null === (D = null === (M = this.characterService.characterState.equipment) || void 0 === M ? void 0 : M.rightHand) || void 0 === D ? void 0 : D.weaponStats.baseDamage) >= 8888 && (null === (A = null === (k = this.characterService.characterState.equipment) || void 0 === k ? void 0 : k.leftHand) || void 0 === A ? void 0 : A.weaponStats) && (null === (z = null === (P = this.characterService.characterState.equipment) || void 0 === P ? void 0 : P.leftHand) || void 0 === z ? void 0 : z.weaponStats.baseDamage) >= 8888)
                                 },
                                 effect: () => {
                                     this.storeService.unlockManual(this.itemRepoService.items.bestWeaponManual)
@@ -18138,8 +18138,8 @@
                                 description: "You armored yourself with epic defenses and unlocked the " + this.itemRepoService.items.bestArmorManual.name,
                                 hint: "Don't hurt me!",
                                 check: () => {
-                                    var y, C, x, D, k, A, P, z, ke, de, Re, Je, De, gi, qt, xt;
-                                    return !!((null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.head) || void 0 === C ? void 0 : C.armorStats) && (null === (D = null === (x = this.characterService.characterState.equipment) || void 0 === x ? void 0 : x.head) || void 0 === D ? void 0 : D.armorStats.defense) >= 8888 && (null === (A = null === (k = this.characterService.characterState.equipment) || void 0 === k ? void 0 : k.body) || void 0 === A ? void 0 : A.armorStats) && (null === (z = null === (P = this.characterService.characterState.equipment) || void 0 === P ? void 0 : P.body) || void 0 === z ? void 0 : z.armorStats.defense) >= 8888 && (null === (de = null === (ke = this.characterService.characterState.equipment) || void 0 === ke ? void 0 : ke.legs) || void 0 === de ? void 0 : de.armorStats) && (null === (Je = null === (Re = this.characterService.characterState.equipment) || void 0 === Re ? void 0 : Re.legs) || void 0 === Je ? void 0 : Je.armorStats.defense) >= 8888 && (null === (gi = null === (De = this.characterService.characterState.equipment) || void 0 === De ? void 0 : De.feet) || void 0 === gi ? void 0 : gi.armorStats) && (null === (xt = null === (qt = this.characterService.characterState.equipment) || void 0 === qt ? void 0 : qt.feet) || void 0 === xt ? void 0 : xt.armorStats.defense) >= 8888)
+                                    var y, C, M, D, k, A, P, z, ke, de, Re, Je, De, vi, zt, xt;
+                                    return !!((null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.head) || void 0 === C ? void 0 : C.armorStats) && (null === (D = null === (M = this.characterService.characterState.equipment) || void 0 === M ? void 0 : M.head) || void 0 === D ? void 0 : D.armorStats.defense) >= 8888 && (null === (A = null === (k = this.characterService.characterState.equipment) || void 0 === k ? void 0 : k.body) || void 0 === A ? void 0 : A.armorStats) && (null === (z = null === (P = this.characterService.characterState.equipment) || void 0 === P ? void 0 : P.body) || void 0 === z ? void 0 : z.armorStats.defense) >= 8888 && (null === (de = null === (ke = this.characterService.characterState.equipment) || void 0 === ke ? void 0 : ke.legs) || void 0 === de ? void 0 : de.armorStats) && (null === (Je = null === (Re = this.characterService.characterState.equipment) || void 0 === Re ? void 0 : Re.legs) || void 0 === Je ? void 0 : Je.armorStats.defense) >= 8888 && (null === (vi = null === (De = this.characterService.characterState.equipment) || void 0 === De ? void 0 : De.feet) || void 0 === vi ? void 0 : vi.armorStats) && (null === (xt = null === (zt = this.characterService.characterState.equipment) || void 0 === zt ? void 0 : zt.feet) || void 0 === xt ? void 0 : xt.armorStats.defense) >= 8888)
                                 },
                                 effect: () => {
                                     this.storeService.unlockManual(this.itemRepoService.items.bestArmorManual)
@@ -18152,11 +18152,11 @@
                                 check: () => {
                                     const y = this.characterService.characterState.attributes.fireLore.value,
                                         C = this.characterService.characterState.attributes.earthLore.value,
-                                        x = this.characterService.characterState.attributes.woodLore.value,
+                                        M = this.characterService.characterState.attributes.woodLore.value,
                                         D = this.characterService.characterState.attributes.waterLore.value,
                                         k = this.characterService.characterState.attributes.metalLore.value,
-                                        A = Math.min(k, D, x, C, y),
-                                        P = Math.max(k, D, x, C, y);
+                                        A = Math.min(k, D, M, C, y),
+                                        P = Math.max(k, D, M, C, y);
                                     return A >= 1e3 && P <= 1.21 * A
                                 },
                                 effect: () => {
@@ -18204,11 +18204,11 @@
                                 check: () => {
                                     const y = this.characterService.characterState.attributes.speed.value,
                                         C = this.characterService.characterState.attributes.toughness.value,
-                                        x = this.characterService.characterState.attributes.charisma.value,
+                                        M = this.characterService.characterState.attributes.charisma.value,
                                         D = this.characterService.characterState.attributes.intelligence.value,
                                         k = this.characterService.characterState.attributes.strength.value,
-                                        A = Math.min(y, C, x, D, k),
-                                        P = Math.max(y, C, x, D, k);
+                                        A = Math.min(y, C, M, D, k),
+                                        P = Math.max(y, C, M, D, k);
                                     return A >= 1e6 && P <= 1.21 * A
                                 },
                                 effect: () => {
@@ -18222,12 +18222,12 @@
                                 check: () => {
                                     const y = this.characterService.characterState.attributes.spirituality.value,
                                         C = this.characterService.characterState.attributes.speed.value,
-                                        x = this.characterService.characterState.attributes.toughness.value,
+                                        M = this.characterService.characterState.attributes.toughness.value,
                                         D = this.characterService.characterState.attributes.charisma.value,
                                         k = this.characterService.characterState.attributes.intelligence.value,
                                         A = this.characterService.characterState.attributes.strength.value,
-                                        P = Math.min(C, x, D, k, A, y),
-                                        z = Math.max(C, x, D, k, A, y);
+                                        P = Math.min(C, M, D, k, A, y),
+                                        z = Math.max(C, M, D, k, A, y);
                                     return P >= 1e6 && z <= 1.21 * P
                                 },
                                 effect: () => {
@@ -18354,7 +18354,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(yt), S(Se), S(pi), S(Ie), S(W), S(Ri), S(ro), S(Wt), S(it), S(Ze), S(Mt), S(vr))
+                        return new(e || i)(w(yt), w(Se), w(gi), w(Oe), w(W), w(Ri), w(ro), w(jt), w(tt), w(Ke), w(Mt), w(vr))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -18364,8 +18364,8 @@
             const Qn = "immortalityIdleGameState";
             let Oi = (() => {
                     class i {
-                        constructor(e, n, r, o, a, s, l, c, u, f, p, v, y, C, x) {
-                            this.characterService = e, this.homeService = n, this.inventoryService = r, this.logService = o, this.reincarnationService = a, this.activityService = s, this.itemRepoService = l, this.battleService = c, this.followersService = u, this.autoBuyerService = f, this.mainLoopService = p, this.dialog = v, this.achievementService = y, this.impossibleTaskService = C, this.hellService = x, this.lastSaved = (new Date).getTime(), this.isDarkMode = !1, this.isImport = !1, this.isExperimental = window.location.href.includes("experimental"), this.gameStartTimestamp = (new Date).getTime(), this.easyModeEver = !1, this.saveInterval = 300, this.saveSlot = "", window.GameStateService = this, p.longTickSubject.subscribe(() => {
+                        constructor(e, n, r, o, a, s, l, c, u, f, p, v, y, C, M) {
+                            this.characterService = e, this.homeService = n, this.inventoryService = r, this.logService = o, this.reincarnationService = a, this.activityService = s, this.itemRepoService = l, this.battleService = c, this.followersService = u, this.autoBuyerService = f, this.mainLoopService = p, this.dialog = v, this.achievementService = y, this.impossibleTaskService = C, this.hellService = M, this.lastSaved = (new Date).getTime(), this.isDarkMode = !1, this.isImport = !1, this.isExperimental = window.location.href.includes("experimental"), this.gameStartTimestamp = (new Date).getTime(), this.easyModeEver = !1, this.saveInterval = 300, this.saveSlot = "", window.GameStateService = this, p.longTickSubject.subscribe(() => {
                                 (new Date).getTime() - this.lastSaved >= 1e3 * this.saveInterval && this.savetoLocalStorage()
                             })
                         }
@@ -18465,7 +18465,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Ie), S(it), S(W), S(pi), S(Jn), S(Ze), S(Ri), S(Wt), S(Mt), S(Au), S(yt), S(Wi), S(ym), S(vr), S(Oe))
+                        return new(e || i)(w(Oe), w(tt), w(W), w(gi), w(Jn), w(Ke), w(Ri), w(jt), w(Mt), w(Au), w(yt), w(Wi), w(ym), w(vr), w(Ie))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -19453,7 +19453,7 @@
                                     useDescription: "Become a god and win the game (again).",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.logService.addLogMessage("YOU HAVE ACHIEVED GODHOOD! YOU WILL RULE OVER THE UNIVERSE FOREVER!", "INJURY", "STORY"), this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.inHell = !1, this.gameStateService || (this.gameStateService = this.injector.get(Oi)), this.logService.addLogMessage("You started your journey on " + new Date(this.gameStateService.gameStartTimestamp).toDateString() + " and achieved godhood on " + (new Date).toDateString() + ".", "STANDARD", "STORY"), this.logService.addLogMessage("You took " + this.mainLoopService.totalTicks + " days over " + this.characterService.characterState.totalLives + " lifetimes to claim your throne on Mount Penglai.", "STANDARD", "STORY"), this.characterService.characterState.god = !0
+                                        this.logService.addLogMessage("YOU HAVE ACHIEVED GODHOOD! YOU WILL RULE OVER THE UNIVERSE FOREVER!", "INJURY", "STORY"), this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.inHell = !1, this.gameStateService || (this.gameStateService = this.injector.get(Oi)), this.activityService || (this.activityService = this.injector.get(Ke)), this.battleService || (this.battleService = this.injector.get(jt)), this.logService.addLogMessage("You started your journey on " + new Date(this.gameStateService.gameStartTimestamp).toDateString() + " and achieved godhood on " + (new Date).toDateString() + ".", "STANDARD", "STORY"), this.logService.addLogMessage("You took " + this.mainLoopService.totalTicks + " days over " + this.characterService.characterState.totalLives + " lifetimes to claim your throne on Mount Penglai.", "STANDARD", "STORY"), this.characterService.characterState.god = !0, this.battleService.troubleKills = 0, this.activityService.reloadActivities()
                                     }
                                 },
                                 fingers: {
@@ -19515,7 +19515,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.followerService || (this.followerService = this.injector.get(Mt)), this.hellService.completedHellBosses.includes(L.TongueRipping) || this.hellService.completedHellBosses.push(L.TongueRipping), this.logService.addLogMessage("The Crown of Tongue Rippers settles onto your head, then sinks in to become a part of your very soul. You feel that your words carry a new power that can inspire a new kind of follower to worship you as the god you are becoming. Perhaps a trip back to the mortal realm through reincarnation might we worthwhile.", "STANDARD", "STORY"), this.followerService.unlockJob("prophet")
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.followerService || (this.followerService = this.injector.get(Mt)), this.hellService.completedHellBosses.includes(L.TongueRipping) || this.hellService.completedHellBosses.push(L.TongueRipping), this.logService.addLogMessage("The Crown of Tongue Rippers settles onto your head, then sinks in to become a part of your very soul. You feel that your words carry a new power that can inspire a new kind of follower to worship you as the god you are becoming. Perhaps a trip back to the mortal realm through reincarnation might we worthwhile.", "STANDARD", "STORY"), this.followerService.unlockJob("prophet")
                                     }
                                 },
                                 hellCrownScissors: {
@@ -19528,7 +19528,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.followerService || (this.followerService = this.injector.get(Mt)), this.hellService.completedHellBosses.includes(L.Scissors) || this.hellService.completedHellBosses.push(L.Scissors), this.logService.addLogMessage("The Crown of Scissors settles onto your head, then sinks in to become a part of your very soul. You feel a deeper appreciation for marriage and family, and your followers sense it.", "STANDARD", "STORY"), this.logService.addLogMessage("From now on, each follower will train a child to replace themselves in your service when they pass away.", "STANDARD", "STORY"), this.followerService.autoReplaceUnlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.followerService || (this.followerService = this.injector.get(Mt)), this.hellService.completedHellBosses.includes(L.Scissors) || this.hellService.completedHellBosses.push(L.Scissors), this.logService.addLogMessage("The Crown of Scissors settles onto your head, then sinks in to become a part of your very soul. You feel a deeper appreciation for marriage and family, and your followers sense it.", "STANDARD", "STORY"), this.logService.addLogMessage("From now on, each follower will train a child to replace themselves in your service when they pass away.", "STANDARD", "STORY"), this.followerService.autoReplaceUnlocked = !0
                                     }
                                 },
                                 hellCrownTreesOfKnives: {
@@ -19541,7 +19541,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.followerService || (this.followerService = this.injector.get(Mt)), this.hellService.completedHellBosses.includes(L.TreesOfKnives) || this.hellService.completedHellBosses.push(L.TreesOfKnives), this.logService.addLogMessage("The Crown of Knives settles onto your head, then sinks in to become a part of your very soul. You can recruit a new follower specialized in honoring ancestors.", "STANDARD", "STORY"), this.followerService.unlockJob("moneyBurner")
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.followerService || (this.followerService = this.injector.get(Mt)), this.hellService.completedHellBosses.includes(L.TreesOfKnives) || this.hellService.completedHellBosses.push(L.TreesOfKnives), this.logService.addLogMessage("The Crown of Knives settles onto your head, then sinks in to become a part of your very soul. You can recruit a new follower specialized in honoring ancestors.", "STANDARD", "STORY"), this.followerService.unlockJob("moneyBurner")
                                     }
                                 },
                                 hellCrownMirrors: {
@@ -19554,7 +19554,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.followerService || (this.followerService = this.injector.get(Mt)), this.activityService || (this.activityService = this.injector.get(Ze)), this.hellService.completedHellBosses.includes(L.Mirrors) || this.hellService.completedHellBosses.push(L.Mirrors), this.logService.addLogMessage("The Crown of Mirrors settles onto your head, then sinks in to become a part of your very soul. A deep understanding of combat based on your many battles with yourself reveals itself in a moment of enlightenment.", "STANDARD", "STORY"), this.characterService.characterState.attributes.combatMastery.value += 1, this.activityService.CombatTraining.unlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.followerService || (this.followerService = this.injector.get(Mt)), this.activityService || (this.activityService = this.injector.get(Ke)), this.hellService.completedHellBosses.includes(L.Mirrors) || this.hellService.completedHellBosses.push(L.Mirrors), this.logService.addLogMessage("The Crown of Mirrors settles onto your head, then sinks in to become a part of your very soul. A deep understanding of combat based on your many battles with yourself reveals itself in a moment of enlightenment.", "STANDARD", "STORY"), this.characterService.characterState.attributes.combatMastery.value += 1, this.activityService.CombatTraining.unlocked = !0
                                     }
                                 },
                                 hellCrownSteamers: {
@@ -19567,7 +19567,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.battleService || (this.battleService = this.injector.get(Wt)), this.hellService.completedHellBosses.includes(L.Steamers) || this.hellService.completedHellBosses.push(L.Steamers), this.logService.addLogMessage("The Crown of Steam settles onto your head, then sinks in to become a part of your very soul. You learn to harness the intense heat of the Hell of Steamers in a powerful magical blast.", "STANDARD", "STORY"), this.battleService.pyroclasmUnlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.battleService || (this.battleService = this.injector.get(jt)), this.hellService.completedHellBosses.includes(L.Steamers) || this.hellService.completedHellBosses.push(L.Steamers), this.logService.addLogMessage("The Crown of Steam settles onto your head, then sinks in to become a part of your very soul. You learn to harness the intense heat of the Hell of Steamers in a powerful magical blast.", "STANDARD", "STORY"), this.battleService.pyroclasmUnlocked = !0
                                     }
                                 },
                                 hellCrownPillars: {
@@ -19580,7 +19580,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.battleService || (this.battleService = this.injector.get(Wt)), this.hellService.completedHellBosses.includes(L.CopperPillars) || this.hellService.completedHellBosses.push(L.CopperPillars), this.logService.addLogMessage("The Crown of Pillars settles onto your head, then sinks in to become a part of your very soul. You can now summon a massive metal fist with each of your combat strikes.", "STANDARD", "STORY"), this.battleService.metalFistUnlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.battleService || (this.battleService = this.injector.get(jt)), this.hellService.completedHellBosses.includes(L.CopperPillars) || this.hellService.completedHellBosses.push(L.CopperPillars), this.logService.addLogMessage("The Crown of Pillars settles onto your head, then sinks in to become a part of your very soul. You can now summon a massive metal fist with each of your combat strikes.", "STANDARD", "STORY"), this.battleService.metalFistUnlocked = !0
                                     }
                                 },
                                 hellCrownMountainOfKnives: {
@@ -19593,7 +19593,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.MountainOfKnives) || this.hellService.completedHellBosses.push(L.MountainOfKnives), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. Having balanced your karmic debt, you begin to see the balance in all the world around you.", "STANDARD", "STORY"), this.characterService.characterState.yinYangUnlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.MountainOfKnives) || this.hellService.completedHellBosses.push(L.MountainOfKnives), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. Having balanced your karmic debt, you begin to see the balance in all the world around you.", "STANDARD", "STORY"), this.characterService.characterState.yinYangUnlocked = !0
                                     }
                                 },
                                 hellCrownMountainOfIce: {
@@ -19606,7 +19606,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.MountainOfIce) || this.hellService.completedHellBosses.push(L.MountainOfIce), this.battleService || (this.battleService = this.injector.get(Wt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. The deep freezing from the mountain has given you a new idea for how to defend yourself.", "STANDARD", "STORY"), this.battleService.iceShieldUnlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.MountainOfIce) || this.hellService.completedHellBosses.push(L.MountainOfIce), this.battleService || (this.battleService = this.injector.get(jt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. The deep freezing from the mountain has given you a new idea for how to defend yourself.", "STANDARD", "STORY"), this.battleService.iceShieldUnlocked = !0
                                     }
                                 },
                                 hellCrownCauldronsOfOil: {
@@ -19619,7 +19619,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.CauldronsOfOil) || this.hellService.completedHellBosses.push(L.CauldronsOfOil), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. A new resolve awakens in you to protect the defenseless from those that would abuse them.", "STANDARD", "STORY"), this.characterService.characterState.righteousWrathUnlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.CauldronsOfOil) || this.hellService.completedHellBosses.push(L.CauldronsOfOil), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. A new resolve awakens in you to protect the defenseless from those that would abuse them.", "STANDARD", "STORY"), this.characterService.characterState.righteousWrathUnlocked = !0
                                     }
                                 },
                                 hellCrownCattlePit: {
@@ -19632,7 +19632,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.CattlePit) || this.hellService.completedHellBosses.push(L.CattlePit), this.followerService || (this.followerService = this.injector.get(Mt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. You find a new and deep connection to animals that you've never felt before.", "STANDARD", "STORY"), this.followerService.unlockElementalPets()
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.CattlePit) || this.hellService.completedHellBosses.push(L.CattlePit), this.followerService || (this.followerService = this.injector.get(Mt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. You find a new and deep connection to animals that you've never felt before.", "STANDARD", "STORY"), this.followerService.unlockElementalPets()
                                     }
                                 },
                                 hellCrownCrushingBoulder: {
@@ -19645,7 +19645,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.CrushingBoulder) || this.hellService.completedHellBosses.push(L.CrushingBoulder), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. Your muscles swell with new power.", "STANDARD", "STORY"), this.characterService.characterState.bonusMuscles = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.CrushingBoulder) || this.hellService.completedHellBosses.push(L.CrushingBoulder), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. Your muscles swell with new power.", "STANDARD", "STORY"), this.characterService.characterState.bonusMuscles = !0
                                     }
                                 },
                                 hellCrownMortarsAndPestles: {
@@ -19658,7 +19658,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.MortarsAndPestles) || this.hellService.completedHellBosses.push(L.MortarsAndPestles), this.homeService || (this.homeService = this.injector.get(it)), this.inventoryService || (this.inventoryService = this.injector.get(W)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. You come to a deep appreciation of the value and importance of food.", "STANDARD", "STORY"), this.homeService.hellFood = !0, this.inventoryService.divinePeachesUnlocked = !0, this.inventoryService.updateFarmFoodList()
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.MortarsAndPestles) || this.hellService.completedHellBosses.push(L.MortarsAndPestles), this.homeService || (this.homeService = this.injector.get(tt)), this.inventoryService || (this.inventoryService = this.injector.get(W)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. You come to a deep appreciation of the value and importance of food.", "STANDARD", "STORY"), this.homeService.hellFood = !0, this.inventoryService.divinePeachesUnlocked = !0, this.inventoryService.updateFarmFoodList()
                                     }
                                 },
                                 hellCrownBloodPool: {
@@ -19671,7 +19671,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.BloodPool) || this.hellService.completedHellBosses.push(L.BloodPool), this.homeService || (this.homeService = this.injector.get(it)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. Your bloodline becomes so powerful that the benefits of your ancestral home now apply even when you are no longer in the mortal realm.", "STANDARD", "STORY"), this.homeService.hellHome = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.BloodPool) || this.hellService.completedHellBosses.push(L.BloodPool), this.homeService || (this.homeService = this.injector.get(tt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. Your bloodline becomes so powerful that the benefits of your ancestral home now apply even when you are no longer in the mortal realm.", "STANDARD", "STORY"), this.homeService.hellHome = !0
                                     }
                                 },
                                 hellCrownWrongfulDead: {
@@ -19684,7 +19684,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.WrongfulDead) || this.hellService.completedHellBosses.push(L.WrongfulDead), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. Your mind suddenly expands with endless new possibilities.", "STANDARD", "STORY"), this.characterService.characterState.bonusBrains = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.WrongfulDead) || this.hellService.completedHellBosses.push(L.WrongfulDead), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. Your mind suddenly expands with endless new possibilities.", "STANDARD", "STORY"), this.characterService.characterState.bonusBrains = !0
                                     }
                                 },
                                 hellCrownDismemberment: {
@@ -19697,7 +19697,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.Dismemberment) || this.hellService.completedHellBosses.push(L.Dismemberment), this.activityService || (this.activityService = this.injector.get(Ze)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. You can now infuse new effects into your weapons.", "STANDARD", "STORY"), this.activityService.purifyGemsUnlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.Dismemberment) || this.hellService.completedHellBosses.push(L.Dismemberment), this.activityService || (this.activityService = this.injector.get(Ke)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. You can now infuse new effects into your weapons.", "STANDARD", "STORY"), this.activityService.purifyGemsUnlocked = !0
                                     }
                                 },
                                 hellCrownFireMountain: {
@@ -19710,7 +19710,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.MountainOfFire) || this.hellService.completedHellBosses.push(L.MountainOfFire), this.battleService || (this.battleService = this.injector.get(Wt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. The intense heat of the volcano has strengthened your inner fire, allowing you to form a barrier to protect you and harm your enemies.", "STANDARD", "STORY"), this.battleService.fireShieldUnlocked = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.MountainOfFire) || this.hellService.completedHellBosses.push(L.MountainOfFire), this.battleService || (this.battleService = this.injector.get(jt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. The intense heat of the volcano has strengthened your inner fire, allowing you to form a barrier to protect you and harm your enemies.", "STANDARD", "STORY"), this.battleService.fireShieldUnlocked = !0
                                     }
                                 },
                                 hellCrownMills: {
@@ -19723,7 +19723,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.Mills) || this.hellService.completedHellBosses.push(L.Mills), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. The intense pressure of the mill has strengthened your skin and bones allowing you to increase your total health dramatically.", "STANDARD", "STORY"), this.characterService.characterState.bonusHealth = !0
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.Mills) || this.hellService.completedHellBosses.push(L.Mills), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. The intense pressure of the mill has strengthened your skin and bones allowing you to increase your total health dramatically.", "STANDARD", "STORY"), this.characterService.characterState.bonusHealth = !0
                                     }
                                 },
                                 hellCrownSaws: {
@@ -19736,7 +19736,7 @@
                                     useDescription: "",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.completedHellBosses.includes(L.Saws) || this.hellService.completedHellBosses.push(L.Saws), this.followerService || (this.followerService = this.injector.get(Mt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. You can now recruit followers that put their swindling and cheating to good use.", "STANDARD", "STORY"), this.followerService.unlockJob("banker")
+                                        this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.completedHellBosses.includes(L.Saws) || this.hellService.completedHellBosses.push(L.Saws), this.followerService || (this.followerService = this.injector.get(Mt)), this.logService.addLogMessage("The crown settles onto your head, then sinks in to become a part of your very soul. You can now recruit followers that put their swindling and cheating to good use.", "STANDARD", "STORY"), this.followerService.unlockJob("banker")
                                     }
                                 },
                                 fastPlayManual: {
@@ -19791,11 +19791,11 @@
                                     useDescription: "Permanently unlock preserving activity plans across reincarnations.",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.autoRestart = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
+                                        this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.autoRestart = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
                                     },
                                     owned: () => {
                                         var a;
-                                        return this.activityService || (this.activityService = this.injector.get(Ze)), null === (a = this.activityService) || void 0 === a ? void 0 : a.autoRestart
+                                        return this.activityService || (this.activityService = this.injector.get(Ke)), null === (a = this.activityService) || void 0 === a ? void 0 : a.autoRestart
                                     }
                                 },
                                 autoSellManual: {
@@ -19850,9 +19850,9 @@
                                     useDescription: "Permanently unlock automatic land purchasing.",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.homeService || (this.homeService = this.injector.get(it)), this.homeService.autoBuyLandUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
+                                        this.homeService || (this.homeService = this.injector.get(tt)), this.homeService.autoBuyLandUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
                                     },
-                                    owned: () => (this.homeService || (this.homeService = this.injector.get(it)), this.homeService.autoBuyLandUnlocked)
+                                    owned: () => (this.homeService || (this.homeService = this.injector.get(tt)), this.homeService.autoBuyLandUnlocked)
                                 },
                                 autoBuyHomeManual: {
                                     id: "autoBuyHomeManual",
@@ -19864,9 +19864,9 @@
                                     useDescription: "Permanently unlock automatic home upgrades.",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.homeService || (this.homeService = this.injector.get(it)), this.homeService.autoBuyHomeUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
+                                        this.homeService || (this.homeService = this.injector.get(tt)), this.homeService.autoBuyHomeUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
                                     },
-                                    owned: () => (this.homeService || (this.homeService = this.injector.get(it)), this.homeService.autoBuyHomeUnlocked)
+                                    owned: () => (this.homeService || (this.homeService = this.injector.get(tt)), this.homeService.autoBuyHomeUnlocked)
                                 },
                                 autoBuyFurnitureManual: {
                                     id: "autoBuyFurnitureManual",
@@ -19878,9 +19878,9 @@
                                     useDescription: "Permanently unlock automatic purchasing for furniture.",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.homeService || (this.homeService = this.injector.get(it)), this.homeService.autoBuyFurnitureUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
+                                        this.homeService || (this.homeService = this.injector.get(tt)), this.homeService.autoBuyFurnitureUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
                                     },
-                                    owned: () => (this.homeService || (this.homeService = this.injector.get(it)), this.homeService.autoBuyFurnitureUnlocked)
+                                    owned: () => (this.homeService || (this.homeService = this.injector.get(tt)), this.homeService.autoBuyFurnitureUnlocked)
                                 },
                                 autoBuyerSettingsManual: {
                                     id: "autoBuySettingsManual",
@@ -19906,9 +19906,9 @@
                                     useDescription: "Permanently unlock automatic field plowing.",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.homeService || (this.homeService = this.injector.get(it)), this.homeService.autoFieldUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
+                                        this.homeService || (this.homeService = this.injector.get(tt)), this.homeService.autoFieldUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
                                     },
-                                    owned: () => (this.homeService || (this.homeService = this.injector.get(it)), this.homeService.autoFieldUnlocked)
+                                    owned: () => (this.homeService || (this.homeService = this.injector.get(tt)), this.homeService.autoFieldUnlocked)
                                 },
                                 autoPotionManual: {
                                     id: "autoPotionManual",
@@ -19952,11 +19952,11 @@
                                     useDescription: "Permanently unlock automatic trouble in the battle panel.",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.battleService || (this.battleService = this.injector.get(Wt)), this.battleService.autoTroubleUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
+                                        this.battleService || (this.battleService = this.injector.get(jt)), this.battleService.autoTroubleUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
                                     },
                                     owned: () => {
                                         var a;
-                                        return this.battleService || (this.battleService = this.injector.get(Wt)), null === (a = this.battleService) || void 0 === a ? void 0 : a.autoTroubleUnlocked
+                                        return this.battleService || (this.battleService = this.injector.get(jt)), null === (a = this.battleService) || void 0 === a ? void 0 : a.autoTroubleUnlocked
                                     }
                                 },
                                 autoWeaponMergeManual: {
@@ -20165,9 +20165,9 @@
                                     useDescription: "Permanently unlock auto-pausing customization",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.autoPauseUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
+                                        this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.autoPauseUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
                                     },
-                                    owned: () => (this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.autoPauseUnlocked)
+                                    owned: () => (this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.autoPauseUnlocked)
                                 },
                                 bankedTicksEfficiencyManual: {
                                     id: "bankedTicksEfficiencyManual",
@@ -20193,9 +20193,9 @@
                                     useDescription: "Permanently unlock automatic resting.",
                                     useConsumes: !0,
                                     use: () => {
-                                        this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.autoRestUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
+                                        this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.autoRestUnlocked = !0, this.logService.addLogMessage("The teachings of the manual sink deep into your soul. You'll be able to apply this knowledge in all future reincarnations.", "STANDARD", "EVENT")
                                     },
-                                    owned: () => (this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.autoRestUnlocked)
+                                    owned: () => (this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.autoRestUnlocked)
                                 },
                                 ageSpeedManual: {
                                     id: "ageSpeedManual",
@@ -20235,17 +20235,17 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Ie), S(Se), S(pi), S(yt))
+                        return new(e || i)(w(Oe), w(Se), w(gi), w(yt))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
                         providedIn: "root"
                     }), i
                 })(),
-                Wt = (() => {
+                jt = (() => {
                     class i {
                         constructor(e, n, r, o, a, s, l) {
-                            this.injector = e, this.logService = n, this.characterService = r, this.itemRepoService = o, this.inventoryService = a, this.autoTroubleUnlocked = !1, this.autoTroubleEnabled = !1, this.enableManaShield = !1, this.enableManaAttack = !1, this.enablePyroclasm = !1, this.enableMetalFist = !1, this.enableFireShield = !1, this.enableIceShield = !1, this.manaShieldUnlocked = !1, this.manaAttackUnlocked = !1, this.pyroclasmUnlocked = !1, this.metalFistUnlocked = !1, this.fireShieldUnlocked = !1, this.iceShieldUnlocked = !1, this.ticksPerFight = 10, this.highestDamageTaken = 0, this.highestDamageDealt = 0, this.totalKills = 0, this.skipEnemyAttack = 0, this.degradeFactor = 1e-7, this.monsterNames = ["spider", "rat", "scorpion", "lizard", "snake", "jack-o-lantern", "gnome", "imp", "ooze", "jackalope", "pixie", "goblin", "monkey", "redcap", "boar", "skeleton", "zombie", "hobgoblin", "kobold", "chupacabra", "siren", "crocodile", "incubus", "succubus", "jackal", "basilisk", "mogwai", "ghoul", "gremlin", "orc", "tiger", "ghost", "centaur", "troll", "manticore", "merlion", "mummy", "landshark", "bugbear", "yeti", "dreameater", "kelpie", "unicorn", "hippo", "ogre", "banshee", "harpy", "sphinx", "werewolf", "boogeyman", "golem", "leshy", "hellhound", "chimaera", "undine", "minotaur", "bunyip", "cyclops", "rakshasa", "oni", "nyuk", "cavebear", "wendigo", "dinosaur", "wyvern", "doomworm", "lich", "thunderbird", "vampire", "beholder", "hydra", "roc", "wyrm", "giant", "kraken", "behemonth", "phoenix", "pazuzu", "titan", "leviathan", "stormbringer"], this.monsterQualities = ["an infant", "a puny", "a tiny", "a pathetic", "a sickly", "a starving", "a wimpy", "a frail", "an ill", "a weak", "a badly wounded", "a tired", "a poor", "a small", "a despondent", "a frightened", "a skinny", "a sad", "a stinking", "a scatterbrained", "a mediocre", "a typical", "an average", "a healthy", "a big", "a tough", "a crazy", "a strong", "a fearsome", "a gutsy", "a quick", "a hefty", "a grotesque", "a large", "a brawny", "an athletic", "a muscular", "a rugged", "a resilient", "an angry", "a clever", "a fierce", "a brutal", "a devious", "a mighty", "a frightening", "a massive", "a powerful", "a noble", "a magical", "a dangerous", "a murderous", "a terrifying", "a gargantuan", "a flame-shrouded", "an abominable", "a monstrous", "a dominating", "a demonic", "a diabolical", "an infernal"], setTimeout(() => this.hellService = this.injector.get(Oe)), this.bigNumberPipe = this.injector.get(jt), this.enemies = [], this.currentEnemy = null, this.kills = 0, this.troubleKills = 0, this.yearlyMonsterDay = 0, this.tickCounter = 0, s.tickSubject.subscribe(() => {
+                            this.injector = e, this.logService = n, this.characterService = r, this.itemRepoService = o, this.inventoryService = a, this.autoTroubleUnlocked = !1, this.autoTroubleEnabled = !1, this.enableManaShield = !1, this.enableManaAttack = !1, this.enablePyroclasm = !1, this.enableMetalFist = !1, this.enableFireShield = !1, this.enableIceShield = !1, this.manaShieldUnlocked = !1, this.manaAttackUnlocked = !1, this.pyroclasmUnlocked = !1, this.metalFistUnlocked = !1, this.fireShieldUnlocked = !1, this.iceShieldUnlocked = !1, this.ticksPerFight = 10, this.highestDamageTaken = 0, this.highestDamageDealt = 0, this.totalKills = 0, this.skipEnemyAttack = 0, this.degradeFactor = 1e-7, this.monsterNames = ["spider", "rat", "scorpion", "lizard", "snake", "jack-o-lantern", "gnome", "imp", "ooze", "jackalope", "pixie", "goblin", "monkey", "redcap", "boar", "skeleton", "zombie", "hobgoblin", "kobold", "chupacabra", "siren", "crocodile", "incubus", "succubus", "jackal", "basilisk", "mogwai", "ghoul", "gremlin", "orc", "tiger", "ghost", "centaur", "troll", "manticore", "merlion", "mummy", "landshark", "bugbear", "yeti", "dreameater", "kelpie", "unicorn", "hippo", "ogre", "banshee", "harpy", "sphinx", "werewolf", "boogeyman", "golem", "leshy", "hellhound", "chimaera", "undine", "minotaur", "bunyip", "cyclops", "rakshasa", "oni", "nyuk", "cavebear", "wendigo", "dinosaur", "wyvern", "doomworm", "lich", "thunderbird", "vampire", "beholder", "hydra", "roc", "wyrm", "giant", "kraken", "behemonth", "phoenix", "pazuzu", "titan", "leviathan", "stormbringer"], this.monsterQualities = ["an infant", "a puny", "a tiny", "a pathetic", "a sickly", "a starving", "a wimpy", "a frail", "an ill", "a weak", "a badly wounded", "a tired", "a poor", "a small", "a despondent", "a frightened", "a skinny", "a sad", "a stinking", "a scatterbrained", "a mediocre", "a typical", "an average", "a healthy", "a big", "a tough", "a crazy", "a strong", "a fearsome", "a gutsy", "a quick", "a hefty", "a grotesque", "a large", "a brawny", "an athletic", "a muscular", "a rugged", "a resilient", "an angry", "a clever", "a fierce", "a brutal", "a devious", "a mighty", "a frightening", "a massive", "a powerful", "a noble", "a magical", "a dangerous", "a murderous", "a terrifying", "a gargantuan", "a flame-shrouded", "an abominable", "a monstrous", "a dominating", "a demonic", "a diabolical", "an infernal"], setTimeout(() => this.hellService = this.injector.get(Ie)), this.bigNumberPipe = this.injector.get(Yt), this.enemies = [], this.currentEnemy = null, this.kills = 0, this.troubleKills = 0, this.yearlyMonsterDay = 0, this.tickCounter = 0, s.tickSubject.subscribe(() => {
                                 if (!this.characterService.characterState.dead) {
                                     if (this.tickCounter < this.ticksPerFight) return void this.tickCounter++;
                                     this.tickCounter = 0, null === this.currentEnemy && this.enemies.length > 0 && (this.currentEnemy = this.enemies[0]), this.enemiesAttack(), this.youAttack(), this.yearlyMonsterDay++, (this.yearlyMonsterDay >= 365 || this.autoTroubleEnabled) && (this.yearlyMonsterDay = 0, this.trouble())
@@ -20311,7 +20311,7 @@
                                         } else this.logService.addLogMessage("Miss! " + n.enemy.name + " tries to hit you but fails.", "STANDARD", "COMBAT")
                         }
                         youAttack() {
-                            var e, n, r, o, a, s, l, c, u, f, p, v, y, C, x, D, k, A;
+                            var e, n, r, o, a, s, l, c, u, f, p, v, y, C, M, D, k, A;
                             if (this.characterService.characterState.accuracy = Math.min((this.troubleKills + Math.sqrt(this.characterService.characterState.attributes.speed.value)) / this.troubleKills / 2, 1), this.currentEnemy && this.characterService.characterState.status.health.value > 0) {
                                 if (Math.random() > this.characterService.characterState.accuracy) return void this.logService.addLogMessage("You attack " + this.currentEnemy.enemy.name + " but miss.", "STANDARD", "COMBAT");
                                 let P = this.characterService.characterState.attackPower;
@@ -20326,7 +20326,7 @@
                                     let De = Math.log(this.characterService.characterState.attributes.fireLore.value) / Math.log(100);
                                     De < 1 && (De = 1), De > 10 && (De = 10), P *= De, this.characterService.characterState.status.mana.value -= 1e4, ke = !0
                                 }
-                                this.characterService.characterState.yinYangUnlocked && (P += P * this.characterService.characterState.yinYangBalance), "corruption" === (null === (r = null === (n = null === (e = this.characterService.characterState.equipment) || void 0 === e ? void 0 : e.leftHand) || void 0 === n ? void 0 : n.weaponStats) || void 0 === r ? void 0 : r.effect) && (P *= 10), "corruption" === (null === (s = null === (a = null === (o = this.characterService.characterState.equipment) || void 0 === o ? void 0 : o.rightHand) || void 0 === a ? void 0 : a.weaponStats) || void 0 === s ? void 0 : s.effect) && (P *= 10), "corruption" === (null === (u = null === (c = null === (l = this.characterService.characterState.equipment) || void 0 === l ? void 0 : l.head) || void 0 === c ? void 0 : c.armorStats) || void 0 === u ? void 0 : u.effect) && (P *= 2), "corruption" === (null === (v = null === (p = null === (f = this.characterService.characterState.equipment) || void 0 === f ? void 0 : f.body) || void 0 === p ? void 0 : p.armorStats) || void 0 === v ? void 0 : v.effect) && (P *= 2), "corruption" === (null === (x = null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.legs) || void 0 === C ? void 0 : C.armorStats) || void 0 === x ? void 0 : x.effect) && (P *= 2), "corruption" === (null === (A = null === (k = null === (D = this.characterService.characterState.equipment) || void 0 === D ? void 0 : D.feet) || void 0 === k ? void 0 : k.armorStats) || void 0 === A ? void 0 : A.effect) && (P *= 2), P > this.highestDamageDealt && (this.highestDamageDealt = P);
+                                this.characterService.characterState.yinYangUnlocked && (P += P * this.characterService.characterState.yinYangBalance), "corruption" === (null === (r = null === (n = null === (e = this.characterService.characterState.equipment) || void 0 === e ? void 0 : e.leftHand) || void 0 === n ? void 0 : n.weaponStats) || void 0 === r ? void 0 : r.effect) && (P *= 10), "corruption" === (null === (s = null === (a = null === (o = this.characterService.characterState.equipment) || void 0 === o ? void 0 : o.rightHand) || void 0 === a ? void 0 : a.weaponStats) || void 0 === s ? void 0 : s.effect) && (P *= 10), "corruption" === (null === (u = null === (c = null === (l = this.characterService.characterState.equipment) || void 0 === l ? void 0 : l.head) || void 0 === c ? void 0 : c.armorStats) || void 0 === u ? void 0 : u.effect) && (P *= 2), "corruption" === (null === (v = null === (p = null === (f = this.characterService.characterState.equipment) || void 0 === f ? void 0 : f.body) || void 0 === p ? void 0 : p.armorStats) || void 0 === v ? void 0 : v.effect) && (P *= 2), "corruption" === (null === (M = null === (C = null === (y = this.characterService.characterState.equipment) || void 0 === y ? void 0 : y.legs) || void 0 === C ? void 0 : C.armorStats) || void 0 === M ? void 0 : M.effect) && (P *= 2), "corruption" === (null === (A = null === (k = null === (D = this.characterService.characterState.equipment) || void 0 === D ? void 0 : D.feet) || void 0 === k ? void 0 : k.armorStats) || void 0 === A ? void 0 : A.effect) && (P *= 2), P > this.highestDamageDealt && (this.highestDamageDealt = P);
                                 let de = 1;
                                 z > 2e4 && (de += Math.sqrt(z - 2e4));
                                 const Re = this.degradeFactor / 4;
@@ -20371,25 +20371,38 @@
                         trouble() {
                             if (0 !== this.enemies.length) return;
                             if (this.hellService && this.hellService.inHell) return void this.hellService.trouble();
-                            const e = Math.floor(this.troubleKills / (this.monsterNames.length * this.monsterQualities.length)),
-                                n = this.troubleKills % (this.monsterNames.length * this.monsterQualities.length),
-                                r = Math.floor(n / this.monsterQualities.length);
-                            let a = this.monsterQualities[n % this.monsterQualities.length] + " " + this.monsterNames[r];
-                            e > 0 && (a += " " + (e + 1));
-                            const s = this.inventoryService.generateSpiritGem(Math.floor(Math.log2(this.troubleKills + 2)));
+                            let o, a, e = 10 * this.troubleKills,
+                                n = this.troubleKills / 5,
+                                r = this.troubleKills / 5;
+                            if (this.characterService.characterState.god) {
+                                const s = this.troubleKills % this.monsterNames.length,
+                                    l = Math.floor(this.troubleKills / this.monsterNames.length);
+                                a = "Godslaying " + this.monsterNames[s], l > 0 && (a += " " + (l + 1)), n = Math.round(Math.pow(1.1, this.troubleKills)), r = 10 * n, e = 200 * n, o = this.inventoryService.generateSpiritGem(Math.ceil(this.troubleKills / 30))
+                            } else {
+                                const s = Math.floor(this.troubleKills / (this.monsterNames.length * this.monsterQualities.length)),
+                                    l = this.troubleKills % (this.monsterNames.length * this.monsterQualities.length),
+                                    c = Math.floor(l / this.monsterQualities.length);
+                                a = this.monsterQualities[l % this.monsterQualities.length] + " " + this.monsterNames[c], s > 0 && (a += " " + (s + 1)), o = this.inventoryService.generateSpiritGem(Math.floor(Math.log2(this.troubleKills + 2)))
+                            }
                             this.addEnemy({
                                 name: a,
-                                health: 10 * this.troubleKills,
-                                maxHealth: 10 * this.troubleKills,
+                                health: e,
+                                maxHealth: e,
                                 accuracy: .5,
-                                attack: this.troubleKills / 5,
-                                defense: this.troubleKills / 5,
-                                loot: [s]
+                                attack: n,
+                                defense: r,
+                                loot: [o]
                             }), this.troubleKills++
                         }
                         degradeArmor(e, n) {
                             let r = 1;
-                            n > 2e4 && (r += Math.sqrt(n - 2e4)), e.armorStats && (e.armorStats.durability -= "corruption" === e.armorStats.effect ? 100 * (r + Math.floor(e.armorStats.durability * this.degradeFactor)) : r + Math.floor(e.armorStats.durability * this.degradeFactor), e.value -= 1 + Math.floor(e.value * this.degradeFactor), e.value < 1 && (e.value = 1), e.armorStats.defense -= 1 + Math.floor(e.armorStats.defense * this.degradeFactor), e.armorStats.defense < 1 && (e.armorStats.defense = 1), "life" === e.armorStats.effect && (this.logService.addLogMessage("Your " + e.name + " healed you for " + r + " as the enemy struck it.", "STANDARD", "COMBAT"), this.characterService.characterState.status.health.value += r + Math.floor(e.armorStats.durability * this.degradeFactor), this.characterService.characterState.checkOverage()), e.armorStats.durability <= 0 && (this.inventoryService.addItem(e), this.characterService.characterState.equipment[e.slot] = null))
+                            if (n > 2e4 && (r += Math.sqrt(n - 2e4)), e.armorStats) {
+                                if (e.armorStats.durability -= "corruption" === e.armorStats.effect ? 100 * (r + Math.floor(e.armorStats.durability * this.degradeFactor)) : r + Math.floor(e.armorStats.durability * this.degradeFactor), e.value -= 1 + Math.floor(e.value * this.degradeFactor), e.value < 1 && (e.value = 1), e.armorStats.defense -= 1 + Math.floor(e.armorStats.defense * this.degradeFactor), e.armorStats.defense < 1 && (e.armorStats.defense = 1), "life" === e.armorStats.effect) {
+                                    const o = 10 * (r + Math.floor(e.armorStats.durability * this.degradeFactor));
+                                    this.logService.addLogMessage("Your " + e.name + " healed you for " + o + " as the enemy struck it.", "STANDARD", "COMBAT"), this.characterService.characterState.status.health.value += o, this.characterService.characterState.checkOverage()
+                                }
+                                e.armorStats.durability <= 0 && (this.inventoryService.addItem(e), this.characterService.characterState.equipment[e.slot] = null)
+                            }
                         }
                         defeatEffect(e) {
                             !e.defeatEffect || "respawnDouble" === e.defeatEffect && (this.logService.addLogMessage("They just keep coming! Two more " + e.name + " appear!", "STANDARD", "COMBAT"), this.addEnemy({
@@ -20414,7 +20427,7 @@
                         }
                         attackEffect(e) {
                             if (e.attackEffect && "feeder" === e.attackEffect && this.hellService)
-                                if (e.hitTracker && e.hitTracker < 1) e.hitTracker++;
+                                if (void 0 !== e.hitTracker && e.hitTracker < 2) e.hitTracker++;
                                 else {
                                     this.hellService.daysFasted = 0;
                                     const n = this.characterService.characterState.status.health.value / 4;
@@ -20423,7 +20436,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Se), S(pi), S(Ie), S(Ri), S(W), S(yt), S(Jn))
+                        return new(e || i)(w(Se), w(gi), w(Oe), w(Ri), w(W), w(yt), w(Jn))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -20434,7 +20447,7 @@
                 return (i = Te || (Te = {}))[i.SquatterTent = 0] = "SquatterTent", i[i.OwnTent = 1] = "OwnTent", i[i.DirtyShack = 2] = "DirtyShack", i[i.SimpleHut = 3] = "SimpleHut", i[i.PleasantCottage = 4] = "PleasantCottage", i[i.LargeHouse = 5] = "LargeHouse", i[i.CourtyardHouse = 6] = "CourtyardHouse", i[i.Manor = 7] = "Manor", i[i.Mansion = 8] = "Mansion", i[i.Palace = 9] = "Palace", i[i.Castle = 10] = "Castle", i[i.Fortress = 11] = "Fortress", i[i.Mountain = 12] = "Mountain", i[i.ForbiddenCity = 13] = "ForbiddenCity", i[i.Capital = 14] = "Capital", i[i.ImperialSeat = 15] = "ImperialSeat", i[i.Godthrone = 16] = "Godthrone", Te;
                 var i
             })();
-            let it = (() => {
+            let tt = (() => {
                     class i {
                         constructor(e, n, r, o, a, s, l, c) {
                             if (this.injector = e, this.characterService = n, this.inventoryService = r, this.logService = o, this.battleService = a, this.itemRepoService = c, this.autoBuyLandUnlocked = !1, this.autoBuyLandLimit = 5, this.autoBuyHomeUnlocked = !1, this.autoBuyHomeLimit = 2, this.autoBuyFurnitureUnlocked = !1, this.autoBuyFurniture = {
@@ -20701,15 +20714,17 @@
                                     },
                                     furnitureSlots: ["bed", "bathtub", "kitchen", "workbench"],
                                     daysToBuild: 365e9
-                                }], this.nextHomeCostReduction = 0, this.nextHomeCost = 0, this.highestLand = 0, this.highestLandPrice = 100, this.mostFields = 0, this.highestAverageYield = 0, this.bestHome = 0, setTimeout(() => this.hellService = this.injector.get(Oe)), this.land = 0, this.landPrice = 100, this.setCurrentHome(this.homesList[0]), void 0 === this.home || void 0 === this.homeValue || void 0 === this.nextHome) throw Error("Home service not initialized correctly.");
+                                }], this.nextHomeCostReduction = 0, this.nextHomeCost = 0, this.highestLand = 0, this.highestLandPrice = 100, this.mostFields = 0, this.highestAverageYield = 0, this.bestHome = 0, setTimeout(() => this.hellService = this.injector.get(Ie)), this.land = 0, this.landPrice = 100, this.setCurrentHome(this.homesList[0]), void 0 === this.home || void 0 === this.homeValue || void 0 === this.nextHome) throw Error("Home service not initialized correctly.");
                             s.tickSubject.subscribe(() => {
-                                var u, f;
+                                var u, f, p;
                                 if (!this.characterService.characterState.dead) {
-                                    this.upgrading && this.upgradeTick(), this.nextHomeCost = this.nextHome.cost - this.nextHomeCostReduction, this.nextHomeCost < 0 && (this.nextHomeCost = 0), (!(null === (u = this.hellService) || void 0 === u ? void 0 : u.inHell) || this.hellHome) && this.home.consequence();
-                                    for (const p of this.furniturePositionsArray) {
-                                        const v = this.furniture[p];
-                                        (null == v ? void 0 : v.use) && (null == v || v.use())
-                                    }(!(null === (f = this.hellService) || void 0 === f ? void 0 : f.inHell) || this.hellFood) && this.ageFields(), this.home.costPerDay > this.characterService.characterState.money ? (this.logService.addLogMessage("You can't afford the upkeep on your home. Some thugs rough you up over the debt. You better get some money, fast.", "INJURY", "EVENT"), this.thugPause && (s.pause = !0), this.characterService.characterState.status.health.value -= 20, this.characterService.characterState.money = 0) : this.characterService.characterState.money -= this.home.costPerDay
+                                    if (this.upgrading && this.upgradeTick(), this.nextHomeCost = this.nextHome.cost - this.nextHomeCostReduction, this.nextHomeCost < 0 && (this.nextHomeCost = 0), !(null === (u = this.hellService) || void 0 === u ? void 0 : u.inHell) || this.hellHome) {
+                                        this.home.consequence();
+                                        for (const v of this.furniturePositionsArray) {
+                                            const y = this.furniture[v];
+                                            (null == y ? void 0 : y.use) && (null == y || y.use())
+                                        }
+                                    }(!(null === (f = this.hellService) || void 0 === f ? void 0 : f.inHell) || this.hellFood) && this.ageFields(), !(null === (p = this.hellService) || void 0 === p ? void 0 : p.inHell) && !this.characterService.characterState.god && (this.home.costPerDay > this.characterService.characterState.money ? (this.logService.addLogMessage("You can't afford the upkeep on your home. Some thugs rough you up over the debt. You better get some money, fast.", "INJURY", "EVENT"), this.thugPause && (s.pause = !0), this.characterService.characterState.status.health.value -= 20, this.characterService.characterState.money = 0) : this.characterService.characterState.money -= this.home.costPerDay)
                                 }
                             }), s.longTickSubject.subscribe(() => {
                                 this.land > this.highestLand && (this.highestLand = this.land), this.landPrice > this.highestLandPrice && (this.highestLandPrice = this.landPrice), this.fields.length + this.extraFields > this.mostFields && (this.mostFields = this.fields.length + this.extraFields), this.averageYield > this.highestAverageYield && (this.highestAverageYield = this.averageYield), this.homeValue > this.bestHome && (this.bestHome = this.homeValue), this.upgrading && this.nextHome === this.home && (this.houseBuildingProgress = 1, this.upgrading = !1, this.setCurrentHome(this.home))
@@ -20838,17 +20853,17 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Se), S(Ie), S(W), S(pi), S(Wt), S(yt), S(Jn), S(Ri))
+                        return new(e || i)(w(Se), w(Oe), w(W), w(gi), w(jt), w(yt), w(Jn), w(Ri))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
                         providedIn: "root"
                     }), i
                 })(),
-                Ze = (() => {
+                Ke = (() => {
                     class i {
                         constructor(e, n, r, o, a, s, l, c, u, f, p) {
-                            this.injector = e, this.characterService = n, this.inventoryService = r, this.homeService = o, this.mainLoopService = s, this.itemRepoService = l, this.battleService = c, this.logService = u, this.followerService = f, this.impossibleTaskService = p, this.activityLoop = [], this.savedActivityLoop = [], this.savedActivityLoop2 = [], this.savedActivityLoop3 = [], this.spiritActivity = null, this.autoRestart = !1, this.autoPauseUnlocked = !1, this.pauseOnImpossibleFail = !0, this.pauseOnDeath = !0, this.pauseBeforeDeath = !1, this.openApprenticeships = 1, this.oddJobDays = 0, this.beggingDays = 0, this.completedApprenticeships = [], this.currentIndex = 0, this.currentTickCount = 0, this.exhaustionDays = 0, this.currentLoopEntry = void 0, this.currentApprenticeship = void 0, this.activityDeath = !1, this.autoRestUnlocked = !1, this.totalExhaustedDays = 0, this.activityHeader = "", this.activityHeaderDescription = "", this.hellEnabled = !1, this.spiritActivityProgress = !1, this.purifyGemsUnlocked = !1, this.defineActivities(), this.activities = [], setTimeout(() => this.activities = this.getActivityList()), a.reincarnateSubject.subscribe(() => {
+                            this.injector = e, this.characterService = n, this.inventoryService = r, this.homeService = o, this.mainLoopService = s, this.itemRepoService = l, this.battleService = c, this.logService = u, this.followerService = f, this.impossibleTaskService = p, this.activityLoop = [], this.savedActivityLoop = [], this.savedActivityLoop2 = [], this.savedActivityLoop3 = [], this.spiritActivity = null, this.autoRestart = !1, this.autoPauseUnlocked = !1, this.pauseOnImpossibleFail = !0, this.pauseOnDeath = !0, this.pauseBeforeDeath = !1, this.openApprenticeships = 1, this.oddJobDays = 0, this.beggingDays = 0, this.completedApprenticeships = [], this.currentIndex = 0, this.currentTickCount = 0, this.exhaustionDays = 0, this.currentLoopEntry = void 0, this.currentApprenticeship = void 0, this.activityDeath = !1, this.autoRestUnlocked = !1, this.totalExhaustedDays = 0, this.activityHeader = "", this.activityHeaderDescription = "", this.spiritActivityProgress = !1, this.purifyGemsUnlocked = !1, this.defineActivities(), this.activities = [], setTimeout(() => this.activities = this.getActivityList()), a.reincarnateSubject.subscribe(() => {
                                 this.reset()
                             }), s.tickSubject.subscribe(() => {
                                 var v;
@@ -20996,7 +21011,7 @@
                         }
                         getActivityList() {
                             const e = [];
-                            if (this.activityHeader = "", this.activityHeaderDescription = "", this.impossibleTaskService.activeTaskIndex >= 0 && (this.activityHeader = "Do the impossible: " + this.impossibleTaskService.tasks[this.impossibleTaskService.activeTaskIndex].name, this.activityHeaderDescription = this.impossibleTaskService.tasks[this.impossibleTaskService.activeTaskIndex].description), this.hellService || (this.hellService = this.injector.get(Oe)), this.hellService.inHell) return this.hellService.getActivityList();
+                            if (this.activityHeader = "", this.activityHeaderDescription = "", this.impossibleTaskService.activeTaskIndex >= 0 && (this.activityHeader = "Do the impossible: " + this.impossibleTaskService.tasks[this.impossibleTaskService.activeTaskIndex].name, this.activityHeaderDescription = this.impossibleTaskService.tasks[this.impossibleTaskService.activeTaskIndex].description), this.hellService || (this.hellService = this.injector.get(Ie)), this.hellService.inHell) return this.hellService.getActivityList();
                             if (this.impossibleTaskService.activeTaskIndex === J.Swim) return e.push(this.Swim), e;
                             this.impossibleTaskService.activeTaskIndex === J.RaiseIsland && (e.push(this.ForgeChains), e.push(this.AttachChains)), this.impossibleTaskService.activeTaskIndex === J.BuildTower && (e.push(this.MakeBrick), e.push(this.MakeMortar), e.push(this.MakeScaffold), e.push(this.BuildTower)), this.impossibleTaskService.activeTaskIndex === J.TameWinds && (e.push(this.ResearchWind), e.push(this.TameWinds)), this.impossibleTaskService.activeTaskIndex === J.LearnToFly && e.push(this.LearnToFly), this.impossibleTaskService.activeTaskIndex === J.BefriendDragon && (e.push(this.OfferDragonFood), e.push(this.OfferDragonWealth), e.push(this.TalkToDragon)), this.impossibleTaskService.activeTaskIndex === J.ConquerTheWorld && (e.push(this.GatherArmies), e.push(this.ConquerTheWorld)), this.impossibleTaskService.activeTaskIndex === J.RearrangeTheStars && e.push(this.MoveStars), e.push(this.Resting), e.push(this.OddJobs), e.push(this.Begging), e.push(this.Burning), e.push(this.Taunting), e.push(this.Farming), e.push(this.Mining), e.push(this.Smelting), e.push(this.Blacksmithing), e.push(this.ChopWood), e.push(this.Woodworking), e.push(this.Hunting), e.push(this.Leatherworking), e.push(this.Fishing), e.push(this.GatherHerbs), e.push(this.Alchemy), e.push(this.BodyCultivation), e.push(this.MindCultivation), e.push(this.BalanceChi), this.characterService.characterState.manaUnlocked && (e.push(this.CoreCultivation), e.push(this.InfuseEquipment), e.push(this.InfuseBody), e.push(this.ExtendLife)), this.characterService.characterState.immortal && e.push(this.SoulCultivation), this.purifyGemsUnlocked && e.push(this.PurifyGems), e.push(this.Recruiting), this.followerService.petsEnabled && (e.push(this.PetRecruiting), e.push(this.PetTraining)), e.push(this.TrainingFollowers), e.push(this.CombatTraining);
                             for (const n of e) n.projectionOnly = !1;
@@ -22151,7 +22166,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Se), S(Ie), S(W), S(it), S(Jn), S(yt), S(Ri), S(Wt), S(pi), S(Mt), S(vr))
+                        return new(e || i)(w(Se), w(Oe), w(W), w(tt), w(Jn), w(yt), w(Ri), w(jt), w(gi), w(Mt), w(vr))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -22165,7 +22180,7 @@
 
             function nU(i, t) {
                 if (1 & i && (d(0, "div", 1)(1, "span"), m(2), h()()), 2 & i) {
-                    const e = w();
+                    const e = S();
                     g(2), le(e.tip)
                 }
             }
@@ -22179,7 +22194,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Eu), _(Ie), _(Ze), _(W), _(Mt), _(vr))
+                    return new(e || i)(_(Eu), _(Oe), _(Ke), _(W), _(Mt), _(vr))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -22195,7 +22210,7 @@
                         ["for", "showLifeSummary"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "A New Life Begins"), h(), B(3, "hr")(4, "br"), d(5, "div", 1)(6, "span"), m(7), h()(), B(8, "br"), T(9, iU, 3, 0, "div", 2), B(10, "br"), d(11, "div", 1)(12, "span"), m(13), h()(), B(14, "br"), T(15, nU, 3, 1, "div", 2), B(16, "br"), d(17, "div", 1)(18, "span")(19, "input", 3), M("change", function (o) {
+                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "A New Life Begins"), h(), B(3, "hr")(4, "br"), d(5, "div", 1)(6, "span"), m(7), h()(), B(8, "br"), x(9, iU, 3, 0, "div", 2), B(10, "br"), d(11, "div", 1)(12, "span"), m(13), h()(), B(14, "br"), x(15, nU, 3, 1, "div", 2), B(16, "br"), d(17, "div", 1)(18, "span")(19, "input", 3), T("change", function (o) {
                             return n.showLifeSummaryChange(o)
                         }), h(), d(20, "label", 4), m(21, "Show this summary at the start of each life"), h()()()()), 2 & e && (g(7), F(" ", n.causeOfDeath, " "), g(2), b("ngIf", !n.characterService.characterState.immortal), g(4), le(n.attributeGains), g(2), b("ngIf", n.characterService.characterState.showTips), g(4), b("checked", n.characterService.characterState.showLifeSummary))
                     },
@@ -22381,7 +22396,7 @@
                         autoFocus: !1
                     })), this.status.health.value = 100, this.status.health.max = 100, this.status.stamina.value = 100, this.status.stamina.max = 100, this.status.nourishment.value = 7, this.status.nourishment.max = 14, this.manaUnlocked ? (this.status.mana.max = 1, this.status.mana.value = 1) : (this.status.mana.max = 0, this.status.mana.value = 0), this.healthBonusFood = 0, this.healthBonusBath = 0, this.healthBonusMagic = 0, this.age = 6570, this.foodLifespan = 0, this.alchemyLifespan = 0, this.spiritualityLifespan = 0, this.magicLifespan = 0;
                     let r = 0;
-                    r += this.attributes.strength.aptitude + this.attributes.toughness.aptitude + this.attributes.speed.aptitude + this.attributes.intelligence.aptitude + this.attributes.charisma.aptitude, this.statLifespan = this.getAptitudeMultipier(r / 5), this.statLifespan *= this.bloodlineRank < 5 ? .1 : 5, this.money < 0 && (this.money = 0), this.money = this.bloodlineRank < 3 ? 0 : this.bloodlineRank < 4 ? this.money / 8 : 4 * this.money, this.money > this.maxMoney && (this.money = this.maxMoney), this.recalculateDerivedStats(), 0 === this.bloodlineRank ? this.equipment = {
+                    r += this.attributes.strength.aptitude + this.attributes.toughness.aptitude + this.attributes.speed.aptitude + this.attributes.intelligence.aptitude + this.attributes.charisma.aptitude, this.statLifespan = this.getAptitudeMultipier(r / 5), this.statLifespan *= this.bloodlineRank < 5 ? .1 : 5, this.money < 0 && (this.money = 0), this.money = this.bloodlineRank < 3 ? 0 : this.bloodlineRank < 4 ? this.money / 8 : 4 * this.money, this.money > this.maxMoney && (this.money = this.maxMoney), this.hellMoney = 0, this.recalculateDerivedStats(), 0 === this.bloodlineRank ? this.equipment = {
                         head: null,
                         body: null,
                         leftHand: null,
@@ -22409,8 +22424,8 @@
                     this.equipment.leftHand && (c = (null === (t = this.equipment.leftHand.weaponStats) || void 0 === t ? void 0 : t.baseDamage) || 1), this.equipment.rightHand && (u = (null === (e = this.equipment.rightHand.weaponStats) || void 0 === e ? void 0 : e.baseDamage) || 1), this.equipment.head && (f = (null === (n = this.equipment.head.armorStats) || void 0 === n ? void 0 : n.defense) || 1), this.equipment.body && (p = (null === (r = this.equipment.body.armorStats) || void 0 === r ? void 0 : r.defense) || 1), this.equipment.legs && (v = (null === (o = this.equipment.legs.armorStats) || void 0 === o ? void 0 : o.defense) || 1), this.equipment.feet && (y = (null === (a = this.equipment.feet.armorStats) || void 0 === a ? void 0 : a.defense) || 1);
                     const C = Math.sqrt(this.attributes.strength.value) || 1;
                     this.attackPower = Math.floor(C * Math.sqrt(u * c)) || 1, this.attributes.combatMastery.value > 1 && (this.attackPower *= Math.log(this.attributes.combatMastery.value + 100) / Math.log(100)), this.righteousWrathUnlocked && (this.attackPower *= 2);
-                    const x = Math.sqrt(this.attributes.toughness.value) || 1;
-                    this.defense = Math.floor(x * (f + p + v + y)) || 1, this.righteousWrathUnlocked && (this.defense *= 2), this.yinYangUnlocked && (this.yinYangBalance = Math.max(1 - Math.abs(this.yang - this.yin) / ((this.yang + this.yin) / 2), 0))
+                    const M = Math.sqrt(this.attributes.toughness.value) || 1;
+                    this.defense = Math.floor(M * (f + p + v + y)) || 1, this.righteousWrathUnlocked && (this.defense *= 2), this.yinYangUnlocked && (this.yinYangBalance = Math.max(1 - Math.abs(this.yang - this.yin) / ((this.yang + this.yin) / 2), 0))
                 }
                 getEmpowermentMult() {
                     let n = 1 + 198 / (1 + Math.pow(1.02, -(this.empowermentFactor - 1) / 3)) - 99;
@@ -22573,7 +22588,7 @@
                             ["button", "mat-flat-button", ""]
                         ],
                         viewQuery: function (e, n) {
-                            if (1 & e && ni(Du, 5), 2 & e) {
+                            if (1 & e && ri(Du, 5), 2 & e) {
                                 let r;
                                 ut(r = ht()) && (n.ripple = r.first)
                             }
@@ -22581,7 +22596,7 @@
                         hostAttrs: [1, "mat-focus-indicator"],
                         hostVars: 5,
                         hostBindings: function (e, n) {
-                            2 & e && (Ye("disabled", n.disabled || null), Ct("_mat-animation-noopable", "NoopAnimations" === n._animationMode)("mat-button-disabled", n.disabled))
+                            2 & e && (ze("disabled", n.disabled || null), Ct("_mat-animation-noopable", "NoopAnimations" === n._animationMode)("mat-button-disabled", n.disabled))
                         },
                         inputs: {
                             disabled: "disabled",
@@ -22612,11 +22627,11 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [
-                            [S1, fi], fi
+                            [S1, mi], mi
                         ]
                     }), i
                 })();
@@ -22637,7 +22652,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(Vt))
+                    return new(e || i)(w(Ut))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -22666,7 +22681,7 @@
                     }
                     observe(e) {
                         let o = I0(T1(Jc(e)).map(a => this._registerQuery(a).observable));
-                        return o = Ic(o.pipe(Jt(1)), o.pipe(aC(1), Bp(0))), o.pipe(me(a => {
+                        return o = Ic(o.pipe(Qt(1)), o.pipe(aC(1), Bp(0))), o.pipe(me(a => {
                             const s = {
                                 matches: !1,
                                 breakpoints: {}
@@ -22683,7 +22698,7 @@
                         if (this._queries.has(e)) return this._queries.get(e);
                         const n = this._mediaMatcher.matchMedia(e),
                             o = {
-                                observable: new We(a => {
+                                observable: new $e(a => {
                                     const s = l => this._zone.run(() => a.next(l));
                                     return n.addListener(s), () => {
                                         n.removeListener(s)
@@ -22700,7 +22715,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(fU), S(pe))
+                    return new(e || i)(w(fU), w(pe))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -22715,12 +22730,12 @@
             function gU(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "button", 3), M("click", function () {
-                        return E(e), w().action()
+                    d(0, "div", 2)(1, "button", 3), T("click", function () {
+                        return E(e), S().action()
                     }), m(2), h()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(2), le(e.data.action)
                 }
             }
@@ -22796,7 +22811,7 @@
                         ["mat-button", "", 3, "click"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "span", 0), m(1), h(), T(2, gU, 3, 1, "div", 1)), 2 & e && (g(1), le(n.data.message), g(1), b("ngIf", n.hasAction))
+                        1 & e && (d(0, "span", 0), m(1), h(), x(2, gU, 3, 1, "div", 1)), 2 & e && (g(1), le(n.data.message), g(1), b("ngIf", n.hasAction))
                     },
                     directives: [hU, st],
                     styles: [".mat-simple-snackbar{display:flex;justify-content:space-between;align-items:center;line-height:20px;opacity:1}.mat-simple-snackbar-action{flex-shrink:0;margin:-8px -8px -8px 8px}.mat-simple-snackbar-action button{max-height:36px;min-width:0}[dir=rtl] .mat-simple-snackbar-action{margin-left:-8px;margin-right:8px}.mat-simple-snack-bar-content{overflow:hidden;text-overflow:ellipsis}\n"],
@@ -22850,7 +22865,7 @@
                             this._destroyed = !0, this._completeExit()
                         }
                         _completeExit() {
-                            this._ngZone.onMicrotaskEmpty.pipe(Jt(1)).subscribe(() => {
+                            this._ngZone.onMicrotaskEmpty.pipe(Qt(1)).subscribe(() => {
                                 this._ngZone.run(() => {
                                     this._onExit.next(), this._onExit.complete()
                                 })
@@ -22878,14 +22893,14 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(pe), _(xe), _(oi), _(Vt), _(Pu))
+                        return new(e || i)(_(pe), _(xe), _(ai), _(Ut), _(Pu))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
                             ["snack-bar-container"]
                         ],
                         viewQuery: function (e, n) {
-                            if (1 & e && ni(Zr, 7), 2 & e) {
+                            if (1 & e && ri(Zr, 7), 2 & e) {
                                 let r;
                                 ut(r = ht()) && (n._portalOutlet = r.first)
                             }
@@ -22905,7 +22920,7 @@
                             ["cdkPortalOutlet", ""]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0), T(1, vU, 0, 0, "ng-template", 1), h(), B(2, "div")), 2 & e && (g(2), Ye("aria-live", n._live)("role", n._role))
+                            1 & e && (d(0, "div", 0), x(1, vU, 0, 0, "ng-template", 1), h(), B(2, "div")), 2 & e && (g(2), ze("aria-live", n._live)("role", n._role))
                         },
                         directives: [Zr],
                         styles: [".mat-snack-bar-container{border-radius:4px;box-sizing:border-box;display:block;margin:24px;max-width:33vw;min-width:344px;padding:14px 16px;min-height:48px;transform-origin:center}.cdk-high-contrast-active .mat-snack-bar-container{border:solid 1px}.mat-snack-bar-handset{width:100%}.mat-snack-bar-handset .mat-snack-bar-container{margin:8px;max-width:100%;min-width:0;width:100%}\n"],
@@ -22919,11 +22934,11 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [
-                            [Np, iu, Cs, dU, fi], fi
+                            [Np, iu, Cs, dU, mi], mi
                         ]
                     }), i
                 })();
@@ -22981,7 +22996,7 @@
                                 o = this._createOverlay(r),
                                 a = this._attachSnackBarContainer(o, r),
                                 s = new Sm(a, o);
-                            if (e instanceof ii) {
+                            if (e instanceof ni) {
                                 const l = new zs(e, null, {
                                     $implicit: r.data,
                                     snackBarRef: s
@@ -23029,7 +23044,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(pr), S(bC), S(Se), S(bm), S(i, 12), S(A1))
+                        return new(e || i)(w(pr), w(bC), w(Se), w(bm), w(i, 12), w(A1))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac
@@ -23042,30 +23057,31 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(pr), S(bC), S(Se), S(bm), S(i, 12), S(A1))
+                        return new(e || i)(w(pr), w(bC), w(Se), w(bm), w(i, 12), w(A1))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
                         providedIn: wU
                     }), i
                 })(),
-                Ie = (() => {
+                Oe = (() => {
                     class i {
                         constructor(e, n, r, o, a) {
-                            this.injector = e, this.mainLoopService = n, this.logService = r, this.reincarnationService = o, this.dialog = a, this.camelToTitlePipe = new Sa, this.forceRebirth = !1, this.fatherGift = !1, this.lifespanTooltip = "", setTimeout(() => this.hellService = this.injector.get(Oe)), this.snackBar = this.injector.get(P1), this.bigNumberPipe = this.injector.get(jt), this.characterState = new oU(r, this.camelToTitlePipe, this.bigNumberPipe, n, a), n.tickSubject.subscribe(() => {
+                            this.injector = e, this.mainLoopService = n, this.logService = r, this.reincarnationService = o, this.dialog = a, this.camelToTitlePipe = new Sa, this.forceRebirth = !1, this.fatherGift = !1, this.lifespanTooltip = "", setTimeout(() => this.hellService = this.injector.get(Ie)), this.snackBar = this.injector.get(P1), this.bigNumberPipe = this.injector.get(Yt), this.characterState = new oU(r, this.camelToTitlePipe, this.bigNumberPipe, n, a), n.tickSubject.subscribe(() => {
+                                var s;
                                 this.mainLoopService.totalTicks % 3650 == 0 && this.characterState.increaseBaseLifespan(1, 70), this.characterState.dead || (this.characterState.age++, this.characterState.status.nourishment.value--);
-                                let s = "";
-                                if (this.forceRebirth) s = "You release your soul from your body at the age of " + this.formatAge() + ".";
-                                else if (this.characterState.age >= this.characterState.lifespan && !this.characterState.immortal) s = "You reach the end of your natural life and pass away from natural causes at the age of " + this.formatAge() + ".";
+                                let l = "";
+                                if (this.forceRebirth) l = "You release your soul from your body at the age of " + this.formatAge() + ".";
+                                else if (this.characterState.age >= this.characterState.lifespan && !this.characterState.immortal) l = "You reach the end of your natural life and pass away from natural causes at the age of " + this.formatAge() + ".";
                                 else if (this.characterState.status.nourishment.value <= 0)
                                     if (this.characterState.status.nourishment.value = 0, this.characterState.attributes.spirituality.value > 0) {
-                                        const l = Math.max(.2 * this.characterState.status.health.value, 20);
-                                        r.addLogMessage("You take " + l + " damage from starvation.", "INJURY", "COMBAT"), this.characterState.status.health.value -= l, this.characterState.increaseAttribute("spirituality", .1), this.characterState.status.health.value <= 0 && !this.characterState.immortal && (s = "You starve to death at the age of " + this.formatAge() + ".")
-                                    } else this.characterState.immortal || (s = "You starve to death at the age of " + this.formatAge() + ".");
-                                else this.characterState.status.health.value <= 0 && !this.characterState.immortal ? (this.activityService || (this.activityService = this.injector.get(Ze)), s = this.activityService.activityDeath ? "You die from overwork at the age of " + this.formatAge() + "." : "You succumb to your wounds and die at the age of " + this.formatAge() + ".") : this.characterState.immortal && this.characterState.status.health.value < 0 && (this.characterState.status.health.value = 0);
-                                "" !== s && (this.characterState.immortal || (this.logService.addLogMessage(s, "INJURY", "EVENT"), this.forceRebirth || this.logService.addLogMessage("You have failed to achieve immortality and your life has ended. Don't worry, I'm sure you'll achieve immortality in your next life.", "STANDARD", "EVENT")), this.characterState.dead = !0, this.characterState.showLifeSummary || this.toast("A new life begins."), this.characterState.reincarnate(s), this.reincarnationService.reincarnate(), this.deathSubscriber = this.mainLoopService.tickSubject.subscribe(() => {
-                                    var l;
-                                    this.characterState.dead = !1, null === (l = this.deathSubscriber) || void 0 === l || l.unsubscribe()
+                                        const c = Math.max(.2 * this.characterState.status.health.value, 20);
+                                        r.addLogMessage("You take " + c + " damage from starvation.", "INJURY", "COMBAT"), this.characterState.status.health.value -= c, this.characterState.status.health.value < 0 && (this.characterState.status.health.value = 0), this.characterState.increaseAttribute("spirituality", .1), this.characterState.status.health.value <= 0 && (this.characterState.immortal ? (null === (s = this.hellService) || void 0 === s ? void 0 : s.inHell) && (this.hellService.beaten = !0) : l = "You starve to death at the age of " + this.formatAge() + ".")
+                                    } else this.characterState.immortal || (l = "You starve to death at the age of " + this.formatAge() + ".");
+                                else this.characterState.status.health.value <= 0 && !this.characterState.immortal ? (this.activityService || (this.activityService = this.injector.get(Ke)), l = this.activityService.activityDeath ? "You die from overwork at the age of " + this.formatAge() + "." : "You succumb to your wounds and die at the age of " + this.formatAge() + ".") : this.characterState.immortal && this.characterState.status.health.value < 0 && (this.characterState.status.health.value = 0);
+                                "" !== l && (this.characterState.immortal || (this.logService.addLogMessage(l, "INJURY", "EVENT"), this.forceRebirth || this.logService.addLogMessage("You have failed to achieve immortality and your life has ended. Don't worry, I'm sure you'll achieve immortality in your next life.", "STANDARD", "EVENT")), this.characterState.dead = !0, this.characterState.showLifeSummary || this.toast("A new life begins."), this.characterState.reincarnate(l), this.reincarnationService.reincarnate(), this.deathSubscriber = this.mainLoopService.tickSubject.subscribe(() => {
+                                    var c;
+                                    this.characterState.dead = !1, null === (c = this.deathSubscriber) || void 0 === c || c.unsubscribe()
                                 }), this.forceRebirth = !1, this.characterState.immortal ? this.logService.addLogMessage("You are born anew, still an immortal but with the fresh vigor of youth.", "STANDARD", "EVENT") : (this.logService.addLogMessage("Congratulations! The cycle of reincarnation has brought you back into the world. You have been born again. You are certain that lucky life number " + this.characterState.totalLives + " will be the one.", "STANDARD", "EVENT"), this.logService.addLogMessage("It takes you a few years to grow up and remember your purpose: to become an immortal. You're all grown up now, so get to it!", "STANDARD", "EVENT")))
                             }), n.longTickSubject.subscribe(() => {
                                 var s;
@@ -23091,7 +23107,7 @@
                                 const r = this.characterState.attributes[e[n]];
                                 r.lifeStartValue = 0, r.aptitude = 1 + r.aptitude / this.characterState.aptitudeGainDivider, r.value = parseInt(n) < 5 ? 1 : 0
                             }
-                            this.activityService || (this.activityService = this.injector.get(Ze)), this.activityService.reloadActivities(), this.activityService.activityLoop.splice(0, this.activityService.activityLoop.length), this.forceRebirth = !0, this.mainLoopService.tick()
+                            this.activityService || (this.activityService = this.injector.get(Ke)), this.activityService.reloadActivities(), this.activityService.activityLoop.splice(0, this.activityService.activityLoop.length), this.forceRebirth = !0, this.mainLoopService.tick()
                         }
                         condenseSoulCore() {
                             this.characterState.aptitudeGainDivider <= 5 || (this.logService.addLogMessage("Your spirituality coelesces around the core of your soul, strengthening it and reforging it into something stronger.", "STANDARD", "STORY"), this.logService.addLogMessage("You now gain additional aptitude each time you reincarnate.", "STANDARD", "STORY"), this.characterState.condenseSoulCoreCost *= 10, this.characterState.aptitudeGainDivider /= 1.5, this.resetAptitudes())
@@ -23140,7 +23156,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Se), S(yt), S(pi), S(Jn), S(Wi))
+                        return new(e || i)(w(Se), w(yt), w(gi), w(Jn), w(Wi))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -23176,7 +23192,7 @@
                             this.earnedTicks = r - this.lastTime > 6048e5 ? (18144e5 + r - this.lastTime) / (25 * this.offlineDivider * 4) : (r - this.lastTime) / (25 * this.offlineDivider), this.bankedTicks = e.bankedTicks + this.earnedTicks, this.lastTime = r, this.totalTicks = e.totalTicks || 0, this.useBankedTicks = null === (n = e.useBankedTicks) || void 0 === n || n, this.scientificNotation = e.scientificNotation || !1
                         }
                         start() {
-                            this.characterService || (this.characterService = this.injector.get(Ie)), window.setInterval(() => {
+                            this.characterService || (this.characterService = this.injector.get(Oe)), window.setInterval(() => {
                                 this.longTickSubject.next(!0)
                             }, 500), window.setInterval(() => {
                                 this.frameSubject.next(!0)
@@ -23218,14 +23234,14 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Se), S(Wi))
+                        return new(e || i)(w(Se), w(Wi))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
                         providedIn: "root"
                     }), i
                 })(),
-                pi = (() => {
+                gi = (() => {
                     class i {
                         constructor(e) {
                             this.logTopics = ["STORY", "EVENT"], this.newStory = "", this.newEvents = "", this.newCombat = "", this.newCrafting = "", this.newFollower = "", this.storyLog = [], this.eventLog = [], this.combatLog = [], this.craftingLog = [], this.followerLog = [], this.currentLog = [], e.frameSubject.subscribe(() => {
@@ -23270,7 +23286,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(yt))
+                        return new(e || i)(w(yt))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -23281,7 +23297,7 @@
                 return (i = L || (L = {}))[i.TongueRipping = 0] = "TongueRipping", i[i.Scissors = 1] = "Scissors", i[i.TreesOfKnives = 2] = "TreesOfKnives", i[i.Mirrors = 3] = "Mirrors", i[i.Steamers = 4] = "Steamers", i[i.CopperPillars = 5] = "CopperPillars", i[i.MountainOfKnives = 6] = "MountainOfKnives", i[i.MountainOfIce = 7] = "MountainOfIce", i[i.CauldronsOfOil = 8] = "CauldronsOfOil", i[i.CattlePit = 9] = "CattlePit", i[i.CrushingBoulder = 10] = "CrushingBoulder", i[i.MortarsAndPestles = 11] = "MortarsAndPestles", i[i.BloodPool = 12] = "BloodPool", i[i.WrongfulDead = 13] = "WrongfulDead", i[i.Dismemberment = 14] = "Dismemberment", i[i.MountainOfFire = 15] = "MountainOfFire", i[i.Mills = 16] = "Mills", i[i.Saws = 17] = "Saws", L;
                 var i
             })();
-            let Oe = (() => {
+            let Ie = (() => {
                     class i {
                         constructor(e, n, r, o, a, s, l, c, u, f) {
                             this.injector = e, this.logService = n, this.characterService = r, this.activityService = s, this.followerService = l, this.battleService = c, this.inventoryService = u, this.itemRepoService = f, this.inHell = !1, this.currentHell = -1, this.completedHellTasks = [], this.completedHellBosses = [], this.beaten = !1, this.mountainSteps = 0, this.animalsHealed = 0, this.boulderHeight = 0, this.daysFasted = 0, this.swimDepth = 0, this.exitFound = !1, this.soulsEscaped = 0, this.relicsReturned = 0, this.timesCrushed = 0, this.contractsExamined = 0, this.burnMoney = {
@@ -23291,7 +23307,7 @@
                                 description: ["Burn mortal realm money to receive hell money."],
                                 consequenceDescription: ["Uses a huge pile of mortal money (one million). Gives you 1 hell money."],
                                 consequence: [() => {
-                                    this.characterService.characterState.money < 1e6 || (this.characterService.characterState.money -= 1e6, this.characterService.characterState.hellMoney++)
+                                    this.characterService.characterState.money < 1e6 ? this.logService.addLogMessage("You fail to burn the money that you don't have, and feel pretty dumb for trying.", "STANDARD", "EVENT") : (this.characterService.characterState.money -= 1e6, this.characterService.characterState.hellMoney++)
                                 }],
                                 resourceUse: [{
                                     stamina: 10
@@ -23307,15 +23323,13 @@
                                 description: ["Look for followers willing to help you."],
                                 consequenceDescription: ["Uses 100 Stamina and 1000 hell money. Gives you a small chance of finding a follower."],
                                 consequence: [() => {
-                                    if (this.characterService.characterState.hellMoney < 1e3) return this.logService.addLogMessage("You don't have enough hell money. The damned souls around you team up with the demons to give you a beating.", "INJURY", "EVENT"), this.characterService.characterState.status.health.value -= .2 * this.characterService.characterState.status.health.max, void(this.characterService.characterState.status.health.value <= 0 && (this.beaten = !0));
-                                    this.characterService.characterState.status.stamina.value -= 100, this.characterService.characterState.hellMoney -= 1e3, Math.random() < .01 && (this.followerService.generateFollower(!1, "damned"), this.logService.addLogMessage("Your recruiting efforts seem to infuriate the demons here.", "STANDARD", "EVENT"))
+                                    if (!(this.characterService.characterState.attributes.charisma.value < 1e6)) return this.characterService.characterState.hellMoney < 1e3 ? (this.logService.addLogMessage("You don't have enough hell money. The damned souls around you team up with the demons to give you a beating.", "INJURY", "EVENT"), this.characterService.characterState.status.health.value -= .2 * this.characterService.characterState.status.health.max, void(this.characterService.characterState.status.health.value <= 0 && (this.beaten = !0))) : (this.characterService.characterState.status.stamina.value -= 100, this.characterService.characterState.hellMoney -= 1e3, void(Math.random() < .01 ? (this.followerService.generateFollower(!1, "damned"), this.logService.addLogMessage("Your recruiting efforts seem to infuriate the demons here.", "STANDARD", "EVENT")) : this.logService.addLogMessage("You pass around some bribes but fail to find any interested followers today.", "STANDARD", "EVENT")));
+                                    this.logService.addLogMessage("You completely fail to catch the attention of any of the damned.", "STANDARD", "EVENT")
                                 }],
                                 resourceUse: [{
                                     stamina: 100
                                 }],
-                                requirements: [{
-                                    charisma: 1e6
-                                }],
+                                requirements: [{}],
                                 unlocked: !1,
                                 discovered: !0,
                                 skipApprenticeshipLevel: 0
@@ -23351,7 +23365,7 @@
                                 description: ["You look around and realize that you have many family members and ancestors here. You should probably give them some credit for what they have done for you. And some money."],
                                 consequenceDescription: ["Uses 1 hell money."],
                                 consequence: [() => {
-                                    this.characterService.characterState.hellMoney < 1 || (this.characterService.characterState.hellMoney--, this.inventoryService.addItem(this.itemRepoService.items.tokenOfGratitude))
+                                    this.characterService.characterState.hellMoney < 1 ? this.logService.addLogMessage("Your ancestors are not impressed with your lack of financial offerings.", "STANDARD", "EVENT") : (this.characterService.characterState.hellMoney--, this.inventoryService.addItem(this.itemRepoService.items.tokenOfGratitude))
                                 }],
                                 resourceUse: [{
                                     stamina: 10
@@ -23367,14 +23381,12 @@
                                 description: ["The copper pillars here look like they're made of a decent grade of copper. It looks like you have enough slack in your chains to turn and break off some pieces."],
                                 consequenceDescription: ["Uses 100,000 stamina and produces one copper bar."],
                                 consequence: [() => {
-                                    this.characterService.characterState.status.stamina.value -= 1e5, this.inventoryService.addItem(this.itemRepoService.items.copperBar)
+                                    this.characterService.characterState.attributes.strength.value < 1e24 ? this.logService.addLogMessage("You try to crack into the pillar, but you're not strong enough.", "STANDARD", "EVENT") : (this.characterService.characterState.status.stamina.value -= 1e5, this.inventoryService.addItem(this.itemRepoService.items.copperBar))
                                 }],
                                 resourceUse: [{
                                     stamina: 1e5
                                 }],
-                                requirements: [{
-                                    strength: 1e24
-                                }],
+                                requirements: [{}],
                                 unlocked: !0,
                                 discovered: !0,
                                 skipApprenticeshipLevel: 0
@@ -23385,7 +23397,7 @@
                                 description: ["Shape a bar of copper into a hammer using your bare hands. This would be so much easier with an anvil and tools."],
                                 consequenceDescription: ["Uses 100,000 stamina and produces the worst hammer in the world."],
                                 consequence: [() => {
-                                    this.characterService.characterState.status.stamina.value -= 1e5, this.inventoryService.consume("metal", 1) > 0 && this.inventoryService.addItem({
+                                    this.characterService.characterState.attributes.strength.value < 1e24 ? this.logService.addLogMessage("Your weak muscles flinch at the very thought of trying to mold metal by hand.", "STANDARD", "EVENT") : (this.characterService.characterState.status.stamina.value -= 1e5, this.inventoryService.consume("metal", 1) > 0 && this.inventoryService.addItem({
                                         id: "weapon",
                                         name: "Copper Hammer",
                                         type: "equipment",
@@ -23398,14 +23410,12 @@
                                             baseName: "hammer"
                                         },
                                         description: "A crude copper hammer."
-                                    })
+                                    }))
                                 }],
                                 resourceUse: [{
                                     stamina: 1e5
                                 }],
-                                requirements: [{
-                                    strength: 1e24
-                                }],
+                                requirements: [{}],
                                 unlocked: !0,
                                 discovered: !0,
                                 skipApprenticeshipLevel: 0
@@ -23414,9 +23424,9 @@
                                 name: ["Climb the Mountain"],
                                 activityType: R.ClimbMountain,
                                 description: ["Take another step up the mountain. The path before you seems exceptionally jagged. Maybe you shouldn't have killed so very many little spiders."],
-                                consequenceDescription: ["Uses 1000 stamina and produces the worst hammer in the world."],
+                                consequenceDescription: ["Uses 1000 stamina and works off some of that murderous karma you have built up."],
                                 consequence: [() => {
-                                    this.characterService.characterState.status.stamina.value -= 1e3, this.mountainSteps++
+                                    this.characterService.characterState.attributes.strength.value < 1e24 || this.characterService.characterState.attributes.toughness.value < 1e24 ? this.logService.addLogMessage("Your legs give out before you can take a single step up the mountain. Maybe if you were stronger and tougher you could climb.", "STANDARD", "EVENT") : (this.characterService.characterState.status.stamina.value -= 1e3, this.mountainSteps++)
                                 }],
                                 resourceUse: [{
                                     stamina: 1e3
@@ -23449,6 +23459,7 @@
                                 description: ["The mountain is far to slippery climb. The only way you're getting to the top is to bring the top down to you."],
                                 consequenceDescription: ["Focus your connection to fire and melt that sucker down."],
                                 consequence: [() => {
+                                    if (this.characterService.characterState.attributes.fireLore.value < 1e16) return void this.logService.addLogMessage("Your connection to fire isn't nearly as strong as you thought it was.", "STANDARD", "EVENT");
                                     const p = Math.log10(this.characterService.characterState.attributes.fireLore.value);
                                     for (let v = 0; v < p; v++) this.battleService.addEnemy({
                                         name: "Ice Golem",
@@ -23461,9 +23472,7 @@
                                     })
                                 }],
                                 resourceUse: [{}],
-                                requirements: [{
-                                    fireLore: 1e3
-                                }],
+                                requirements: [{}],
                                 unlocked: !0,
                                 discovered: !0,
                                 skipApprenticeshipLevel: 0
@@ -23474,6 +23483,7 @@
                                 description: ["Swimming in lava is less fun that it seemed like it would be."],
                                 consequenceDescription: ["Focus your connection to water and turn that lava back to stone."],
                                 consequence: [() => {
+                                    if (this.characterService.characterState.attributes.waterLore.value < 1e16) return void this.logService.addLogMessage("Your connection to water isn't nearly as strong as you thought it was.", "STANDARD", "EVENT");
                                     const p = Math.log10(this.characterService.characterState.attributes.waterLore.value);
                                     for (let v = 0; v < p; v++) this.battleService.addEnemy({
                                         name: "Lava Golem",
@@ -23486,9 +23496,7 @@
                                     })
                                 }],
                                 resourceUse: [{}],
-                                requirements: [{
-                                    fireLore: 1e3
-                                }],
+                                requirements: [{}],
                                 unlocked: !0,
                                 discovered: !0,
                                 skipApprenticeshipLevel: 0
@@ -23514,7 +23522,7 @@
                                 name: ["Lift the Boulder Higher"],
                                 activityType: R.LiftBoulder,
                                 description: ["The boulder is heavy, but you are strong. See how high you can lift it."],
-                                consequenceDescription: ["Uses 100,000 stamina. Heals an animal."],
+                                consequenceDescription: ["Uses 100,000 stamina."],
                                 consequence: [() => {
                                     this.characterService.characterState.status.stamina.value -= 1e5, this.boulderHeight++
                                 }],
@@ -23549,9 +23557,9 @@
                                 description: ["The lost souls here are searching for a way out, and they can't seem to see the portal you came in on. You could help them search for the exit they're seeking."],
                                 consequenceDescription: ["Uses 200,000 Stamina."],
                                 consequence: [() => {
-                                    if (this.characterService.characterState.status.stamina.value -= 2e5, this.characterService.characterState.attributes.intelligence.value <= 1e24) return;
+                                    if (this.characterService.characterState.status.stamina.value -= 2e5, this.characterService.characterState.attributes.intelligence.value <= 1e24) return void this.logService.addLogMessage("You stumble around completely lost like the rest of the souls here. If only you were smarter.", "STANDARD", "EVENT");
                                     const p = 1e-6 * Math.log10(this.characterService.characterState.attributes.intelligence.value - 1e24);
-                                    Math.random() < p && (this.exitFound = !0, this.hells[L.WrongfulDead].activities.includes(this.teachTheWay) || (this.hells[L.WrongfulDead].activities.push(this.teachTheWay), this.activityService.reloadActivities())), this.characterService.characterState.status.stamina.value -= 2e5
+                                    Math.random() < p && (this.exitFound = !0, this.hells[L.WrongfulDead].activities.includes(this.teachTheWay) || (this.hells[L.WrongfulDead].activities.push(this.teachTheWay), this.activityService.reloadActivities()))
                                 }],
                                 resourceUse: [{
                                     stamina: 2e5
@@ -23567,7 +23575,7 @@
                                 description: ["Teach the other damned souls here the way out."],
                                 consequenceDescription: ["Uses 200,000 Stamina."],
                                 consequence: [() => {
-                                    if (this.characterService.characterState.status.stamina.value -= 2e5, this.characterService.characterState.attributes.charisma.value <= 1e24) return;
+                                    if (this.characterService.characterState.status.stamina.value -= 2e5, this.characterService.characterState.attributes.charisma.value <= 1e24) return void this.logService.addLogMessage("The damned souls completely ignore your attempts at instruction.", "STANDARD", "EVENT");
                                     const p = Math.floor(Math.log10(this.characterService.characterState.attributes.charisma.value - 1e24));
                                     this.soulsEscaped += p
                                 }],
@@ -23585,9 +23593,9 @@
                                 description: ["Find out where the tomb looters here hid their stolen treasures. You might be able to reverse some of the damage they have done."],
                                 consequenceDescription: ["Uses 1000 Stamina."],
                                 consequence: [() => {
-                                    if (this.characterService.characterState.status.stamina.value -= 1e3, this.characterService.characterState.attributes.charisma.value <= 1e24) return;
+                                    if (this.characterService.characterState.status.stamina.value -= 1e3, this.characterService.characterState.attributes.charisma.value <= 1e24) return void this.logService.addLogMessage("The damned here completely ignore you attempts.", "STANDARD", "EVENT");
                                     const p = 1e-6 * Math.log10(this.characterService.characterState.attributes.charisma.value - 1e24);
-                                    Math.random() < p && this.inventoryService.addItem(this.itemRepoService.items.treasureMap)
+                                    Math.random() < p ? this.inventoryService.addItem(this.itemRepoService.items.treasureMap) : this.logService.addLogMessage("You almost talk a soul into telling you where their treasure is hidden.", "STANDARD", "EVENT")
                                 }],
                                 resourceUse: [{
                                     stamina: 1e3
@@ -23603,9 +23611,9 @@
                                 description: ["Recover a stolen relic. You'll need all your wits to find it even if you have one the sketchy maps the damned can provide."],
                                 consequenceDescription: ["Uses 1000 Stamina."],
                                 consequence: [() => {
-                                    if (this.characterService.characterState.status.stamina.value -= 1e3, this.characterService.characterState.attributes.intelligence.value <= 1e24) return;
+                                    if (this.characterService.characterState.status.stamina.value -= 1e3, this.characterService.characterState.attributes.intelligence.value <= 1e24) return void this.logService.addLogMessage("The puzzle your best puzzling but can't figure out how to even start on this relic.", "STANDARD", "EVENT");
                                     const p = 1e-6 * Math.log10(this.characterService.characterState.attributes.intelligence.value - 1e24);
-                                    Math.random() < p && this.inventoryService.consume("treasureMap") > 0 && this.inventoryService.addItem(this.itemRepoService.items.stolenRelic)
+                                    Math.random() < p ? this.inventoryService.consume("treasureMap") > 0 && this.inventoryService.addItem(this.itemRepoService.items.stolenRelic) : this.logService.addLogMessage("You think you're getting close to figuring out where this relic is. If only you were more clever.", "STANDARD", "EVENT")
                                 }],
                                 resourceUse: [{
                                     stamina: 1e3
@@ -23621,9 +23629,9 @@
                                 description: ["Return a stolen relic to the tomb where it came from. You'll need to be quick to avoid the tomb's traps."],
                                 consequenceDescription: ["Uses 1000 Stamina."],
                                 consequence: [() => {
-                                    if (this.characterService.characterState.status.stamina.value -= 1e3, this.characterService.characterState.attributes.speed.value <= 1e24) return;
+                                    if (this.characterService.characterState.status.stamina.value -= 1e3, this.characterService.characterState.attributes.speed.value <= 1e24) return void this.logService.addLogMessage("You are too slow to even attempt replacing a treasure.", "STANDARD", "EVENT");
                                     const p = 1e-6 * Math.log10(this.characterService.characterState.attributes.speed.value - 1e24);
-                                    Math.random() < p && this.inventoryService.consume("stolenRelic") > 0 && this.relicsReturned++
+                                    Math.random() < p ? this.inventoryService.consume("stolenRelic") > 0 && this.relicsReturned++ : this.logService.addLogMessage("You make a good effort to run through the tomb, but you fail. Try harder!", "STANDARD", "EVENT")
                                 }],
                                 resourceUse: [{
                                     stamina: 1e3
@@ -23640,7 +23648,7 @@
                                 consequenceDescription: ["Uses 1000 stamina. Try not to give up. You can do this!"],
                                 consequence: [() => {
                                     this.characterService.characterState.status.stamina.value -= 1e3;
-                                    const p = Math.max(1e5 - this.characterService.characterState.attributes.toughness.value / 1e24, 100);
+                                    const p = Math.max(1e5 - this.characterService.characterState.attributes.toughness.value / 1e23, 100);
                                     this.characterService.characterState.status.health.value -= p, this.characterService.characterState.status.health.value <= 0 ? this.beaten = !0 : this.timesCrushed++
                                 }],
                                 resourceUse: [{
@@ -23657,9 +23665,9 @@
                                 description: ["As if the saw-weilding demons weren't bad enough, this place is a haven for fiendish bureaucrats. Huge piles of paper containing the contracts, covenants, bylaws, stipulations, regulations, and heretofor unspecified legal nonsense for this hell. Maybe if you go through them carefully, you can find a loophole to get yourself an audience with the boss."],
                                 consequenceDescription: ["Uses 500,000 stamina because hellish legalize is so incredibly boring."],
                                 consequence: [() => {
-                                    if (this.characterService.characterState.status.stamina.value -= 5e5, this.characterService.characterState.attributes.intelligence.value <= 1e24) return;
+                                    if (this.characterService.characterState.status.stamina.value -= 5e5, this.characterService.characterState.attributes.intelligence.value <= 1e24) return void this.logService.addLogMessage("You can't even begin to read the complex contracts.", "STANDARD", "EVENT");
                                     const p = 1e-6 * Math.log10(this.characterService.characterState.attributes.intelligence.value - 1e24);
-                                    Math.random() < p && this.contractsExamined++
+                                    Math.random() < p ? this.contractsExamined++ : this.logService.addLogMessage("You very nearly make out the meaning of the scrawled contract.", "STANDARD", "EVENT")
                                 }],
                                 resourceUse: [{
                                     stamina: 5e5
@@ -23703,10 +23711,10 @@
                                 description: "Torment for those who ruin marriages. The demons here will cut your fingers right off.",
                                 index: L.Scissors,
                                 entryEffect: () => {
-                                    this.characterService.stashWeapons()
+                                    this.inventoryService.stashWeapons()
                                 },
                                 exitEffect: () => {
-                                    this.characterService.restoreWeapons()
+                                    this.inventoryService.restoreWeapons()
                                 },
                                 completeEffect: () => {
                                     this.logService.addLogMessage("Using nothing but the strength of your body and mind, you have seized control of the Hell of Scissors. Now all that remains is to defeat its lord.", "STANDARD", "STORY")
@@ -23725,7 +23733,8 @@
                                     this.characterService.stashMoney()
                                 },
                                 dailyEffect: () => {
-                                    this.characterService.characterState.status.health.value -= .1 * this.characterService.characterState.status.health.value
+                                    const p = .1 * this.characterService.characterState.status.health.value;
+                                    this.logService.addLogMessage("The knives dig into your flesh, causing " + p + " damage.", "INJURY", "COMBAT"), this.characterService.characterState.status.health.value -= p
                                 },
                                 exitEffect: () => {
                                     this.characterService.restoreMoney()
@@ -23763,18 +23772,22 @@
                                 description: "Torment for hypocrites and troublemakers. The steam baskets here are just the right size for you.",
                                 index: L.Steamers,
                                 entryEffect: () => {
-                                    this.characterService.stashWeapons(), this.characterService.stashArmor()
+                                    this.inventoryService.stashWeapons(), this.inventoryService.stashArmor()
                                 },
                                 exitEffect: () => {
-                                    this.characterService.restoreWeapons(), this.characterService.restoreArmor()
+                                    this.inventoryService.restoreWeapons(), this.inventoryService.restoreArmor()
                                 },
                                 dailyEffect: () => {
-                                    this.inventoryService.consume("iceCore") < 0 && (this.characterService.characterState.status.health.value -= .05 * this.characterService.characterState.status.health.value), Math.random() < .2 && (this.logService.addLogMessage("As if the constant scalding steam isn't enough, one of these troublemakers stole some money! Why does this feel so familiar?", "STANDARD", "EVENT"), this.characterService.characterState.hellMoney -= .1 * this.characterService.characterState.hellMoney)
+                                    if (this.inventoryService.consume("iceCore") < 0) {
+                                        const p = .05 * this.characterService.characterState.status.health.value;
+                                        this.logService.addLogMessage("The steam cooks your skin, causing " + p + " damage.", "INJURY", "COMBAT"), this.characterService.characterState.status.health.value -= p
+                                    }
+                                    Math.random() < .2 && (this.logService.addLogMessage("As if the constant scalding steam isn't enough, one of these troublemakers stole some money! Why does this feel so familiar?", "STANDARD", "EVENT"), this.characterService.characterState.hellMoney -= .1 * this.characterService.characterState.hellMoney)
                                 },
                                 completeEffect: () => {
                                     this.battleService.clearEnemies(), this.logService.addLogMessage("You defeat so many troublemakers that the rest all beg to return to their baskets for their regular torment.", "STANDARD", "STORY")
                                 },
-                                activities: [this.activityService.Resting, this.activityService.MindCultivation, this.activityService.BodyCultivation, this.activityService.CoreCultivation, this.activityService.SoulCultivation, this.rehabilitation],
+                                activities: [this.activityService.Resting, this.activityService.MindCultivation, this.activityService.BodyCultivation, this.activityService.CoreCultivation, this.activityService.SoulCultivation, this.activityService.Taunting, this.rehabilitation],
                                 projectionActivities: [this.activityService.OddJobs, this.burnMoney],
                                 hint: "There so many troublemakers here that deserve some payback from you. I wonder if you can take them all on.",
                                 progress: () => {
@@ -23793,13 +23806,16 @@
                                 description: "Torment for arsonists. The red-hot copper pillars you will be bound to remind you of all those times you played with fire.",
                                 index: L.CopperPillars,
                                 entryEffect: () => {
-                                    this.characterService.stashWeapons()
+                                    this.inventoryService.stashWeapons()
                                 },
                                 exitEffect: () => {
-                                    this.characterService.restoreWeapons()
+                                    this.inventoryService.restoreWeapons()
                                 },
                                 dailyEffect: () => {
-                                    this.inventoryService.consume("iceCore") < 0 && (this.characterService.characterState.status.health.value -= Math.max(.1 * this.characterService.characterState.status.health.value, 20))
+                                    if (this.inventoryService.consume("iceCore") < 0) {
+                                        const p = Math.max(.1 * this.characterService.characterState.status.health.value, 20);
+                                        this.characterService.characterState.status.health.value -= p, this.logService.addLogMessage("The heat of the pillars burns you for " + p + " damage.", "INJURY", "COMBAT")
+                                    }
                                 },
                                 completeEffect: () => {
                                     this.logService.addLogMessage("You finally forge a hammer powerful enough to break through the chains that bind you to the pillar. The Lord of this Hell comes to investigate all the commotion as the chains fall to the ground.", "STANDARD", "STORY")
@@ -23831,8 +23847,8 @@
                                 projectionActivities: [this.activityService.OddJobs, this.burnMoney],
                                 hint: "It seems you've accrued a lot of karma from all the killing you've done over your many lives. The bill is due.",
                                 progress: () => this.mountainSteps,
-                                progressMax: () => this.battleService.totalKills / 10,
-                                successCheck: () => this.mountainSteps >= this.battleService.totalKills / 10
+                                progressMax: () => this.battleService.totalKills / 100,
+                                successCheck: () => this.mountainSteps >= this.battleService.totalKills / 100
                             }, {
                                 name: "Hell of the Mountain of Ice",
                                 description: "Torment for adulterers and schemers. The chill wind blowing through the gate is so cold it burns.",
@@ -23843,7 +23859,7 @@
                                 dailyEffect: () => {
                                     this.inventoryService.consume("fireCore") < 0 && (this.characterService.characterState.status.health.value -= 1e3, this.logService.addLogMessage("The mountain's ice freezes you for 1000 damage.", "INJURY", "COMBAT")), this.characterService.characterState.attributes.fireLore.value *= .9
                                 },
-                                activities: [this.activityService.Resting, this.activityService.MindCultivation, this.activityService.BodyCultivation, this.activityService.CoreCultivation, this.activityService.SoulCultivation, this.meltMountain],
+                                activities: [this.activityService.Resting, this.activityService.MindCultivation, this.activityService.BodyCultivation, this.activityService.CoreCultivation, this.activityService.SoulCultivation, this.activityService.Taunting, this.meltMountain],
                                 projectionActivities: [this.activityService.OddJobs, this.burnMoney],
                                 hint: "Burn it down!",
                                 progress: () => this.inventoryService.getQuantityByName("ice core"),
@@ -23855,8 +23871,9 @@
                                 index: L.CauldronsOfOil,
                                 dailyEffect: () => {
                                     if (!this.completedHellTasks.includes(L.CauldronsOfOil)) {
-                                        if (this.inventoryService.consume("iceCore") < 0) return this.logService.addLogMessage("The ice cores you brought in with you make the oil sputter and pop, baking you in a cloud of superheated steam.", "INJURY", "EVENT"), void(this.characterService.characterState.status.health.value -= 1e5);
-                                        this.characterService.characterState.status.health.value -= Math.max(.1 * this.characterService.characterState.status.health.value, 20)
+                                        if (this.inventoryService.consume("iceCore") > 0) return this.logService.addLogMessage("The ice cores you brought in with you make the oil sputter and pop, baking you in a cloud of superheated steam.", "INJURY", "EVENT"), void(this.characterService.characterState.status.health.value -= 1e5);
+                                        const p = Math.max(.1 * this.characterService.characterState.status.health.value, 20);
+                                        this.logService.addLogMessage("The oil scorches you, causing " + p + " damage.", "INJURY", "COMBAT"), this.characterService.characterState.status.health.value -= p
                                     }
                                     if (Math.random() < .1) {
                                         this.logService.addLogMessage("Your weapons slip from your oily hands.", "INJURY", "COMBAT"), this.inventoryService.autoequipBestEnabled = !1;
@@ -23911,8 +23928,8 @@
                                 projectionActivities: [this.activityService.OddJobs, this.burnMoney],
                                 hint: "It's leg day. No, it's arm day. Must be both! Lift!",
                                 progress: () => this.boulderHeight,
-                                progressMax: () => 100,
-                                successCheck: () => this.boulderHeight > 100
+                                progressMax: () => 1e3,
+                                successCheck: () => this.boulderHeight > 1e3
                             }, {
                                 name: "Hell of Mortars and Pestles",
                                 description: "Torment for food wasters. You didn't really need to eat all those peaches, did you? The diet here is pure hellfire.",
@@ -23943,8 +23960,8 @@
                                 projectionActivities: [this.activityService.OddJobs, this.burnMoney],
                                 hint: "Not this again!",
                                 progress: () => this.swimDepth,
-                                progressMax: () => 1e3,
-                                successCheck: () => this.swimDepth > 1e3
+                                progressMax: () => 1e4,
+                                successCheck: () => this.swimDepth > 1e4
                             }, {
                                 name: "Hell of the Wrongful Dead",
                                 description: "Torment for those who gave up their lives too early. Fortunately you've probably never done that. The pounding Rains of Pain and the blowing Winds of Sorrow give unrelenting misery to everyone here.",
@@ -23953,7 +23970,7 @@
                                     this.exitFound && (this.hells[L.WrongfulDead].activities.includes(this.teachTheWay) || this.hells[L.WrongfulDead].activities.push(this.teachTheWay))
                                 },
                                 dailyEffect: () => {
-                                    this.characterService.characterState.status.health.value -= 500, this.characterService.characterState.status.stamina.value -= 100
+                                    this.logService.addLogMessage("The constant storm saps you of 500 health and 100 stamina.", "INJURY", "COMBAT"), this.characterService.characterState.status.health.value -= 500, this.characterService.characterState.status.stamina.value -= 100
                                 },
                                 completeEffect: () => {
                                     this.logService.addLogMessage("You sigh in relief as you usher the last of the damned out. The hell is finally empty. Well, empty except for the monstrous Hell Lord coming toward you.", "STANDARD", "STORY")
@@ -23982,7 +23999,10 @@
                                 description: "Torment for thieves. The volcano where the poor souls are thrown looks a little toasty for comfort.",
                                 index: L.MountainOfFire,
                                 dailyEffect: () => {
-                                    this.inventoryService.consume("iceCore") < 0 && (this.characterService.characterState.status.health.value -= Math.max(.1 * this.characterService.characterState.status.health.value, 20))
+                                    if (this.inventoryService.consume("iceCore") < 0) {
+                                        const p = Math.max(.1 * this.characterService.characterState.status.health.value, 20);
+                                        this.logService.addLogMessage("The oppressive heat of the volcano burns you for " + p + " damage.", "INJURY", "COMBAT"), this.characterService.characterState.status.health.value -= p
+                                    }
                                 },
                                 completeEffect: () => {
                                     this.logService.addLogMessage("You realize that the power of the fire cores is essential to keeping the lava in the volcano liquid. With enough of these tucked away in your pack, the the surface finally cools enough to turn back to stone. Someone is not happy with this change.", "STANDARD", "STORY")
@@ -24009,9 +24029,9 @@
                             }, {
                                 name: "Hell of Saws",
                                 description: "Torment for swindlers and business cheats. The demons sharpen their saws and grin at you. You wish now that you'd stayed out of politics.",
-                                index: 0,
+                                index: L.Saws,
                                 dailyEffect: () => {
-                                    this.contractsExamined <= 1e5 && (this.characterService.characterState.status.health.value -= 100)
+                                    this.contractsExamined <= 2e4 && (this.logService.addLogMessage("The saws tear into your flesh, causing 100 damage.", "INJURY", "COMBAT"), this.characterService.characterState.status.health.value -= 100)
                                 },
                                 completeEffect: () => {
                                     this.logService.addLogMessage("You finally find article 131 of bylaw 8888 subsection 42(b)6.42 where paragraph fourty-eight clearly states that you have the right to confront the Hell Lord. Time to party!", "STANDARD", "STORY")
@@ -24020,12 +24040,12 @@
                                 projectionActivities: [this.activityService.OddJobs, this.burnMoney],
                                 hint: "You read legalese, right?",
                                 progress: () => this.contractsExamined,
-                                progressMax: () => 1e5,
-                                successCheck: () => this.contractsExamined > 1e5
+                                progressMax: () => 2e4,
+                                successCheck: () => this.contractsExamined > 2e4
                             }], o.tickSubject.subscribe(() => {
                                 if (this.currentHell < 0) return;
                                 const p = this.hells[this.currentHell];
-                                p.dailyEffect && p.dailyEffect(), this.beaten && (this.beaten = !1, this.logService.addLogMessage("You fall to your knees, unable to bear more damage. You crawl back through this hell's gate to get a moment of respite at the gates of Lord Yama's realm.", "INJURY", "EVENT"), p.exitEffect && p.exitEffect(), this.currentHell = -1, this.activityService.reloadActivities()), !this.completedHellTasks.includes(this.currentHell) && p.successCheck() && (p.completeEffect(), this.completedHellTasks.push(this.currentHell))
+                                p.dailyEffect && p.dailyEffect(), this.beaten && (this.beaten = !1, this.logService.addLogMessage("You fall to your knees, unable to bear more damage. You crawl back through this hell's gate to get a moment of respite at the gates of Lord Yama's realm.", "INJURY", "EVENT"), this.battleService.enemies = [], this.battleService.currentEnemy = null, p.exitEffect && p.exitEffect(), this.currentHell = -1, this.activityService.reloadActivities()), !this.completedHellTasks.includes(this.currentHell) && p.successCheck() && (p.completeEffect(), this.completedHellTasks.push(this.currentHell))
                             }), a.reincarnateSubject.subscribe(() => {
                                 this.reset()
                             })
@@ -24137,10 +24157,10 @@
                                 loot: [this.itemRepoService.items.hellCrownTongueRippers]
                             }) : this.currentHell === L.Scissors ? this.battleService.addEnemy({
                                 name: "Malgorath the Marriage Masher",
-                                health: 1e30,
-                                maxHealth: 1e30,
+                                health: 1e27,
+                                maxHealth: 1e27,
                                 accuracy: .8,
-                                attack: 1e10,
+                                attack: 1e11,
                                 defense: 1e12,
                                 loot: [this.itemRepoService.items.hellCrownScissors]
                             }) : this.currentHell === L.TreesOfKnives ? this.battleService.addEnemy({
@@ -24161,8 +24181,8 @@
                                 loot: [this.itemRepoService.items.hellCrownMirrors]
                             }) : this.currentHell === L.Steamers ? this.battleService.addEnemy({
                                 name: "Stactolus the Steamer",
-                                health: 1e30,
-                                maxHealth: 1e30,
+                                health: 1e27,
+                                maxHealth: 1e27,
                                 accuracy: .8,
                                 attack: 1e10,
                                 defense: 1e12,
@@ -24355,27 +24375,27 @@
                                 consequence: [() => {
                                     0 == this.battleService.enemies.length && (this.battleService.addEnemy({
                                         name: "Lord Yama",
-                                        health: 1e39,
-                                        maxHealth: 1e39,
+                                        health: 1e40,
+                                        maxHealth: 1e40,
                                         accuracy: .8,
-                                        attack: 1e15,
+                                        attack: 1e14,
                                         defense: 1e18,
                                         loot: [this.itemRepoService.items.portalKey]
                                     }), this.battleService.addEnemy({
                                         name: "Horse Face",
-                                        health: 1e30,
-                                        maxHealth: 1e30,
+                                        health: 1e39,
+                                        maxHealth: 1e39,
                                         accuracy: .8,
-                                        attack: 1e10,
-                                        defense: 1e12,
+                                        attack: 5e13,
+                                        defense: 5e17,
                                         loot: []
                                     }), this.battleService.addEnemy({
                                         name: "Ox Head",
-                                        health: 1e30,
-                                        maxHealth: 1e30,
+                                        health: 1e39,
+                                        maxHealth: 1e39,
                                         accuracy: .8,
-                                        attack: 1e10,
-                                        defense: 1e12,
+                                        attack: 5e13,
+                                        defense: 5e17,
                                         loot: []
                                     }))
                                 }],
@@ -24386,7 +24406,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Se), S(pi), S(Ie), S(yt), S(Jn), S(Ze), S(Mt), S(Wt), S(W), S(Ri))
+                        return new(e || i)(w(Se), w(gi), w(Oe), w(yt), w(Jn), w(Ke), w(Mt), w(jt), w(W), w(Ri))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -24396,7 +24416,7 @@
                 W = (() => {
                     class i {
                         constructor(e, n, r, o, a, s) {
-                            this.injector = e, this.logService = n, this.characterService = r, this.itemRepoService = s, this.itemStacks = [], this.stashedItemStacks = [], this.maxItems = 10, this.maxStackSize = 100, this.selectedItem = null, this.autoequipBestEnabled = !0, this.fed = !1, this.lifetimeUsedItems = 0, this.lifetimeSoldItems = 0, this.lifetimePotionsUsed = 0, this.lifetimePillsUsed = 0, this.lifetimeGemsSold = 0, this.motherGift = !1, this.grandmotherGift = !1, this.thrownAwayItems = 0, this.mergeCounter = 0, this.autoBuyFood = !0, this.automergeEquipped = !1, this.autoSort = !1, this.descendingSort = !1, this.divinePeachesUnlocked = !1, this.hideEquipment = !1, this.farmFoodList = [this.itemRepoService.items.rice, this.itemRepoService.items.cabbage, this.itemRepoService.items.beans, this.itemRepoService.items.broccoli, this.itemRepoService.items.calabash, this.itemRepoService.items.taro, this.itemRepoService.items.pear, this.itemRepoService.items.melon, this.itemRepoService.items.plum, this.itemRepoService.items.apricot, this.itemRepoService.items.peach], setTimeout(() => this.hellService = this.injector.get(Oe)), this.bigNumberPipe = this.injector.get(jt), this.noFood = !1, this.autoSellUnlocked = !1, this.autoSellEntries = [], this.autoUseUnlocked = !1, this.autoUseEntries = [], this.autoBalanceUnlocked = !1, this.autoBalanceItems = [], this.autoPotionUnlocked = !1, this.autoPillUnlocked = !1, this.autoWeaponMergeUnlocked = !1, this.autoArmorMergeUnlocked = !1, this.autoequipBestWeapon = !1, this.autoequipBestArmor = !1, this.useSpiritGemUnlocked = !1, this.useSpiritGemWeapons = !1, this.useSpiritGemPotions = !1, this.useCheapestSpiritGem = !1, this.autoSellOldHerbs = !1, this.autoSellOldWood = !1, this.autoSellOldOre = !1, this.autoSellOldHides = !1, this.autoSellOldHerbsEnabled = !1, this.autoSellOldWoodEnabled = !1, this.autoSellOldOreEnabled = !1, this.autoSellOldBarsEnabled = !1, this.autoSellOldHidesEnabled = !1, this.autoSellOldGemsUnlocked = !1, this.autoSellOldGemsEnabled = !1;
+                            this.injector = e, this.logService = n, this.characterService = r, this.itemRepoService = s, this.itemStacks = [], this.stashedItemStacks = [], this.maxItems = 10, this.maxStackSize = 100, this.selectedItem = null, this.autoequipBestEnabled = !0, this.fed = !1, this.lifetimeUsedItems = 0, this.lifetimeSoldItems = 0, this.lifetimePotionsUsed = 0, this.lifetimePillsUsed = 0, this.lifetimeGemsSold = 0, this.motherGift = !1, this.grandmotherGift = !1, this.thrownAwayItems = 0, this.mergeCounter = 0, this.autoBuyFood = !0, this.automergeEquipped = !1, this.autoSort = !1, this.descendingSort = !1, this.divinePeachesUnlocked = !1, this.hideEquipment = !1, this.farmFoodList = [this.itemRepoService.items.rice, this.itemRepoService.items.cabbage, this.itemRepoService.items.beans, this.itemRepoService.items.broccoli, this.itemRepoService.items.calabash, this.itemRepoService.items.taro, this.itemRepoService.items.pear, this.itemRepoService.items.melon, this.itemRepoService.items.plum, this.itemRepoService.items.apricot, this.itemRepoService.items.peach], setTimeout(() => this.hellService = this.injector.get(Ie)), this.bigNumberPipe = this.injector.get(Yt), this.noFood = !1, this.autoSellUnlocked = !1, this.autoSellEntries = [], this.autoUseUnlocked = !1, this.autoUseEntries = [], this.autoBalanceUnlocked = !1, this.autoBalanceItems = [], this.autoPotionUnlocked = !1, this.autoPillUnlocked = !1, this.autoWeaponMergeUnlocked = !1, this.autoArmorMergeUnlocked = !1, this.autoequipBestWeapon = !1, this.autoequipBestArmor = !1, this.useSpiritGemUnlocked = !1, this.useSpiritGemWeapons = !1, this.useSpiritGemPotions = !1, this.useCheapestSpiritGem = !1, this.autoSellOldHerbs = !1, this.autoSellOldWood = !1, this.autoSellOldOre = !1, this.autoSellOldHides = !1, this.autoSellOldHerbsEnabled = !1, this.autoSellOldWoodEnabled = !1, this.autoSellOldOreEnabled = !1, this.autoSellOldBarsEnabled = !1, this.autoSellOldHidesEnabled = !1, this.autoSellOldGemsUnlocked = !1, this.autoSellOldGemsEnabled = !1;
                             for (let l = 0; l < this.maxItems; l++) this.itemStacks.push(null);
                             o.tickSubject.subscribe(() => {
                                 this.characterService.characterState.dead || (this.eatFood(), this.mergeCounter >= 20 ? (this.autoWeaponMergeUnlocked && this.autoWeaponMerge(), this.autoArmorMergeUnlocked && this.autoArmorMerge(), this.mergeCounter = 0) : this.mergeCounter++)
@@ -24414,7 +24434,7 @@
                                     for (const l of this.itemStacks)
                                         if (l) {
                                             const c = l.item;
-                                            mi(c) && (c.weaponStats ? this.updateWeaponDescription(c) : c.armorStats && this.updateArmorDescription(c))
+                                            At(c) && (c.weaponStats ? this.updateWeaponDescription(c) : c.armorStats && this.updateArmorDescription(c))
                                         } this.autoSort && this.sortInventory()
                                 }
                             }), a.reincarnateSubject.subscribe(() => {
@@ -24508,13 +24528,13 @@
                                 y = "rightHand";
                             "wood" === n && (y = "leftHand", v = "wooden");
                             const C = null != o ? o : Uw[Math.floor(Math.random() * Uw.length)];
-                            let x;
-                            x = "Grandmother's Walking Stick" === C ? C : f + " " + v + " " + C + p, this.logService.addLogMessage("Your hard work paid off! You created a new weapon: " + x + "!", "STANDARD", "CRAFTING");
+                            let M;
+                            M = "Grandmother's Walking Stick" === C ? C : f + " " + v + " " + C + p, this.logService.addLogMessage("Your hard work paid off! You created a new weapon: " + M + "!", "STANDARD", "CRAFTING");
                             const D = 15 * e,
                                 k = Math.max(Math.sqrt(e), 1e3) * e;
                             return {
                                 id: "weapon",
-                                name: x,
+                                name: M,
                                 type: "equipment",
                                 slot: y,
                                 value: e,
@@ -24639,8 +24659,8 @@
                             const y = n;
                             let C = UN;
                             "legs" === r ? C = jN : "head" === r ? C = qN : "feet" === r && (C = YN);
-                            const x = null != a ? a : C[Math.floor(Math.random() * C.length)],
-                                D = p + " " + y + " " + x + v;
+                            const M = null != a ? a : C[Math.floor(Math.random() * C.length)],
+                                D = p + " " + y + " " + M + v;
                             this.logService.addLogMessage("Your hard work paid off! You created some armor: " + D + "!", "STANDARD", "CRAFTING");
                             const k = 10 * e,
                                 A = Math.max(Math.sqrt(e), 1e3) * e;
@@ -24654,7 +24674,7 @@
                                     defense: A,
                                     material: n,
                                     durability: k,
-                                    baseName: x,
+                                    baseName: M,
                                     effect: s
                                 },
                                 description: "A unique piece of armor made of " + n + ". Drag and drop onto similar armor to merge them into something better.\nDefense: " + this.bigNumberPipe.transform(A) + "\nDurability: " + this.bigNumberPipe.transform(k)
@@ -24741,17 +24761,14 @@
                                     baseName: "Grandmother's Walking Stick"
                                 },
                                 description: "Your grandmother's walking stick. Drag and drop onto similar weapons to merge them into something better.\nBase Damage: 10\nDurability: 100"
-                            }), this.characterService.characterState.bloodlineRank >= 6 || this.motherGift && (this.logService.addLogMessage("Your mother gives you three big bags of rice as she sends you out to make your way in the world.", "STANDARD", "EVENT"), this.itemStacks[0] = {
-                                item: this.itemRepoService.items.rice,
-                                quantity: 300
-                            })
+                            }), this.characterService.characterState.bloodlineRank >= 6 || this.motherGift && (this.logService.addLogMessage("Your mother gives you three big bags of rice as she sends you out to make your way in the world.", "STANDARD", "EVENT"), this.addItem(this.itemRepoService.items.rice, 300))
                         }
                         eatFood() {
                             var e;
                             if (this.fed) return this.noFood = !1, void(this.fed = !1);
                             let n = null;
                             for (const o of this.itemStacks) null !== o && "food" === o.item.type && o.item.value > 0 && (n = o);
-                            n ? (this.useItemStack(n), this.noFood = !1) : (null === (e = this.hellService) || void 0 === e ? void 0 : e.inHell) || (this.noFood = !0, this.characterService.characterState.money > 0 && this.autoBuyFood && (this.characterService.characterState.money--, this.characterService.characterState.status.nourishment.value++)), this.fed = !1
+                            n ? (this.useItemStack(n), this.noFood = !1) : (this.noFood = !0, !(null === (e = this.hellService) || void 0 === e ? void 0 : e.inHell) && this.characterService.characterState.money > 0 && this.autoBuyFood && (this.characterService.characterState.money--, this.characterService.characterState.status.nourishment.value++)), this.fed = !1
                         }
                         addItem(e, n = 1) {
                             var r, o, a;
@@ -24829,7 +24846,7 @@
                             for (const n of this.itemStacks) null !== n && n.item.name === e.name && this.sell(n, n.quantity)
                         }
                         autoSell(e) {
-                            e.value !== 1 / 0 && (!this.autoSellUnlocked || mi(e) || (this.autoSellEntries.some(n => n.name === e.name) || this.autoSellEntries.push({
+                            e.value !== 1 / 0 && (!this.autoSellUnlocked || At(e) || (this.autoSellEntries.some(n => n.name === e.name) || this.autoSellEntries.push({
                                 name: e.name,
                                 reserve: 0
                             }), this.sellAll(e)))
@@ -24882,7 +24899,7 @@
                         equip(e) {
                             var n, r;
                             const o = e.item;
-                            if (!mi(o)) return;
+                            if (!At(o)) return;
                             if (((null === (n = o.armorStats) || void 0 === n ? void 0 : n.durability) || 0) <= 0 && ((null === (r = o.weaponStats) || void 0 === r ? void 0 : r.durability) || 0) <= 0) return void this.logService.addLogMessage("You tried to equip some broken equipment, but it was broken.", "STANDARD", "EVENT");
                             const a = this.characterService.characterState.equipment[o.slot];
                             a && this.addItem(a), this.characterService.characterState.equipment[o.slot] = o;
@@ -24898,9 +24915,14 @@
                                 const y = this.itemStacks[v];
                                 if (y) {
                                     const C = y.item;
-                                    if (mi(C) && C.slot === e) {
-                                        let x = 0;
-                                        p && C.weaponStats && (null === (s = C.weaponStats) || void 0 === s ? void 0 : s.durability) > 0 ? x = null === (l = C.weaponStats) || void 0 === l ? void 0 : l.baseDamage : !p && C.armorStats && (null === (c = C.armorStats) || void 0 === c ? void 0 : c.durability) > 0 && (x = null === (u = C.armorStats) || void 0 === u ? void 0 : u.defense), x > f && this.equip(y)
+                                    if (At(C) && C.slot === e) {
+                                        let M = 0;
+                                        if (p && C.weaponStats && (null === (s = C.weaponStats) || void 0 === s ? void 0 : s.durability) > 0) M = null === (l = C.weaponStats) || void 0 === l ? void 0 : l.baseDamage;
+                                        else {
+                                            if (!(!p && C.armorStats && (null === (c = C.armorStats) || void 0 === c ? void 0 : c.durability) > 0)) continue;
+                                            M = null === (u = C.armorStats) || void 0 === u ? void 0 : u.defense
+                                        }
+                                        M > f && this.equip(y)
                                     }
                                 }
                             }
@@ -24942,7 +24964,7 @@
                         hasDurability(e) {
                             var n, r;
                             const o = e.item;
-                            return !mi(o) || ((null === (n = o.armorStats) || void 0 === n ? void 0 : n.durability) || 0) > 0 || ((null === (r = o.weaponStats) || void 0 === r ? void 0 : r.durability) || 0) > 0
+                            return !At(o) || ((null === (n = o.armorStats) || void 0 === n ? void 0 : n.durability) || 0) > 0 || ((null === (r = o.weaponStats) || void 0 === r ? void 0 : r.durability) || 0) > 0
                         }
                         usePotion(e, n = 1) {
                             n < 1 && (n = 1), this.lifetimePotionsUsed += n, this.characterService.characterState.attributes[e.attribute].value += e.increase * n
@@ -24984,18 +25006,16 @@
                                 l = -1;
                             for (let c = 0; c < this.itemStacks.length; c++) {
                                 let u = null === (n = this.itemStacks[c]) || void 0 === n ? void 0 : n.item;
-                                u && mi(u) && u.slot === e && (-1 === o ? (o = c, l = c, a = u) : (s = u, a && ((this.selectedItem === this.itemStacks[o] || this.selectedItem === this.itemStacks[c]) && (this.selectedItem = null), this.itemStacks[o] = null, this.itemStacks[c] = null, this.mergeEquipment(a, s, o), u = null === (r = this.itemStacks[o]) || void 0 === r ? void 0 : r.item, u ? mi(u) && u.slot === e && (a = u) : o = -1)))
+                                u && At(u) && u.slot === e && (-1 === o ? (o = c, l = c, a = u) : (s = u, a && ((this.selectedItem === this.itemStacks[o] || this.selectedItem === this.itemStacks[c]) && (this.selectedItem = null), this.itemStacks[o] = null, this.itemStacks[c] = null, this.mergeEquipment(a, s, o), u = null === (r = this.itemStacks[o]) || void 0 === r ? void 0 : r.item, u ? At(u) && u.slot === e && (a = u) : o = -1)))
                             }
-                            if (this.automergeEquipped && a && this.autoequipBestEnabled && (this.autoequipBestWeapon || this.autoequipBestArmor)) {
-                                if (!(("rightHand" === e || "leftHand" === e) && this.autoequipBestWeapon || "rightHand" !== e && "leftHand" !== e && this.autoequipBestArmor)) return;
-                                this.mergeEquippedSlot(e, a, l)
-                            }
+                            this.automergeEquipped && a && this.autoequipBestEnabled && (this.autoequipBestWeapon || this.autoequipBestArmor) && (("rightHand" === e || "leftHand" === e) && this.autoequipBestWeapon || "rightHand" !== e && "leftHand" !== e && this.autoequipBestArmor) && this.mergeEquippedSlot(e, a, l)
                         }
                         mergeEquippedSlot(e, n, r) {
                             var o, a, s, l, c, u;
                             const f = this.characterService.characterState.equipment[e];
+                            if (!f) return;
                             if (n.type.includes("Gem") && f) return void this.gemifyEquipment(r, f);
-                            if (!mi(n)) return;
+                            if (!At(n)) return;
                             let p;
                             if (!f) return this.characterService.characterState.equipment[e] = n, void(this.itemStacks[r] = null);
                             p = "rightHand" === e || "leftHand" === e ? this.generateWeapon(f.value + n.value, (null === (o = n.weaponStats) || void 0 === o ? void 0 : o.material) + "", !1, null === (a = f.weaponStats) || void 0 === a ? void 0 : a.baseName, null === (s = f.weaponStats) || void 0 === s ? void 0 : s.effect) : this.generateArmor(f.value + n.value, (null === (l = n.armorStats) || void 0 === l ? void 0 : l.material) + "", e, !1, null === (c = f.armorStats) || void 0 === c ? void 0 : c.baseName, null === (u = f.armorStats) || void 0 === u ? void 0 : u.effect), this.characterService.characterState.equipment[e] = p, this.itemStacks[r] = null
@@ -25013,17 +25033,49 @@
                                 if (o && "spiritGem" === o.item.type && o.quantity >= 10 - e) return void this.mergeSpiritGem(o, e)
                             }
                         }
+                        stashWeapons() {
+                            var e;
+                            this.characterService.stashWeapons();
+                            for (let n = 0; n < this.itemStacks.length; n++) {
+                                const r = null === (e = this.itemStacks[n]) || void 0 === e ? void 0 : e.item;
+                                r && At(r) && r.weaponStats && (this.stashedItemStacks.push(this.itemStacks[n]), this.itemStacks[n] = null)
+                            }
+                        }
+                        restoreWeapons() {
+                            this.characterService.restoreWeapons();
+                            for (let e = this.stashedItemStacks.length - 1; e >= 0; e--) {
+                                const n = this.stashedItemStacks[e];
+                                n && n.item && At(n.item) && n.item.weaponStats && (this.addItem(n.item, n.quantity), this.stashedItemStacks.splice(e, 1))
+                            }
+                        }
+                        stashArmor() {
+                            var e;
+                            this.characterService.stashArmor();
+                            for (let n = 0; n < this.itemStacks.length; n++) {
+                                const r = null === (e = this.itemStacks[n]) || void 0 === e ? void 0 : e.item;
+                                r && At(r) && r.armorStats && (this.stashedItemStacks.push(this.itemStacks[n]), this.itemStacks[n] = null)
+                            }
+                        }
+                        restoreArmor() {
+                            this.characterService.restoreArmor();
+                            for (let e = this.stashedItemStacks.length - 1; e >= 0; e--) {
+                                const n = this.stashedItemStacks[e];
+                                n && n.item && At(n.item) && n.item.armorStats && (this.addItem(n.item, n.quantity), this.stashedItemStacks.splice(e, 1))
+                            }
+                        }
                         stashInventory() {
                             var e;
-                            this.stashedItemStacks = [];
                             for (let n = 0; n < this.itemStacks.length; n++) {
                                 const r = null === (e = this.itemStacks[n]) || void 0 === e ? void 0 : e.item;
                                 r && "food" !== r.type && !r.type.includes("Gem") && (this.stashedItemStacks.push(this.itemStacks[n]), this.itemStacks[n] = null)
                             }
                         }
                         restoreInventory() {
-                            this.itemStacks = [];
-                            for (let e = 0; e < this.stashedItemStacks.length; e++) this.stashedItemStacks[e] && (this.itemStacks.push(this.stashedItemStacks[e]), this.stashedItemStacks[e] = null)
+                            for (let e = this.stashedItemStacks.length - 1; e >= 0; e--) {
+                                const n = this.stashedItemStacks[e];
+                                n && n.item && this.addItem(n.item, n.quantity)
+                            }
+                            this.stashedItemStacks = []
                         }
                         gemifyEquipment(e, n) {
                             var r;
@@ -25034,9 +25086,13 @@
                                 this.upgradeEquipment(n, Math.floor(Math.pow(a.value / 10, 2.4)), s), this.updateArmorDescription(n), o.quantity > 1 ? o.quantity-- : this.itemStacks[e] = null, this.characterService.characterState.yinYangUnlocked && (this.characterService.characterState.yang++, this.characterService.characterState.yin++)
                             }
                         }
+                        removeItemStack(e) {
+                            const n = this.itemStacks.indexOf(e);
+                            this.thrownAwayItems += e.quantity, this.itemStacks[n] = null
+                        }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(S(Se), S(pi), S(Ie), S(yt), S(Jn), S(Ri))
+                        return new(e || i)(w(Se), w(gi), w(Oe), w(yt), w(Jn), w(Ri))
                     }, i.\u0275prov = N({
                         token: i,
                         factory: i.\u0275fac,
@@ -25044,7 +25100,7 @@
                     }), i
                 })();
 
-            function mi(i) {
+            function At(i) {
                 return "slot" in i
             }
             let ro = (() => {
@@ -25097,7 +25153,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(pi), S(Ie), S(W), S(Ri), S(it), S(Wi))
+                    return new(e || i)(w(gi), w(Oe), w(W), w(Ri), w(tt), w(Wi))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -25106,8 +25162,8 @@
             })();
 
             function AU(i, t) {
-                if (1 & i && (d(0, "div"), m(1), I(2, "bigNumber"), h()), 2 & i) {
-                    const e = w().$implicit;
+                if (1 & i && (d(0, "div"), m(1), O(2, "bigNumber"), h()), 2 & i) {
+                    const e = S().$implicit;
                     g(1), F("$ ", H(2, 1, e.value), "")
                 }
             }
@@ -25121,14 +25177,14 @@
             function IU(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div")(1, "div", 4), M("click", function () {
+                    d(0, "div")(1, "div", 4), T("click", function () {
                         const o = E(e).$implicit;
-                        return w().slotClicked(o)
-                    }), d(2, "div")(3, "mat-icon"), m(4, "menu_book"), h()(), d(5, "div"), m(6), I(7, "titlecase"), h(), T(8, AU, 3, 3, "div", 5), h()()
+                        return S().slotClicked(o)
+                    }), d(2, "div")(3, "mat-icon"), m(4, "menu_book"), h()(), d(5, "div"), m(6), O(7, "titlecase"), h(), x(8, AU, 3, 3, "div", 5), h()()
                 }
                 if (2 & i) {
                     const e = t.$implicit,
-                        n = w();
+                        n = S();
                     g(1), ve("matTooltip", e.description), b("ngClass", Bn(6, PU, e === n.storeService.selectedItem, e.owned && e.owned())), g(5), le(H(7, 4, e.name)), g(2), b("ngIf", e.owned && !e.owned())
                 }
             }
@@ -25142,7 +25198,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(ro), _(Ie), _(it), _(W), _(Ri), _(Oi))
+                    return new(e || i)(_(ro), _(Oe), _(tt), _(W), _(Ri), _(Oi))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -25159,7 +25215,7 @@
                         [4, "ngIf"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Manuals Shop"), h(), B(3, "hr"), d(4, "div", 1), T(5, IU, 9, 9, "div", 2), h(), d(6, "button", 3), M("click", function () {
+                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Manuals Shop"), h(), B(3, "hr"), d(4, "div", 1), x(5, IU, 9, 9, "div", 2), h(), d(6, "button", 3), T("click", function () {
                             return n.storeService.buyManual()
                         }), m(7, " Buy "), h()()), 2 & e && (g(5), b("ngForOf", n.storeService.manuals), g(1), b("disabled", n.buyDisabled))
                     },
@@ -25195,51 +25251,51 @@
             function YU(i, t) {}
 
             function zU(i, t) {
-                1 & i && T(0, YU, 0, 0, "ng-template", 10), 2 & i && b("cdkPortalOutlet", w().$implicit.templateLabel)
+                1 & i && x(0, YU, 0, 0, "ng-template", 10), 2 & i && b("cdkPortalOutlet", S().$implicit.templateLabel)
             }
 
             function GU(i, t) {
-                1 & i && m(0), 2 & i && le(w().$implicit.textLabel)
+                1 & i && m(0), 2 & i && le(S().$implicit.textLabel)
             }
 
             function $U(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 6), M("click", function () {
+                    d(0, "div", 6), T("click", function () {
                         const r = E(e),
                             o = r.$implicit,
                             a = r.index,
-                            s = w(),
-                            l = Rt(1);
+                            s = S(),
+                            l = Ft(1);
                         return s._handleClick(o, l, a)
                     })("cdkFocusChange", function (r) {
                         const a = E(e).index;
-                        return w()._tabFocusChanged(r, a)
-                    }), d(1, "div", 7), T(2, zU, 1, 1, "ng-template", 8), T(3, GU, 1, 1, "ng-template", null, 9, cS), h()()
+                        return S()._tabFocusChanged(r, a)
+                    }), d(1, "div", 7), x(2, zU, 1, 1, "ng-template", 8), x(3, GU, 1, 1, "ng-template", null, 9, cS), h()()
                 }
                 if (2 & i) {
                     const e = t.$implicit,
                         n = t.index,
-                        r = Rt(4),
-                        o = w();
-                    Ct("mat-tab-label-active", o.selectedIndex === n), b("id", o._getTabLabelId(n))("ngClass", e.labelClass)("disabled", e.disabled)("matRippleDisabled", e.disabled || o.disableRipple), Ye("tabIndex", o._getTabIndex(e, n))("aria-posinset", n + 1)("aria-setsize", o._tabs.length)("aria-controls", o._getTabContentId(n))("aria-selected", o.selectedIndex === n)("aria-label", e.ariaLabel || null)("aria-labelledby", !e.ariaLabel && e.ariaLabelledby ? e.ariaLabelledby : null), g(2), b("ngIf", e.templateLabel)("ngIfElse", r)
+                        r = Ft(4),
+                        o = S();
+                    Ct("mat-tab-label-active", o.selectedIndex === n), b("id", o._getTabLabelId(n))("ngClass", e.labelClass)("disabled", e.disabled)("matRippleDisabled", e.disabled || o.disableRipple), ze("tabIndex", o._getTabIndex(e, n))("aria-posinset", n + 1)("aria-setsize", o._tabs.length)("aria-controls", o._getTabContentId(n))("aria-selected", o.selectedIndex === n)("aria-label", e.ariaLabel || null)("aria-labelledby", !e.ariaLabel && e.ariaLabelledby ? e.ariaLabelledby : null), g(2), b("ngIf", e.templateLabel)("ngIfElse", r)
                 }
             }
 
             function WU(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-tab-body", 11), M("_onCentered", function () {
-                        return E(e), w()._removeTabBodyWrapperHeight()
+                    d(0, "mat-tab-body", 11), T("_onCentered", function () {
+                        return E(e), S()._removeTabBodyWrapperHeight()
                     })("_onCentering", function (r) {
-                        return E(e), w()._setTabBodyWrapperHeight(r)
+                        return E(e), S()._setTabBodyWrapperHeight(r)
                     }), h()
                 }
                 if (2 & i) {
                     const e = t.$implicit,
                         n = t.index,
-                        r = w();
-                    Ct("mat-tab-body-active", r.selectedIndex === n), b("id", r._getTabContentId(n))("ngClass", e.bodyClass)("content", e.content)("position", e.position)("origin", e.origin)("animationDuration", r.animationDuration), Ye("tabindex", null != r.contentTabIndex && r.selectedIndex === n ? r.contentTabIndex : null)("aria-labelledby", r._getTabLabelId(n))
+                        r = S();
+                    Ct("mat-tab-body-active", r.selectedIndex === n), b("id", r._getTabContentId(n))("ngClass", e.bodyClass)("content", e.content)("position", e.position)("origin", e.origin)("animationDuration", r.animationDuration), ze("tabindex", null != r.contentTabIndex && r.selectedIndex === n ? r.contentTabIndex : null)("aria-labelledby", r._getTabLabelId(n))
                 }
             }
             const KU = new q("MatInkBarPositioner", {
@@ -25257,7 +25313,7 @@
                         this._elementRef = e, this._ngZone = n, this._inkBarPositioner = r, this._animationMode = o
                     }
                     alignToElement(e) {
-                        this.show(), this._ngZone.onStable.pipe(Jt(1)).subscribe(() => {
+                        this.show(), this._ngZone.onStable.pipe(Qt(1)).subscribe(() => {
                             const n = this._inkBarPositioner(e),
                                 r = this._elementRef.nativeElement;
                             r.style.left = n.left, r.style.width = n.width
@@ -25294,7 +25350,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(ii), _(Lt), _(L1, 8))
+                    return new(e || i)(_(ni), _(Nt), _(L1, 8))
                 }, i.\u0275dir = Y({
                     type: i,
                     selectors: [
@@ -25337,20 +25393,20 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Lt), _(N1, 8))
+                    return new(e || i)(_(Nt), _(N1, 8))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
                         ["mat-tab"]
                     ],
                     contentQueries: function (e, n, r) {
-                        if (1 & e && (Hr(r, F1, 5), Hr(r, QU, 7, ii)), 2 & e) {
+                        if (1 & e && (Hr(r, F1, 5), Hr(r, QU, 7, ni)), 2 & e) {
                             let o;
                             ut(o = ht()) && (n.templateLabel = o.first), ut(o = ht()) && (n._explicitContent = o.first)
                         }
                     },
                     viewQuery: function (e, n) {
-                        if (1 & e && ni(ii, 7), 2 & e) {
+                        if (1 & e && ri(ni, 7), 2 & e) {
                             let r;
                             ut(r = ht()) && (n._implicitContent = r.first)
                         }
@@ -25367,12 +25423,12 @@
                     features: [Ue([{
                         provide: L1,
                         useExisting: i
-                    }]), ee, Si],
+                    }]), ee, wi],
                     ngContentSelectors: O1,
                     decls: 1,
                     vars: 0,
                     template: function (e, n) {
-                        1 & e && (os(), T(0, OU, 1, 0, "ng-template"))
+                        1 & e && (os(), x(0, OU, 1, 0, "ng-template"))
                     },
                     encapsulation: 2
                 }), i
@@ -25395,7 +25451,7 @@
             let tj = (() => {
                     class i extends Zr {
                         constructor(e, n, r, o) {
-                            super(e, n, o), this._host = r, this._centeringSub = Xe.EMPTY, this._leavingSub = Xe.EMPTY
+                            super(e, n, o), this._host = r, this._centeringSub = Ze.EMPTY, this._leavingSub = Ze.EMPTY
                         }
                         ngOnInit() {
                             super.ngOnInit(), this._centeringSub = this._host._beforeCentering.pipe(Ts(this._host._isCenterPosition(this._host._position))).subscribe(e => {
@@ -25409,7 +25465,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(hr), _(Lt), _(Be(() => H1)), _(fe))
+                        return new(e || i)(_(hr), _(Nt), _(Be(() => H1)), _(fe))
                     }, i.\u0275dir = Y({
                         type: i,
                         selectors: [
@@ -25421,7 +25477,7 @@
                 ij = (() => {
                     class i {
                         constructor(e, n, r) {
-                            this._elementRef = e, this._dir = n, this._dirChangeSubscription = Xe.EMPTY, this._translateTabComplete = new re, this._onCentering = new _e, this._beforeCentering = new _e, this._afterLeavingCenter = new _e, this._onCentered = new _e(!0), this.animationDuration = "500ms", n && (this._dirChangeSubscription = n.change.subscribe(o => {
+                            this._elementRef = e, this._dir = n, this._dirChangeSubscription = Ze.EMPTY, this._translateTabComplete = new re, this._onCentering = new _e, this._beforeCentering = new _e, this._afterLeavingCenter = new _e, this._onCentered = new _e(!0), this.animationDuration = "500ms", n && (this._dirChangeSubscription = n.change.subscribe(o => {
                                 this._computePositionAnimationState(o), r.markForCheck()
                             })), this._translateTabComplete.pipe(sC((o, a) => o.fromState === a.fromState && o.toState === a.toState)).subscribe(o => {
                                 this._isCenterPosition(o.toState) && this._isCenterPosition(this._position) && this._onCentered.emit(), this._isCenterPosition(o.fromState) && !this._isCenterPosition(this._position) && this._afterLeavingCenter.emit()
@@ -25455,7 +25511,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(zn, 8), _(oi))
+                        return new(e || i)(_(xe), _(zn, 8), _(ai))
                     }, i.\u0275dir = Y({
                         type: i,
                         inputs: {
@@ -25479,14 +25535,14 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(zn, 8), _(oi))
+                        return new(e || i)(_(xe), _(zn, 8), _(ai))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
                             ["mat-tab-body"]
                         ],
                         viewQuery: function (e, n) {
-                            if (1 & e && ni(Zr, 5), 2 & e) {
+                            if (1 & e && ri(Zr, 5), 2 & e) {
                                 let r;
                                 ut(r = ht()) && (n._portalHost = r.first)
                             }
@@ -25501,11 +25557,11 @@
                             ["matTabBodyHost", ""]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0, 1), M("@translateTab.start", function (o) {
+                            1 & e && (d(0, "div", 0, 1), T("@translateTab.start", function (o) {
                                 return n._onTranslateTabStarted(o)
                             })("@translateTab.done", function (o) {
                                 return n._translateTabComplete.next(o)
-                            }), T(2, RU, 0, 0, "ng-template", 2), h()), 2 & e && b("@translateTab", Bn(3, LU, n._position, ze(1, FU, n.animationDuration)))
+                            }), x(2, RU, 0, 0, "ng-template", 2), h()), 2 & e && b("@translateTab", Bn(3, LU, n._position, je(1, FU, n.animationDuration)))
                         },
                         directives: [tj],
                         styles: ['.mat-tab-body-content{height:100%;overflow:auto}.mat-tab-group-dynamic-height .mat-tab-body-content{overflow:hidden}.mat-tab-body-content[style*="visibility: hidden"]{display:none}\n'],
@@ -25541,7 +25597,7 @@
                     ],
                     hostVars: 3,
                     hostBindings: function (e, n) {
-                        2 & e && (Ye("aria-disabled", !!n.disabled), Ct("mat-tab-disabled", n.disabled))
+                        2 & e && (ze("aria-disabled", !!n.disabled), Ct("mat-tab-disabled", n.disabled))
                     },
                     inputs: {
                         disabled: "disabled"
@@ -25580,7 +25636,7 @@
                                 r = () => {
                                     this.updatePagination(), this._alignInkBarToSelectedTab()
                                 };
-                            this._keyManager = new dH(this._items).withHorizontalOrientation(this._getLayoutDirection()).withHomeAndEnd().withWrap(), this._keyManager.updateActiveItem(this._selectedIndex), this._ngZone.onStable.pipe(Jt(1)).subscribe(r), Ea(e, n, this._items.changes).pipe(Et(this._destroyed)).subscribe(() => {
+                            this._keyManager = new dH(this._items).withHorizontalOrientation(this._getLayoutDirection()).withHomeAndEnd().withWrap(), this._keyManager.updateActiveItem(this._selectedIndex), this._ngZone.onStable.pipe(Qt(1)).subscribe(r), Ea(e, n, this._items.changes).pipe(Et(this._destroyed)).subscribe(() => {
                                 this._ngZone.run(() => {
                                     Promise.resolve().then(() => {
                                         this._scrollDistance = Math.max(0, Math.min(this._getMaxScrollDistance(), this._scrollDistance)), r()
@@ -25712,7 +25768,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(oi), _(Ys), _(zn, 8), _(pe), _(Vt), _(Ii, 8))
+                        return new(e || i)(_(xe), _(ai), _(Ys), _(zn, 8), _(pe), _(Ut), _(Ii, 8))
                     }, i.\u0275dir = Y({
                         type: i,
                         inputs: {
@@ -25736,7 +25792,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(oi), _(Ys), _(zn, 8), _(pe), _(Vt), _(Ii, 8))
+                        return new(e || i)(_(xe), _(ai), _(Ys), _(zn, 8), _(pe), _(Ut), _(Ii, 8))
                     }, i.\u0275dir = Y({
                         type: i,
                         inputs: {
@@ -25752,7 +25808,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(oi), _(Ys), _(zn, 8), _(pe), _(Vt), _(Ii, 8))
+                        return new(e || i)(_(xe), _(ai), _(Ys), _(zn, 8), _(pe), _(Ut), _(Ii, 8))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
@@ -25765,7 +25821,7 @@
                             }
                         },
                         viewQuery: function (e, n) {
-                            if (1 & e && (ni(R1, 7), ni(NU, 7), ni(BU, 7), ni(HU, 7), ni(VU, 5), ni(UU, 5)), 2 & e) {
+                            if (1 & e && (ri(R1, 7), ri(NU, 7), ri(BU, 7), ri(HU, 7), ri(VU, 5), ri(UU, 5)), 2 & e) {
                                 let r;
                                 ut(r = ht()) && (n._inkBar = r.first), ut(r = ht()) && (n._tabListContainer = r.first), ut(r = ht()) && (n._tabList = r.first), ut(r = ht()) && (n._tabListInner = r.first), ut(r = ht()) && (n._nextPaginator = r.first), ut(r = ht()) && (n._previousPaginator = r.first)
                             }
@@ -25800,17 +25856,17 @@
                             ["nextPaginator", ""]
                         ],
                         template: function (e, n) {
-                            1 & e && (os(), d(0, "button", 0, 1), M("click", function () {
+                            1 & e && (os(), d(0, "button", 0, 1), T("click", function () {
                                 return n._handlePaginatorClick("before")
                             })("mousedown", function (o) {
                                 return n._handlePaginatorPress("before", o)
                             })("touchend", function () {
                                 return n._stopInterval()
-                            }), B(2, "div", 2), h(), d(3, "div", 3, 4), M("keydown", function (o) {
+                            }), B(2, "div", 2), h(), d(3, "div", 3, 4), T("keydown", function (o) {
                                 return n._handleKeydown(o)
-                            }), d(5, "div", 5, 6), M("cdkObserveContent", function () {
+                            }), d(5, "div", 5, 6), T("cdkObserveContent", function () {
                                 return n._onContentChanges()
-                            }), d(7, "div", 7, 8), as(9), h(), B(10, "mat-ink-bar"), h()(), d(11, "button", 9, 10), M("mousedown", function (o) {
+                            }), d(7, "div", 7, 8), as(9), h(), B(10, "mat-ink-bar"), h()(), d(11, "button", 9, 10), T("mousedown", function (o) {
                                 return n._handlePaginatorPress("after", o)
                             })("click", function () {
                                 return n._handlePaginatorClick("after")
@@ -25834,7 +25890,7 @@
                     class i extends hj {
                         constructor(e, n, r, o) {
                             var a;
-                            super(e), this._changeDetectorRef = n, this._animationMode = o, this._tabs = new ea, this._indexToSelect = 0, this._lastFocusedTabIndex = null, this._tabBodyWrapperHeight = 0, this._tabsSubscription = Xe.EMPTY, this._tabLabelSubscription = Xe.EMPTY, this._selectedIndex = null, this.headerPosition = "above", this.selectedIndexChange = new _e, this.focusChange = new _e, this.animationDone = new _e, this.selectedTabChange = new _e(!0), this._groupId = cj++, this.animationDuration = r && r.animationDuration ? r.animationDuration : "500ms", this.disablePagination = !(!r || null == r.disablePagination) && r.disablePagination, this.dynamicHeight = !(!r || null == r.dynamicHeight) && r.dynamicHeight, this.contentTabIndex = null !== (a = null == r ? void 0 : r.contentTabIndex) && void 0 !== a ? a : null
+                            super(e), this._changeDetectorRef = n, this._animationMode = o, this._tabs = new ea, this._indexToSelect = 0, this._lastFocusedTabIndex = null, this._tabBodyWrapperHeight = 0, this._tabsSubscription = Ze.EMPTY, this._tabLabelSubscription = Ze.EMPTY, this._selectedIndex = null, this.headerPosition = "above", this.selectedIndexChange = new _e, this.focusChange = new _e, this.animationDone = new _e, this.selectedTabChange = new _e(!0), this._groupId = cj++, this.animationDuration = r && r.animationDuration ? r.animationDuration : "500ms", this.disablePagination = !(!r || null == r.disablePagination) && r.disablePagination, this.dynamicHeight = !(!r || null == r.dynamicHeight) && r.dynamicHeight, this.contentTabIndex = null !== (a = null == r ? void 0 : r.contentTabIndex) && void 0 !== a ? a : null
                         }
                         get dynamicHeight() {
                             return this._dynamicHeight
@@ -25959,7 +26015,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(oi), _(V1, 8), _(Ii, 8))
+                        return new(e || i)(_(xe), _(ai), _(V1, 8), _(Ii, 8))
                     }, i.\u0275dir = Y({
                         type: i,
                         inputs: {
@@ -25987,7 +26043,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(xe), _(oi), _(V1, 8), _(Ii, 8))
+                        return new(e || i)(_(xe), _(ai), _(V1, 8), _(Ii, 8))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
@@ -26000,7 +26056,7 @@
                             }
                         },
                         viewQuery: function (e, n) {
-                            if (1 & e && (ni(jU, 5), ni(qU, 5)), 2 & e) {
+                            if (1 & e && (ri(jU, 5), ri(qU, 5)), 2 & e) {
                                 let r;
                                 ut(r = ht()) && (n._tabBodyWrapper = r.first), ut(r = ht()) && (n._tabHeader = r.first)
                             }
@@ -26036,13 +26092,13 @@
                             ["role", "tabpanel", 3, "id", "ngClass", "content", "position", "origin", "animationDuration", "_onCentered", "_onCentering"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "mat-tab-header", 0, 1), M("indexFocused", function (o) {
+                            1 & e && (d(0, "mat-tab-header", 0, 1), T("indexFocused", function (o) {
                                 return n._focusChanged(o)
                             })("selectFocusedIndex", function (o) {
                                 return n.selectedIndex = o
-                            }), T(2, $U, 5, 15, "div", 2), h(), d(3, "div", 3, 4), T(5, WU, 1, 10, "mat-tab-body", 5), h()), 2 & e && (b("selectedIndex", n.selectedIndex || 0)("disableRipple", n.disableRipple)("disablePagination", n.disablePagination), g(2), b("ngForOf", n._tabs), g(1), Ct("_mat-animation-noopable", "NoopAnimations" === n._animationMode), g(2), b("ngForOf", n._tabs))
+                            }), x(2, $U, 5, 15, "div", 2), h(), d(3, "div", 3, 4), x(5, WU, 1, 10, "mat-tab-body", 5), h()), 2 & e && (b("selectedIndex", n.selectedIndex || 0)("disableRipple", n.disableRipple)("disablePagination", n.disablePagination), g(2), b("ngForOf", n._tabs), g(1), Ct("_mat-animation-noopable", "NoopAnimations" === n._animationMode), g(2), b("ngForOf", n._tabs))
                         },
-                        directives: [lj, H1, Nt, U1, Du, IH, Di, st, Zr],
+                        directives: [lj, H1, Bt, U1, Du, IH, fi, st, Zr],
                         styles: [".mat-tab-group{display:flex;flex-direction:column;max-width:100%}.mat-tab-group.mat-tab-group-inverted-header{flex-direction:column-reverse}.mat-tab-label{height:48px;padding:0 24px;cursor:pointer;box-sizing:border-box;opacity:.6;min-width:160px;text-align:center;display:inline-flex;justify-content:center;align-items:center;white-space:nowrap;position:relative}.mat-tab-label:focus{outline:none}.mat-tab-label:focus:not(.mat-tab-disabled){opacity:1}.cdk-high-contrast-active .mat-tab-label:focus{outline:dotted 2px;outline-offset:-2px}.mat-tab-label.mat-tab-disabled{cursor:default}.cdk-high-contrast-active .mat-tab-label.mat-tab-disabled{opacity:.5}.mat-tab-label .mat-tab-label-content{display:inline-flex;justify-content:center;align-items:center;white-space:nowrap}.cdk-high-contrast-active .mat-tab-label{opacity:1}@media(max-width: 599px){.mat-tab-label{padding:0 12px}}@media(max-width: 959px){.mat-tab-label{padding:0 12px}}.mat-tab-group[mat-stretch-tabs]>.mat-tab-header .mat-tab-label{flex-basis:0;flex-grow:1}.mat-tab-body-wrapper{position:relative;overflow:hidden;display:flex;transition:height 500ms cubic-bezier(0.35, 0, 0.25, 1)}._mat-animation-noopable.mat-tab-body-wrapper{transition:none;animation:none}.mat-tab-body{top:0;left:0;right:0;bottom:0;position:absolute;display:block;overflow:hidden;outline:0;flex-basis:100%}.mat-tab-body.mat-tab-body-active{position:relative;overflow-x:hidden;overflow-y:auto;z-index:1;flex-grow:1}.mat-tab-group.mat-tab-group-dynamic-height .mat-tab-body.mat-tab-body-active{overflow-y:hidden}\n"],
                         encapsulation: 2
                     }), i
@@ -26051,11 +26107,11 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [
-                            [Cs, fi, iu, S1, cC, kC], fi
+                            [Cs, mi, iu, S1, cC, kC], mi
                         ]
                     }), i
                 })();
@@ -26246,7 +26302,7 @@
                             }
                         }
                         _updateTooltipMessage() {
-                            this._tooltipInstance && (this._tooltipInstance.message = this.message, this._tooltipInstance._markForCheck(), this._ngZone.onMicrotaskEmpty.pipe(Jt(1), Et(this._destroyed)).subscribe(() => {
+                            this._tooltipInstance && (this._tooltipInstance.message = this.message, this._tooltipInstance._markForCheck(), this._ngZone.onMicrotaskEmpty.pipe(Qt(1), Et(this._destroyed)).subscribe(() => {
                                 this._tooltipInstance && this._overlayRef.updatePosition()
                             }))
                         }
@@ -26339,14 +26395,14 @@
                         }
                     }), i
                 })(),
-                At = (() => {
+                Pt = (() => {
                     class i extends bj {
                         constructor(e, n, r, o, a, s, l, c, u, f, p, v) {
                             super(e, n, r, o, a, s, l, c, u, f, p, v), this._tooltipComponent = wj
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(pr), _(xe), _(Ww), _(Lt), _(pe), _(Vt), _(uH), _(su), _($1), _(zn, 8), _(W1, 8), _(fe))
+                        return new(e || i)(_(pr), _(xe), _(Ww), _(Nt), _(pe), _(Ut), _(uH), _(su), _($1), _(zn, 8), _(W1, 8), _(fe))
                     }, i.\u0275dir = Y({
                         type: i,
                         selectors: [
@@ -26413,7 +26469,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(oi), _(Ii, 8))
+                        return new(e || i)(_(ai), _(Ii, 8))
                     }, i.\u0275dir = Y({
                         type: i
                     }), i
@@ -26425,14 +26481,14 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(oi), _(bm), _(Ii, 8))
+                        return new(e || i)(_(ai), _(bm), _(Ii, 8))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
                             ["mat-tooltip-component"]
                         ],
                         viewQuery: function (e, n) {
-                            if (1 & e && ni(pj, 7), 2 & e) {
+                            if (1 & e && ri(pj, 7), 2 & e) {
                                 let r;
                                 ut(r = ht()) && (n._tooltip = r.first)
                             }
@@ -26440,9 +26496,9 @@
                         hostAttrs: ["aria-hidden", "true"],
                         hostVars: 2,
                         hostBindings: function (e, n) {
-                            1 & e && M("mouseleave", function (o) {
+                            1 & e && T("mouseleave", function (o) {
                                 return n._handleMouseLeave(o)
-                            }), 2 & e && Ft("zoom", n.isVisible() ? 1 : null)
+                            }), 2 & e && Lt("zoom", n.isVisible() ? 1 : null)
                         },
                         features: [ee],
                         decls: 4,
@@ -26452,14 +26508,14 @@
                             ["tooltip", ""]
                         ],
                         template: function (e, n) {
-                            if (1 & e && (d(0, "div", 0, 1), M("animationend", function (o) {
+                            if (1 & e && (d(0, "div", 0, 1), T("animationend", function (o) {
                                     return n._handleAnimationEnd(o)
-                                }), I(2, "async"), m(3), h()), 2 & e) {
+                                }), O(2, "async"), m(3), h()), 2 & e) {
                                 let r;
                                 Ct("mat-tooltip-handset", null == (r = H(2, 4, n._isHandset)) ? null : r.matches), b("ngClass", n.tooltipClass), g(3), le(n.message)
                             }
                         },
-                        directives: [Di],
+                        directives: [fi],
                         pipes: [d0],
                         styles: [".mat-tooltip{color:#fff;border-radius:4px;margin:14px;max-width:250px;padding-left:8px;padding-right:8px;overflow:hidden;text-overflow:ellipsis;transform:scale(0)}.mat-tooltip._mat-animation-noopable{animation:none;transform:scale(1)}.cdk-high-contrast-active .mat-tooltip{outline:solid 1px}.mat-tooltip-handset{margin:24px;padding-left:16px;padding-right:16px}.mat-tooltip-panel-non-interactive{pointer-events:none}@keyframes mat-tooltip-show{0%{opacity:0;transform:scale(0)}50%{opacity:.5;transform:scale(0.99)}100%{opacity:1;transform:scale(1)}}@keyframes mat-tooltip-hide{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1)}}.mat-tooltip-show{animation:mat-tooltip-show 200ms cubic-bezier(0, 0, 0.2, 1) forwards}.mat-tooltip-hide{animation:mat-tooltip-hide 100ms cubic-bezier(0, 0, 0.2, 1) forwards}\n"],
                         encapsulation: 2,
@@ -26470,12 +26526,12 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         providers: [yj],
                         imports: [
-                            [kC, Cs, Np, fi], fi, Ip
+                            [kC, Cs, Np, mi], mi, Ip
                         ]
                     }), i
                 })();
@@ -26508,7 +26564,7 @@
                     return i.\u0275fac = function () {
                         let t;
                         return function (n) {
-                            return (t || (t = Ot(i)))(n || i)
+                            return (t || (t = Rt(i)))(n || i)
                         }
                     }(), i.\u0275dir = Y({
                         type: i,
@@ -26520,7 +26576,7 @@
                 class i {}
                 return i.\u0275fac = function (e) {
                     return new(e || i)
-                }, i.\u0275mod = je({
+                }, i.\u0275mod = qe({
                     type: i
                 }), i.\u0275inj = He({}), i
             })();
@@ -26569,7 +26625,7 @@
                     return i.\u0275fac = function () {
                         let t;
                         return function (n) {
-                            return (t || (t = Ot(i)))(n || i)
+                            return (t || (t = Rt(i)))(n || i)
                         }
                     }(), i.\u0275dir = Y({
                         type: i,
@@ -26579,7 +26635,7 @@
                             ["select", "ngModel", "", 3, "multiple", ""]
                         ],
                         hostBindings: function (e, n) {
-                            1 & e && M("change", function (o) {
+                            1 & e && T("change", function (o) {
                                 return n.onChange(o.target.value)
                             })("blur", function () {
                                 return n.onTouched()
@@ -26693,7 +26749,7 @@
                     return i.\u0275fac = function () {
                         let t;
                         return function (n) {
-                            return (t || (t = Ot(i)))(n || i)
+                            return (t || (t = Rt(i)))(n || i)
                         }
                     }(), i.\u0275dir = Y({
                         type: i,
@@ -26703,7 +26759,7 @@
                             ["select", "multiple", "", "ngModel", ""]
                         ],
                         hostBindings: function (e, n) {
-                            1 & e && M("change", function (o) {
+                            1 & e && T("change", function (o) {
                                 return n.onChange(o.target)
                             })("blur", function () {
                                 return n.onTouched()
@@ -26753,7 +26809,7 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [
@@ -26765,7 +26821,7 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [b4]
@@ -26787,12 +26843,12 @@
             function M4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span"), m(2, " Automatically buy up to "), d(3, "input", 18), M("change", function (r) {
-                        return E(e), w(2).autoBuyLandLimitChanged(r)
+                    d(0, "div", 2)(1, "span"), m(2, " Automatically buy up to "), d(3, "input", 18), T("change", function (r) {
+                        return E(e), S(2).autoBuyLandLimitChanged(r)
                     }), h(), m(4, " land (including fields) "), h()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(3), ve("value", e.homeService.autoBuyLandLimit)
                 }
             }
@@ -26800,12 +26856,12 @@
             function x4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span"), m(2, " Automatically plow up to "), d(3, "input", 18), M("change", function (r) {
-                        return E(e), w(2).autoFieldLimitChanged(r)
+                    d(0, "div", 2)(1, "span"), m(2, " Automatically plow up to "), d(3, "input", 18), T("change", function (r) {
+                        return E(e), S(2).autoFieldLimitChanged(r)
                     }), h(), m(4, " fields "), h()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(3), ve("value", e.homeService.autoFieldLimit)
                 }
             }
@@ -26813,7 +26869,7 @@
             function T4(i, t) {
                 if (1 & i && (d(0, "option", 21), m(1), h()), 2 & i) {
                     const e = t.$implicit,
-                        n = w(3);
+                        n = S(3);
                     ve("value", e.type), b("selected", n.homeService.autoBuyHomeLimit === e.type), g(1), F(" ", e.name, " ")
                 }
             }
@@ -26821,12 +26877,12 @@
             function D4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span"), m(2, " Automatically upgrade your home up to a "), d(3, "select", 19), M("change", function (r) {
-                        return E(e), w(2).autoBuyHomeLimitChanged(r)
-                    }), T(4, T4, 2, 3, "option", 20), h()()()
+                    d(0, "div", 2)(1, "span"), m(2, " Automatically upgrade your home up to a "), d(3, "select", 19), T("change", function (r) {
+                        return E(e), S(2).autoBuyHomeLimitChanged(r)
+                    }), x(4, T4, 2, 3, "option", 20), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(4), b("ngForOf", e.homeService.homesList)
                 }
             }
@@ -26834,12 +26890,12 @@
             function E4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-tab"), T(1, k4, 2, 0, "ng-template", 1), T(2, M4, 5, 1, "div", 17), T(3, x4, 5, 1, "div", 17), T(4, D4, 5, 1, "div", 17), d(5, "div")(6, "span")(7, "input", 7), M("change", function (r) {
-                        return E(e), w().autoPauseThugs(r)
+                    d(0, "mat-tab"), x(1, k4, 2, 0, "ng-template", 1), x(2, M4, 5, 1, "div", 17), x(3, x4, 5, 1, "div", 17), x(4, D4, 5, 1, "div", 17), d(5, "div")(6, "span")(7, "input", 7), T("change", function (r) {
+                        return E(e), S().autoPauseThugs(r)
                     }), h(), d(8, "label", 8), m(9, "Automatically pause if thugs rough you up."), h()()()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(2), b("ngIf", e.homeService.autoBuyLandUnlocked), g(1), b("ngIf", e.homeService.autoFieldUnlocked), g(1), b("ngIf", e.homeService.autoBuyHomeUnlocked), g(3), b("checked", e.homeService.thugPause)
                 }
             }
@@ -26851,12 +26907,12 @@
             function P4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 22), M("change", function (r) {
-                        return E(e), w(2).autoequipEnableChange(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 22), T("change", function (r) {
+                        return E(e), S(2).autoequipEnableChange(r)
                     }), h(), d(3, "label", 23), m(4, "Automatically equip best equipment"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.autoequipBestEnabled)
                 }
             }
@@ -26864,12 +26920,12 @@
             function I4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 24), M("change", function (r) {
-                        return E(e), w(2).automergeEquippedChange(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 24), T("change", function (r) {
+                        return E(e), S(2).automergeEquippedChange(r)
                     }), h(), d(3, "label", 25), m(4, "Automatically merge onto equipped equipment"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.automergeEquipped)
                 }
             }
@@ -26877,12 +26933,12 @@
             function O4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 26), M("change", function (r) {
-                        return E(e), w(2).useSpiritGemWeaponsChange(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 26), T("change", function (r) {
+                        return E(e), S(2).useSpiritGemWeaponsChange(r)
                     }), h(), d(3, "label", 27), m(4, "Use spirit gem when crafting weapons"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.useSpiritGemWeapons)
                 }
             }
@@ -26890,12 +26946,12 @@
             function R4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 28), M("change", function (r) {
-                        return E(e), w(2).useSpiritGemPotionsChange(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 28), T("change", function (r) {
+                        return E(e), S(2).useSpiritGemPotionsChange(r)
                     }), h(), d(3, "label", 29), m(4, "Use spirit gem when crafting potions"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.useSpiritGemPotions)
                 }
             }
@@ -26903,20 +26959,20 @@
             function F4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 30), M("change", function (r) {
-                        return E(e), w(2).useCheapestSpiritGemChange(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 30), T("change", function (r) {
+                        return E(e), S(2).useCheapestSpiritGemChange(r)
                     }), h(), d(3, "label", 31), m(4, "Use your lowest grade spirit gem instead of your highest"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.useCheapestSpiritGem)
                 }
             }
 
             function L4(i, t) {
-                if (1 & i && (d(0, "mat-tab"), T(1, A4, 2, 0, "ng-template", 1), T(2, P4, 5, 1, "div", 17), T(3, I4, 5, 1, "div", 17), T(4, O4, 5, 1, "div", 17), T(5, R4, 5, 1, "div", 17), T(6, F4, 5, 1, "div", 17), h()), 2 & i) {
-                    const e = w();
-                    g(2), b("ngIf", e.inventoryService.autoequipBestArmor || e.inventoryService.autoequipBestWeapon), g(1), b("ngIf", e.inventoryService.autoequipBestArmor && e.inventoryService.autoArmorMergeUnlocked || e.inventoryService.autoequipBestWeapon && e.inventoryService.autoArmorMergeUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked)
+                if (1 & i && (d(0, "mat-tab"), x(1, A4, 2, 0, "ng-template", 1), x(2, P4, 5, 1, "div", 17), x(3, I4, 5, 1, "div", 17), x(4, O4, 5, 1, "div", 17), x(5, R4, 5, 1, "div", 17), x(6, F4, 5, 1, "div", 17), h()), 2 & i) {
+                    const e = S();
+                    g(2), b("ngIf", e.inventoryService.autoequipBestArmor || e.inventoryService.autoequipBestWeapon), g(1), b("ngIf", e.inventoryService.autoequipBestArmor && e.inventoryService.autoArmorMergeUnlocked || e.inventoryService.autoequipBestWeapon && e.inventoryService.autoWeaponMergeUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", e.inventoryService.useSpiritGemUnlocked)
                 }
             }
 
@@ -26927,12 +26983,12 @@
             function B4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 32), M("change", function (r) {
-                        return E(e), w(2).autoSellOldHerbs(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 32), T("change", function (r) {
+                        return E(e), S(2).autoSellOldHerbs(r)
                     }), h(), d(3, "label", 33), m(4, "Automatically sell lower grade herbs than what current activities produce"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.autoSellOldHerbsEnabled)
                 }
             }
@@ -26940,12 +26996,12 @@
             function H4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 34), M("change", function (r) {
-                        return E(e), w(2).autoSellOldWood(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 34), T("change", function (r) {
+                        return E(e), S(2).autoSellOldWood(r)
                     }), h(), d(3, "label", 35), m(4, "Automatically sell lower grade wood than what current activities produce"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.autoSellOldWoodEnabled)
                 }
             }
@@ -26953,12 +27009,12 @@
             function V4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 36), M("change", function (r) {
-                        return E(e), w(2).autoSellOldOre(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 36), T("change", function (r) {
+                        return E(e), S(2).autoSellOldOre(r)
                     }), h(), d(3, "label", 37), m(4, "Automatically sell lower grade ore than what current activities produce"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.autoSellOldOreEnabled)
                 }
             }
@@ -26966,12 +27022,12 @@
             function U4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 38), M("change", function (r) {
-                        return E(e), w(2).autoSellOldBars(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 38), T("change", function (r) {
+                        return E(e), S(2).autoSellOldBars(r)
                     }), h(), d(3, "label", 39), m(4, "Automatically sell lower grade bars than what current activities produce"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.autoSellOldBarsEnabled)
                 }
             }
@@ -26979,12 +27035,12 @@
             function j4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 40), M("change", function (r) {
-                        return E(e), w(2).autoSellOldHides(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 40), T("change", function (r) {
+                        return E(e), S(2).autoSellOldHides(r)
                     }), h(), d(3, "label", 41), m(4, "Automatically sell lower grade hides than what current activities produce"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.autoSellOldHidesEnabled)
                 }
             }
@@ -26992,12 +27048,12 @@
             function q4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 42), M("change", function (r) {
-                        return E(e), w(2).autoSellOldGems(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 42), T("change", function (r) {
+                        return E(e), S(2).autoSellOldGems(r)
                     }), h(), d(3, "label", 43), m(4, "Automatically sell lower grade gems than what current monsters drop"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.inventoryService.autoSellOldGemsEnabled)
                 }
             }
@@ -27005,12 +27061,12 @@
             function Y4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div")(1, "span"), m(2), I(3, "titlecase"), h(), d(4, "span"), m(5, " - Reserve \xa0"), d(6, "input", 18), M("change", function (r) {
+                    d(0, "div")(1, "span"), m(2), O(3, "titlecase"), h(), d(4, "span"), m(5, " - Reserve \xa0"), d(6, "input", 18), T("change", function (r) {
                         const a = E(e).$implicit;
-                        return w(3).autoSellReserveChange(r, a)
-                    }), h(), m(7, "\xa0 "), d(8, "button", 46), M("click", function () {
+                        return S(3).autoSellReserveChange(r, a)
+                    }), h(), m(7, "\xa0 "), d(8, "button", 46), T("click", function () {
                         const o = E(e).$implicit;
-                        return w(3).inventoryService.unAutoSell(o.name)
+                        return S(3).inventoryService.unAutoSell(o.name)
                     }), m(9, "Stop Selling"), h()()()
                 }
                 if (2 & i) {
@@ -27020,8 +27076,8 @@
             }
 
             function z4(i, t) {
-                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, " Automatically Sold Items: "), h(), d(3, "div", 44), T(4, Y4, 10, 4, "div", 45), h()()), 2 & i) {
-                    const e = w(2);
+                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, " Automatically Sold Items: "), h(), d(3, "div", 44), x(4, Y4, 10, 4, "div", 45), h()()), 2 & i) {
+                    const e = S(2);
                     g(4), b("ngForOf", e.inventoryService.autoSellEntries)
                 }
             }
@@ -27029,12 +27085,12 @@
             function G4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div")(1, "span"), m(2), I(3, "titlecase"), h(), d(4, "span"), m(5, " - Reserve \xa0"), d(6, "input", 18), M("change", function (r) {
+                    d(0, "div")(1, "span"), m(2), O(3, "titlecase"), h(), d(4, "span"), m(5, " - Reserve \xa0"), d(6, "input", 18), T("change", function (r) {
                         const a = E(e).$implicit;
-                        return w(3).autoUseReserveChange(r, a)
-                    }), h(), m(7, "\xa0 "), d(8, "button", 46), M("click", function () {
+                        return S(3).autoUseReserveChange(r, a)
+                    }), h(), m(7, "\xa0 "), d(8, "button", 46), T("click", function () {
                         const o = E(e).$implicit;
-                        return w(3).inventoryService.unAutoUse(o.name)
+                        return S(3).inventoryService.unAutoUse(o.name)
                     }), m(9, "Stop Using"), h()()()
                 }
                 if (2 & i) {
@@ -27044,8 +27100,8 @@
             }
 
             function $4(i, t) {
-                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, "Automatically Used Items:"), h(), d(3, "div", 44), T(4, G4, 10, 4, "div", 45), h()()), 2 & i) {
-                    const e = w(2);
+                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, "Automatically Used Items:"), h(), d(3, "div", 44), x(4, G4, 10, 4, "div", 45), h()()), 2 & i) {
+                    const e = S(2);
                     g(4), b("ngForOf", e.inventoryService.autoUseEntries)
                 }
             }
@@ -27053,15 +27109,15 @@
             function W4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div")(1, "span"), m(2), I(3, "titlecase"), d(4, "input", 18), M("change", function (r) {
+                    d(0, "div")(1, "span"), m(2), O(3, "titlecase"), d(4, "input", 18), T("change", function (r) {
                         const a = E(e).$implicit;
-                        return w(3).autoBalanceUseChanged(r, a)
-                    }), h(), m(5, " then Sell "), d(6, "input", 18), M("change", function (r) {
+                        return S(3).autoBalanceUseChanged(r, a)
+                    }), h(), m(5, " then Sell "), d(6, "input", 18), T("change", function (r) {
                         const a = E(e).$implicit;
-                        return w(3).autoBalanceSellChanged(r, a)
-                    }), h(), d(7, "button", 46), M("click", function () {
+                        return S(3).autoBalanceSellChanged(r, a)
+                    }), h(), d(7, "button", 46), T("click", function () {
                         const o = E(e).$implicit;
-                        return w(3).inventoryService.unAutoBalance(o.name)
+                        return S(3).inventoryService.unAutoBalance(o.name)
                     }), m(8, "Stop Balancing"), h()()()
                 }
                 if (2 & i) {
@@ -27071,15 +27127,15 @@
             }
 
             function K4(i, t) {
-                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, "Automatically Balanced Items:"), h(), d(3, "div", 44), T(4, W4, 9, 5, "div", 45), h()()), 2 & i) {
-                    const e = w(2);
+                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, "Automatically Balanced Items:"), h(), d(3, "div", 44), x(4, W4, 9, 5, "div", 45), h()()), 2 & i) {
+                    const e = S(2);
                     g(4), b("ngForOf", e.inventoryService.autoBalanceItems)
                 }
             }
 
             function J4(i, t) {
-                if (1 & i && (d(0, "mat-tab"), T(1, N4, 2, 0, "ng-template", 1), T(2, B4, 5, 1, "div", 17), T(3, H4, 5, 1, "div", 17), T(4, V4, 5, 1, "div", 17), T(5, U4, 5, 1, "div", 17), T(6, j4, 5, 1, "div", 17), T(7, q4, 5, 1, "div", 17), T(8, z4, 5, 1, "div", 17), T(9, $4, 5, 1, "div", 17), T(10, K4, 5, 1, "div", 17), h()), 2 & i) {
-                    const e = w();
+                if (1 & i && (d(0, "mat-tab"), x(1, N4, 2, 0, "ng-template", 1), x(2, B4, 5, 1, "div", 17), x(3, H4, 5, 1, "div", 17), x(4, V4, 5, 1, "div", 17), x(5, U4, 5, 1, "div", 17), x(6, j4, 5, 1, "div", 17), x(7, q4, 5, 1, "div", 17), x(8, z4, 5, 1, "div", 17), x(9, $4, 5, 1, "div", 17), x(10, K4, 5, 1, "div", 17), h()), 2 & i) {
+                    const e = S();
                     g(2), b("ngIf", e.inventoryService.autoSellOldHerbs), g(1), b("ngIf", e.inventoryService.autoSellOldWood), g(1), b("ngIf", e.inventoryService.autoSellOldOre), g(1), b("ngIf", e.inventoryService.autoSellOldOre), g(1), b("ngIf", e.inventoryService.autoSellOldHides), g(1), b("ngIf", e.inventoryService.autoSellOldGemsUnlocked), g(1), b("ngIf", e.inventoryService.autoSellUnlocked), g(1), b("ngIf", e.inventoryService.autoUseUnlocked), g(1), b("ngIf", e.inventoryService.autoBalanceUnlocked)
                 }
             }
@@ -27091,14 +27147,14 @@
             function Z4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 2)(1, "span")(2, "input", 47), M("change", function (r) {
-                        return E(e), w(2).useAutoBuyReserveChanged(r)
-                    }), h(), d(3, "label", 48), m(4, "Auto-buying should reserve "), h(), d(5, "input", 18), M("change", function (r) {
-                        return E(e), w(2).autoBuyReserveAmountChanged(r)
+                    d(0, "div", 2)(1, "span")(2, "input", 47), T("change", function (r) {
+                        return E(e), S(2).useAutoBuyReserveChanged(r)
+                    }), h(), d(3, "label", 48), m(4, "Auto-buying should reserve "), h(), d(5, "input", 18), T("change", function (r) {
+                        return E(e), S(2).autoBuyReserveAmountChanged(r)
                     }), h(), m(6, " taels instead of 10 days worth of expenses "), h()()
                 }
                 if (2 & i) {
-                    const e = w(2);
+                    const e = S(2);
                     g(2), b("checked", e.homeService.useAutoBuyReserve), g(3), ve("value", e.homeService.autoBuyReserveAmount)
                 }
             }
@@ -27106,18 +27162,18 @@
             function X4(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "tr")(1, "td")(2, "button", 51), M("click", function () {
+                    d(0, "tr")(1, "td")(2, "button", 51), T("click", function () {
                         const o = E(e).index;
-                        return w(3).autoBuySettingsPriorityChanged(o, !0)
-                    }), m(3, "\u25b2"), h()(), d(4, "td")(5, "button", 51), M("click", function () {
+                        return S(3).autoBuySettingsPriorityChanged(o, !0)
+                    }), m(3, "\u25b2"), h()(), d(4, "td")(5, "button", 51), T("click", function () {
                         const o = E(e).index;
-                        return w(3).autoBuySettingsPriorityChanged(o, !1)
-                    }), m(6, "\u25bc"), h()(), d(7, "td", 52), m(8), h(), d(9, "td", 53)(10, "input", 54), M("change", function (r) {
+                        return S(3).autoBuySettingsPriorityChanged(o, !1)
+                    }), m(6, "\u25bc"), h()(), d(7, "td", 52), m(8), h(), d(9, "td", 53)(10, "input", 54), T("change", function (r) {
                         const a = E(e).$implicit;
-                        return w(3).autoBuySettingsEnabledChange(r, a)
-                    }), h()(), d(11, "td", 53)(12, "input", 54), M("change", function (r) {
+                        return S(3).autoBuySettingsEnabledChange(r, a)
+                    }), h()(), d(11, "td", 53)(12, "input", 54), T("change", function (r) {
                         const a = E(e).$implicit;
-                        return w(3).autoBuySettingsWaitForFinishChange(r, a)
+                        return S(3).autoBuySettingsWaitForFinishChange(r, a)
                     }), h()()()
                 }
                 if (2 & i) {
@@ -27129,15 +27185,15 @@
             }
 
             function e5(i, t) {
-                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, " Auto-Buyer Options: "), d(3, "table", 49)(4, "tr")(5, "th", 50), m(6, "Priority Order"), h(), d(7, "th"), m(8, "Enabled"), h(), d(9, "th"), m(10, "Wait For Finish"), h()(), T(11, X4, 13, 5, "tr", 45), h()()()), 2 & i) {
-                    const e = w(2);
+                if (1 & i && (d(0, "div", 2)(1, "span"), m(2, " Auto-Buyer Options: "), d(3, "table", 49)(4, "tr")(5, "th", 50), m(6, "Priority Order"), h(), d(7, "th"), m(8, "Enabled"), h(), d(9, "th"), m(10, "Wait For Finish"), h()(), x(11, X4, 13, 5, "tr", 45), h()()()), 2 & i) {
+                    const e = S(2);
                     g(11), b("ngForOf", e.autoBuyerService.autoBuyerSettings)
                 }
             }
 
             function t5(i, t) {
-                if (1 & i && (d(0, "mat-tab"), T(1, Q4, 2, 0, "ng-template", 1), T(2, Z4, 7, 2, "div", 17), T(3, e5, 12, 1, "div", 17), h()), 2 & i) {
-                    const e = w();
+                if (1 & i && (d(0, "mat-tab"), x(1, Q4, 2, 0, "ng-template", 1), x(2, Z4, 7, 2, "div", 17), x(3, e5, 12, 1, "div", 17), h()), 2 & i) {
+                    const e = S();
                     g(2), b("ngIf", e.homeService.autoBuyLandUnlocked || e.homeService.autoBuyHomeUnlocked || e.homeService.autoBuyFurnitureUnlocked), g(1), b("ngIf", e.autoBuyerService.autoBuyerSettingsUnlocked)
                 }
             }
@@ -27223,7 +27279,7 @@
                             if (e.preventDefault(), e.stopPropagation(), this.characterService.characterState.easyMode) this.characterService.characterState.easyMode = !1;
                             else {
                                 if (!this.gameStateService.easyModeEver) {
-                                    if (!confirm("这将启用简单模式并永久标记您的存档。 你确定吗？")) return void(e.target.checked = !1);
+                                    if (!confirm("This will enable easy mode and mark your save permanently. Are you sure?")) return void(e.target.checked = !1);
                                     this.gameStateService.easyModeEver = !0
                                 }
                                 this.characterService.characterState.easyMode = !0, this.activityService.reloadActivities()
@@ -27243,7 +27299,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(it), _(Ie), _(W), _(Oi), _(Mt), _(Au), _(yt), _(Ze))
+                    return new(e || i)(_(tt), _(Oe), _(W), _(Oi), _(Mt), _(Au), _(yt), _(Ke))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -27309,28 +27365,28 @@
                         ["type", "checkbox", 3, "checked", "change"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Manuals Options"), h(), d(3, "mat-tab-group")(4, "mat-tab"), T(5, w4, 2, 0, "ng-template", 1), d(6, "div", 2)(7, "span", 3)(8, "input", 4), M("change", function (o) {
+                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Manuals Options"), h(), d(3, "mat-tab-group")(4, "mat-tab"), x(5, w4, 2, 0, "ng-template", 1), d(6, "div", 2)(7, "span", 3)(8, "input", 4), T("change", function (o) {
                             return n.easyModeChange(o)
-                        }), h(), d(9, "label", 5), m(10, "Easy Mode"), h()(), T(11, C4, 2, 0, "span", 6), h(), d(12, "div", 2)(13, "span")(14, "input", 7), M("change", function (o) {
+                        }), h(), d(9, "label", 5), m(10, "Easy Mode"), h()(), x(11, C4, 2, 0, "span", 6), h(), d(12, "div", 2)(13, "span")(14, "input", 7), T("change", function (o) {
                             return n.autoBuyFoodChange(o)
-                        }), h(), d(15, "label", 8), m(16, "Automatically buy rice each day if you have no food to avoid starvation."), h()()(), d(17, "div", 2)(18, "span")(19, "input", 9), M("change", function (o) {
+                        }), h(), d(15, "label", 8), m(16, "Automatically buy rice each day if you have no food to avoid starvation."), h()()(), d(17, "div", 2)(18, "span")(19, "input", 9), T("change", function (o) {
                             return n.showLifeSummaryChange(o)
-                        }), h(), d(20, "label", 10), m(21, "Show a previous life summary at the start of each life"), h()()(), d(22, "div", 2)(23, "span")(24, "input", 11), M("change", function (o) {
+                        }), h(), d(20, "label", 10), m(21, "Show a previous life summary at the start of each life"), h()()(), d(22, "div", 2)(23, "span")(24, "input", 11), T("change", function (o) {
                             return n.showTipsChange(o)
-                        }), h(), d(25, "label", 12), m(26, "Include tips in the life summary. Warning, this can spoil the fun of discovering things for yourself."), h()()(), d(27, "div", 2)(28, "span")(29, "input", 13), M("change", function (o) {
+                        }), h(), d(25, "label", 12), m(26, "Include tips in the life summary. Warning, this can spoil the fun of discovering things for yourself."), h()()(), d(27, "div", 2)(28, "span")(29, "input", 13), T("change", function (o) {
                             return n.scientificNotationChange(o)
-                        }), h(), d(30, "label", 14), m(31, "Turn on numbers with scientific notation."), h(), m(32, "\xa0 "), d(33, "span", 15), m(34, "Changing this will save and reload immediately."), h()()()(), T(35, E4, 10, 4, "mat-tab", 6), T(36, L4, 7, 5, "mat-tab", 6), T(37, J4, 11, 9, "mat-tab", 6), T(38, t5, 4, 2, "mat-tab", 6), h()()), 2 & e && (g(8), b("checked", n.characterService.characterState.easyMode), g(3), b("ngIf", n.gameStateService.easyModeEver), g(3), b("checked", n.inventoryService.autoBuyFood), g(5), b("checked", n.characterService.characterState.showLifeSummary), g(5), b("checked", n.characterService.characterState.showTips), g(5), b("checked", n.mainLoopService.scientificNotation), g(6), b("ngIf", n.homeService.autoBuyLandUnlocked || n.homeService.autoFieldUnlocked || n.homeService.autoBuyHomeUnlocked), g(1), b("ngIf", n.inventoryService.autoequipBestArmor || n.inventoryService.autoequipBestWeapon || n.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", n.inventoryService.autoSellOldHerbs || n.inventoryService.autoSellOldWood || n.inventoryService.autoSellOldOre || n.inventoryService.autoSellOldHides || n.inventoryService.autoSellOldGemsUnlocked || n.inventoryService.autoSellUnlocked || n.inventoryService.autoUseUnlocked || n.inventoryService.autoBalanceUnlocked), g(1), b("ngIf", n.homeService.autoBuyLandUnlocked || n.homeService.autoBuyHomeUnlocked || n.homeService.autoBuyFurnitureUnlocked || n.autoBuyerService.autoBuyerSettingsUnlocked))
+                        }), h(), d(30, "label", 14), m(31, "Turn on numbers with scientific notation."), h(), m(32, "\xa0 "), d(33, "span", 15), m(34, "Changing this will save and reload immediately."), h()()()(), x(35, E4, 10, 4, "mat-tab", 6), x(36, L4, 7, 5, "mat-tab", 6), x(37, J4, 11, 9, "mat-tab", 6), x(38, t5, 4, 2, "mat-tab", 6), h()()), 2 & e && (g(8), b("checked", n.characterService.characterState.easyMode), g(3), b("ngIf", n.gameStateService.easyModeEver), g(3), b("checked", n.inventoryService.autoBuyFood), g(5), b("checked", n.characterService.characterState.showLifeSummary), g(5), b("checked", n.characterService.characterState.showTips), g(5), b("checked", n.mainLoopService.scientificNotation), g(6), b("ngIf", n.homeService.autoBuyLandUnlocked || n.homeService.autoFieldUnlocked || n.homeService.autoBuyHomeUnlocked), g(1), b("ngIf", n.inventoryService.autoequipBestArmor || n.inventoryService.autoequipBestWeapon || n.inventoryService.useSpiritGemUnlocked), g(1), b("ngIf", n.inventoryService.autoSellOldHerbs || n.inventoryService.autoSellOldWood || n.inventoryService.autoSellOldOre || n.inventoryService.autoSellOldHides || n.inventoryService.autoSellOldGemsUnlocked || n.inventoryService.autoSellUnlocked || n.inventoryService.autoUseUnlocked || n.inventoryService.autoBalanceUnlocked), g(1), b("ngIf", n.homeService.autoBuyLandUnlocked || n.homeService.autoBuyHomeUnlocked || n.homeService.autoBuyFurnitureUnlocked || n.autoBuyerService.autoBuyerSettingsUnlocked))
                     },
-                    directives: [fj, B1, ZU, At, st, Nt, qm, zm],
+                    directives: [fj, B1, ZU, Pt, st, Bt, qm, zm],
                     pipes: [un],
                     styles: [".optionsDiv[_ngcontent-%COMP%]{overflow-y:auto;max-height:600px;min-height:250px}.inputBox[_ngcontent-%COMP%]{width:70px}.optionField[_ngcontent-%COMP%], button[_ngcontent-%COMP%]{margin-top:2px}.scrollingDiv[_ngcontent-%COMP%]{max-height:200px;overflow:auto}.warning[_ngcontent-%COMP%]{color:red}.priorityTable[_ngcontent-%COMP%]{background:var(--itemSlotColor);border:1px solid var(--panelBorder);border-radius:4px;margin:5px 10px 10px}.priorityTable[_ngcontent-%COMP%]   th[_ngcontent-%COMP%]{font-size:x-small;font-weight:400;line-height:1}.priorityTable[_ngcontent-%COMP%]   th[_ngcontent-%COMP%]:first-child{text-align:left}.priorityTable[_ngcontent-%COMP%]   .priorityTableNameColumn[_ngcontent-%COMP%]{width:100px;padding-left:5px}.priorityTable[_ngcontent-%COMP%]   .priorityTableCheckboxColumn[_ngcontent-%COMP%]{text-align:center;vertical-align:middle;width:50px}.priorityTable[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]{background:none;border:none}.priorityTable[_ngcontent-%COMP%]   button[_ngcontent-%COMP%]:disabled{color:var(--disabledText);cursor:default}.tab-label[_ngcontent-%COMP%]{color:var(--disabledText)}"]
                 }), i
             })();
 
             function r5(i, t) {
-                if (1 & i && (d(0, "span"), m(1), I(2, "bigNumber"), h()), 2 & i) {
-                    const e = w();
-                    g(1), Ti(" Next rank requires ", H(2, 2, e.characterService.characterState.condenseSoulCoreCost), " spirituality and a grade ", e.storeService.soulCoreRank + 12, " spirit gem. ")
+                if (1 & i && (d(0, "span"), m(1), O(2, "bigNumber"), h()), 2 & i) {
+                    const e = S();
+                    g(1), Di(" Next rank requires ", H(2, 2, e.characterService.characterState.condenseSoulCoreCost), " spirituality and a grade ", e.storeService.soulCoreRank + 12, " spirit gem. ")
                 }
             }
 
@@ -27339,9 +27395,9 @@
             }
 
             function a5(i, t) {
-                if (1 & i && (d(0, "span"), m(1), I(2, "bigNumber"), h()), 2 & i) {
-                    const e = w();
-                    g(1), Ti(" Next rank requires ", H(2, 2, e.characterService.characterState.reinforceMeridiansCost), " spirituality and a grade ", e.storeService.meridianRank + 16, " spirit gem. ")
+                if (1 & i && (d(0, "span"), m(1), O(2, "bigNumber"), h()), 2 & i) {
+                    const e = S();
+                    g(1), Di(" Next rank requires ", H(2, 2, e.characterService.characterState.reinforceMeridiansCost), " spirituality and a grade ", e.storeService.meridianRank + 16, " spirit gem. ")
                 }
             }
 
@@ -27350,9 +27406,9 @@
             }
 
             function l5(i, t) {
-                if (1 & i && (d(0, "span"), m(1), I(2, "bigNumber"), h()), 2 & i) {
-                    const e = w();
-                    g(1), Ti(" Next rank requires ", H(2, 2, e.characterService.characterState.bloodlineCost), " spirituality and a ", e.storeService.bloodLineHomeRequirement.name, ". ")
+                if (1 & i && (d(0, "span"), m(1), O(2, "bigNumber"), h()), 2 & i) {
+                    const e = S();
+                    g(1), Di(" Next rank requires ", H(2, 2, e.characterService.characterState.bloodlineCost), " spirituality and a ", e.storeService.bloodLineHomeRequirement.name, ". ")
                 }
             }
 
@@ -27361,9 +27417,9 @@
             }
 
             function u5(i, t) {
-                if (1 & i && (d(0, "span"), m(1), I(2, "number"), I(3, "number"), h()), 2 & i) {
-                    const e = w();
-                    g(1), Ti(" You have consumed ", Ge(2, 2, 100 * (e.characterService.characterState.empowermentFactor - 1), "1.0-0"), " Empowerment Pills which multiplies all your attribute gains by ", Ge(3, 5, e.characterService.characterState.getEmpowermentMult(), "1.0-3"), ". You will always keep this bonus, even after ascending. ")
+                if (1 & i && (d(0, "span"), m(1), O(2, "number"), O(3, "number"), h()), 2 & i) {
+                    const e = S();
+                    g(1), Di(" You have consumed ", at(2, 2, 100 * (e.characterService.characterState.empowermentFactor - 1), "1.0-0"), " Empowerment Pills which multiplies all your attribute gains by ", at(3, 5, e.characterService.characterState.getEmpowermentMult(), "1.0-3"), ". You will always keep this bonus, even after ascending. ")
                 }
             }
             let nM = (() => {
@@ -27373,7 +27429,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(ro), _(Ie), _(it), _(W), _(Ri), _(Oi))
+                    return new(e || i)(_(ro), _(Oe), _(tt), _(W), _(Ri), _(Oi))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -27387,13 +27443,13 @@
                         [4, "ngIf"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Ascension Techniques"), h(), B(3, "hr"), d(4, "table")(5, "tr")(6, "td")(7, "button", 1), M("click", function () {
+                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Ascension Techniques"), h(), B(3, "hr"), d(4, "table")(5, "tr")(6, "td")(7, "button", 1), T("click", function () {
                             return n.storeService.condenseSoulCore()
-                        }), m(8, "Condense Soul Core"), h()(), d(9, "td"), m(10, " End your current life, sacrifice all attributes and aptitudes that are not protected by the power of your previous soul core ascensions, and permanently increase the amount of aptitude gained on each Reincarnation and Ascension. "), B(11, "br"), m(12), B(13, "br"), T(14, r5, 3, 4, "span", 2), T(15, o5, 2, 0, "span", 2), h()(), d(16, "tr")(17, "td")(18, "button", 1), M("click", function () {
+                        }), m(8, "Condense Soul Core"), h()(), d(9, "td"), m(10, " End your current life, sacrifice all attributes and aptitudes that are not protected by the power of your previous soul core ascensions, and permanently increase the amount of aptitude gained on each Reincarnation and Ascension. "), B(11, "br"), m(12), B(13, "br"), x(14, r5, 3, 4, "span", 2), x(15, o5, 2, 0, "span", 2), h()(), d(16, "tr")(17, "td")(18, "button", 1), T("click", function () {
                             return n.storeService.reinforceMeridians()
-                        }), m(19, "Reinforce Meridians"), h()(), d(20, "td"), m(21, " End your current life, sacrifice all attributes and aptitudes that are not protected by the power of your previous soul core ascensions, and permanently increase the power of your aptitudes when gaining attributes. "), B(22, "br"), m(23), B(24, "br"), T(25, a5, 3, 4, "span", 2), T(26, s5, 2, 0, "span", 2), h()(), d(27, "tr")(28, "td")(29, "button", 1), M("click", function () {
+                        }), m(19, "Reinforce Meridians"), h()(), d(20, "td"), m(21, " End your current life, sacrifice all attributes and aptitudes that are not protected by the power of your previous soul core ascensions, and permanently increase the power of your aptitudes when gaining attributes. "), B(22, "br"), m(23), B(24, "br"), x(25, a5, 3, 4, "span", 2), x(26, s5, 2, 0, "span", 2), h()(), d(27, "tr")(28, "td")(29, "button", 1), T("click", function () {
                             return n.storeService.upgradeBloodline()
-                        }), m(30), h()(), d(31, "td"), m(32), B(33, "br"), m(34), B(35, "br"), T(36, l5, 3, 4, "span", 2), T(37, c5, 2, 0, "span", 2), h()()(), T(38, u5, 4, 8, "span", 2), h()), 2 & e && (g(7), b("disabled", n.storeService.soulCoreRank > 8), g(5), F(" Current Rank: ", n.storeService.soulCoreRank, " "), g(2), b("ngIf", n.storeService.soulCoreRank < 9), g(1), b("ngIf", n.storeService.soulCoreRank >= 9), g(3), b("disabled", n.storeService.meridianRank > 8), g(5), F(" Current Rank: ", n.storeService.meridianRank, " "), g(2), b("ngIf", n.storeService.meridianRank < 9), g(1), b("ngIf", n.storeService.meridianRank >= 9), g(3), b("disabled", n.characterService.characterState.bloodlineRank >= 9), g(1), le(n.storeService.bloodlineLabel), g(2), F(" ", n.storeService.bloodlineDescription, " "), g(2), F(" Current Rank: ", n.characterService.characterState.bloodlineRank, " "), g(2), b("ngIf", n.characterService.characterState.bloodlineRank < 9), g(1), b("ngIf", n.characterService.characterState.bloodlineRank >= 9), g(1), b("ngIf", n.characterService.characterState.empowermentFactor > 1))
+                        }), m(30), h()(), d(31, "td"), m(32), B(33, "br"), m(34), B(35, "br"), x(36, l5, 3, 4, "span", 2), x(37, c5, 2, 0, "span", 2), h()()(), x(38, u5, 4, 8, "span", 2), h()), 2 & e && (g(7), b("disabled", n.storeService.soulCoreRank > 8), g(5), F(" Current Rank: ", n.storeService.soulCoreRank, " "), g(2), b("ngIf", n.storeService.soulCoreRank < 9), g(1), b("ngIf", n.storeService.soulCoreRank >= 9), g(3), b("disabled", n.storeService.meridianRank > 8), g(5), F(" Current Rank: ", n.storeService.meridianRank, " "), g(2), b("ngIf", n.storeService.meridianRank < 9), g(1), b("ngIf", n.storeService.meridianRank >= 9), g(3), b("disabled", n.characterService.characterState.bloodlineRank >= 9), g(1), le(n.storeService.bloodlineLabel), g(2), F(" ", n.storeService.bloodlineDescription, " "), g(2), F(" Current Rank: ", n.characterService.characterState.bloodlineRank, " "), g(2), b("ngIf", n.characterService.characterState.bloodlineRank < 9), g(1), b("ngIf", n.characterService.characterState.bloodlineRank >= 9), g(1), b("ngIf", n.characterService.characterState.empowermentFactor > 1))
                     },
                     styles: ["table[_ngcontent-%COMP%]{border-spacing:8px}td[_ngcontent-%COMP%]{border-bottom:1px var(--tableDividerColor) solid}button[_ngcontent-%COMP%]{margin-top:2px}"]
                 }), i
@@ -27401,31 +27457,31 @@
 
             function h5(i, t) {
                 if (1 & i && (d(0, "div"), m(1), h()), 2 & i) {
-                    const e = w(2).$implicit;
+                    const e = S(2).$implicit;
                     g(1), le(e.displayName)
                 }
             }
 
             function d5(i, t) {
                 if (1 & i && (d(0, "div"), m(1), h()), 2 & i) {
-                    const e = w(2).$implicit;
+                    const e = S(2).$implicit;
                     g(1), le(e.name)
                 }
             }
 
             function f5(i, t) {
-                if (1 & i && (d(0, "div", 5), T(1, h5, 2, 1, "div", 6), T(2, d5, 2, 1, "div", 6), h()), 2 & i) {
-                    const e = w().$implicit;
+                if (1 & i && (d(0, "div", 5), x(1, h5, 2, 1, "div", 6), x(2, d5, 2, 1, "div", 6), h()), 2 & i) {
+                    const e = S().$implicit;
                     ve("matTooltip", e.description), g(1), b("ngIf", e.displayName), g(1), b("ngIf", !e.displayName)
                 }
             }
 
             function p5(i, t) {
-                1 & i && (d(0, "div", 7), m(1, " ? "), h()), 2 & i && ve("matTooltip", w().$implicit.hint)
+                1 & i && (d(0, "div", 7), m(1, " ? "), h()), 2 & i && ve("matTooltip", S().$implicit.hint)
             }
 
             function m5(i, t) {
-                if (1 & i && (d(0, "div"), T(1, f5, 3, 3, "div", 3), T(2, p5, 2, 1, "div", 4), h()), 2 & i) {
+                if (1 & i && (d(0, "div"), x(1, f5, 3, 3, "div", 3), x(2, p5, 2, 1, "div", 4), h()), 2 & i) {
                     const e = t.$implicit;
                     g(1), b("ngIf", e.unlocked), g(1), b("ngIf", !e.unlocked)
                 }
@@ -27456,9 +27512,9 @@
                         [1, "itemSlot", 3, "matTooltip"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Achievements"), h(), B(3, "hr"), d(4, "div", 1), T(5, m5, 3, 2, "div", 2), h()()), 2 & e && (g(5), b("ngForOf", n.achievementService.achievements))
+                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Achievements"), h(), B(3, "hr"), d(4, "div", 1), x(5, m5, 3, 2, "div", 2), h()()), 2 & e && (g(5), b("ngForOf", n.achievementService.achievements))
                     },
-                    directives: [Nt, st, At],
+                    directives: [Bt, st, Pt],
                     styles: [".itemSlot[_ngcontent-%COMP%]{width:90px;height:90px;font-size:small;display:table-cell;vertical-align:middle;cursor:default}.achievementGrid[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;border-spacing:4px;max-height:600px}.itemSlot[_ngcontent-%COMP%] > tr[_ngcontent-%COMP%]{line-height:12px}.iconButton[_ngcontent-%COMP%]{float:right}"]
                 }), i
             })();
@@ -27780,14 +27836,14 @@
                     })
                 }
             }
-            var Ut = (() => ((Ut = Ut || {})[Ut.Sent = 0] = "Sent", Ut[Ut.UploadProgress = 1] = "UploadProgress", Ut[Ut.ResponseHeader = 2] = "ResponseHeader", Ut[Ut.DownloadProgress = 3] = "DownloadProgress", Ut[Ut.Response = 4] = "Response", Ut[Ut.User = 5] = "User", Ut))();
+            var qt = (() => ((qt = qt || {})[qt.Sent = 0] = "Sent", qt[qt.UploadProgress = 1] = "UploadProgress", qt[qt.ResponseHeader = 2] = "ResponseHeader", qt[qt.DownloadProgress = 3] = "DownloadProgress", qt[qt.Response = 4] = "Response", qt[qt.User = 5] = "User", qt))();
             class $m extends class M5 {
                 constructor(t, e = 200, n = "OK") {
                     this.headers = t.headers || new Sr, this.status = void 0 !== t.status ? t.status : e, this.statusText = t.statusText || n, this.url = t.url || null, this.ok = this.status >= 200 && this.status < 300
                 }
             } {
                 constructor(t = {}) {
-                    super(t), this.type = Ut.Response, this.body = void 0 !== t.body ? t.body : null
+                    super(t), this.type = qt.Response, this.body = void 0 !== t.body ? t.body : null
                 }
                 clone(t = {}) {
                     return new $m({
@@ -27835,7 +27891,7 @@
                         }
                         const a = Z(o).pipe(na(l => this.handler.handle(l)));
                         if (e instanceof el || "events" === r.observe) return a;
-                        const s = a.pipe(di(l => l instanceof $m));
+                        const s = a.pipe(pi(l => l instanceof $m));
                         switch (r.observe || "body") {
                             case "body":
                                 switch (o.responseType) {
@@ -27893,7 +27949,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(v5))
+                    return new(e || i)(w(v5))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac
@@ -27985,7 +28041,7 @@
                         const n = this._sanitizer.sanitize(Pe.RESOURCE_URL, e);
                         if (!n) throw dM(e);
                         const r = this._cachedIconsByUrl.get(n);
-                        return r ? Z(qu(r)) : this._loadSvgIconFromConfig(new so(e, null)).pipe(Bt(o => this._cachedIconsByUrl.set(n, o)), me(o => qu(o)))
+                        return r ? Z(qu(r)) : this._loadSvgIconFromConfig(new so(e, null)).pipe(Ht(o => this._cachedIconsByUrl.set(n, o)), me(o => qu(o)))
                     }
                     getNamedSvgIcon(e, n = "") {
                         const r = pM(n, e);
@@ -28009,7 +28065,7 @@
                                     args: e,
                                     keys: n
                                 } = A0(i),
-                                r = new We(o => {
+                                r = new $e(o => {
                                     const {
                                         length: a
                                     } = e;
@@ -28019,7 +28075,7 @@
                                         c = a;
                                     for (let u = 0; u < a; u++) {
                                         let f = !1;
-                                        vi(e[u]).subscribe(et(o, p => {
+                                        yi(e[u]).subscribe(Xe(o, p => {
                                             f || (f = !0, c--), s[u] = p
                                         }, () => l--, void 0, () => {
                                             (!l || !f) && (c || o.next(n ? P0(n, s) : s), o.complete())
@@ -28048,10 +28104,10 @@
                         return null
                     }
                     _loadSvgIconFromConfig(e) {
-                        return this._fetchIcon(e).pipe(Bt(n => e.svgText = n), me(() => this._svgElementFromConfig(e)))
+                        return this._fetchIcon(e).pipe(Ht(n => e.svgText = n), me(() => this._svgElementFromConfig(e)))
                     }
                     _loadSvgIconSetFromConfig(e) {
-                        return e.svgText ? Z(null) : this._fetchIcon(e).pipe(Bt(n => e.svgText = n))
+                        return e.svgText ? Z(null) : this._fetchIcon(e).pipe(Ht(n => e.svgText = n))
                     }
                     _extractSvgIconFromSet(e, n, r) {
                         const o = e.querySelector(`[id="${n}"]`);
@@ -28127,7 +28183,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(S(uM, 8), S(ep), S(fe, 8), S(ar))
+                    return new(e || i)(w(uM, 8), w(ep), w(fe, 8), w(ar))
                 }, i.\u0275prov = N({
                     token: i,
                     factory: i.\u0275fac,
@@ -28164,10 +28220,10 @@
                 mM = ["clip-path", "color-profile", "src", "cursor", "fill", "filter", "marker", "marker-start", "marker-mid", "marker-end", "mask", "stroke"],
                 F5 = mM.map(i => `[${i}]`).join(", "),
                 L5 = /^url\(['"]?#(.*?)['"]?\)$/;
-            let si = (() => {
+            let li = (() => {
                     class i extends I5 {
                         constructor(e, n, r, o, a) {
-                            super(e), this._iconRegistry = n, this._location = o, this._errorHandler = a, this._inline = !1, this._currentIconFetch = Xe.EMPTY, r || e.nativeElement.setAttribute("aria-hidden", "true")
+                            super(e), this._iconRegistry = n, this._location = o, this._errorHandler = a, this._inline = !1, this._currentIconFetch = Ze.EMPTY, r || e.nativeElement.setAttribute("aria-hidden", "true")
                         }
                         get inline() {
                             return this._inline
@@ -28272,7 +28328,7 @@
                         _updateSvgIcon(e) {
                             if (this._svgNamespace = null, this._svgName = null, this._currentIconFetch.unsubscribe(), e) {
                                 const [n, r] = this._splitIconName(e);
-                                n && (this._svgNamespace = n), r && (this._svgName = r), this._currentIconFetch = this._iconRegistry.getNamedSvgIcon(r, n).pipe(Jt(1)).subscribe(o => this._setSvgElement(o), o => {
+                                n && (this._svgNamespace = n), r && (this._svgName = r), this._currentIconFetch = this._iconRegistry.getNamedSvgIcon(r, n).pipe(Qt(1)).subscribe(o => this._setSvgElement(o), o => {
                                     this._errorHandler.handleError(new Error(`Error retrieving icon ${n}:${r}! ${o.message}`))
                                 })
                             }
@@ -28288,7 +28344,7 @@
                         hostAttrs: ["role", "img", 1, "mat-icon", "notranslate"],
                         hostVars: 7,
                         hostBindings: function (e, n) {
-                            2 & e && (Ye("data-mat-icon-type", n._usingFontIcon() ? "font" : "svg")("data-mat-icon-name", n._svgName || n.fontIcon)("data-mat-icon-namespace", n._svgNamespace || n.fontSet), Ct("mat-icon-inline", n.inline)("mat-icon-no-color", "primary" !== n.color && "accent" !== n.color && "warn" !== n.color))
+                            2 & e && (ze("data-mat-icon-type", n._usingFontIcon() ? "font" : "svg")("data-mat-icon-name", n._svgName || n.fontIcon)("data-mat-icon-namespace", n._svgNamespace || n.fontSet), Ct("mat-icon-inline", n.inline)("mat-icon-no-color", "primary" !== n.color && "accent" !== n.color && "warn" !== n.color))
                         },
                         inputs: {
                             color: "color",
@@ -28314,18 +28370,18 @@
                     class i {}
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275mod = je({
+                    }, i.\u0275mod = qe({
                         type: i
                     }), i.\u0275inj = He({
                         imports: [
-                            [fi], fi
+                            [mi], mi
                         ]
                     }), i
                 })();
 
             function N5(i, t) {
                 if (1 & i && (d(0, "span")(1, "mat-icon", 6), m(2, " help "), h(), m(3), h()), 2 & i) {
-                    const e = w().$implicit;
+                    const e = S().$implicit;
                     g(1), ve("matTooltip", e.description), g(2), F(" ", e.name, " ")
                 }
             }
@@ -28336,9 +28392,9 @@
 
             function H5(i, t) {
                 if (1 & i && (d(0, "div", 7), B(1, "span"), h()), 2 & i) {
-                    const e = w().$implicit,
-                        n = w();
-                    Ye("value", n.Math.floor(n.impossibleTaskService.taskProgress[e.taskType].progress))("max", n.Math.floor(e.progressRequired)), g(1), Ft("width", 100 * n.impossibleTaskService.taskProgress[e.taskType].progress / e.progressRequired, "%")
+                    const e = S().$implicit,
+                        n = S();
+                    ze("value", n.Math.floor(n.impossibleTaskService.taskProgress[e.taskType].progress))("max", n.Math.floor(e.progressRequired)), g(1), Lt("width", 100 * n.impossibleTaskService.taskProgress[e.taskType].progress / e.progressRequired, "%")
                 }
             }
 
@@ -28349,8 +28405,8 @@
             function U5(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "span")(1, "button", 8), M("click", function () {
-                        return E(e), w(2).impossibleTaskService.stopTask()
+                    d(0, "span")(1, "button", 8), T("click", function () {
+                        return E(e), S(2).impossibleTaskService.stopTask()
                     }), m(2, "Stop"), h()()
                 }
             }
@@ -28358,16 +28414,16 @@
             function j5(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "span")(1, "button", 8), M("click", function () {
-                        return E(e), w(2).impossibleTaskService.startTask()
+                    d(0, "span")(1, "button", 8), T("click", function () {
+                        return E(e), S(2).impossibleTaskService.startTask()
                     }), m(2, "Start"), h()()
                 }
             }
 
             function q5(i, t) {
-                if (1 & i && (d(0, "tr")(1, "td"), T(2, N5, 4, 2, "span", 4), T(3, B5, 2, 0, "span", 4), h(), d(4, "td"), T(5, H5, 2, 4, "div", 5), h(), d(6, "td"), T(7, V5, 3, 0, "span", 4), T(8, U5, 3, 0, "span", 4), T(9, j5, 3, 0, "span", 4), h()()), 2 & i) {
+                if (1 & i && (d(0, "tr")(1, "td"), x(2, N5, 4, 2, "span", 4), x(3, B5, 2, 0, "span", 4), h(), d(4, "td"), x(5, H5, 2, 4, "div", 5), h(), d(6, "td"), x(7, V5, 3, 0, "span", 4), x(8, U5, 3, 0, "span", 4), x(9, j5, 3, 0, "span", 4), h()()), 2 & i) {
                     const e = t.$implicit,
-                        n = w();
+                        n = S();
                     g(2), b("ngIf", n.impossibleTaskService.nextTask >= e.taskType), g(1), b("ngIf", n.impossibleTaskService.nextTask < e.taskType), g(2), b("ngIf", n.impossibleTaskService.nextTask >= e.taskType), g(2), b("ngIf", n.impossibleTaskService.taskProgress[e.taskType].complete), g(1), b("ngIf", n.impossibleTaskService.activeTaskIndex === e.taskType), g(1), b("ngIf", -1 === n.impossibleTaskService.activeTaskIndex && n.impossibleTaskService.nextTask === e.taskType)
                 }
             }
@@ -28382,7 +28438,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(vr), _(Oi), _(Ze))
+                    return new(e || i)(_(vr), _(Oi), _(Ke))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -28402,11 +28458,11 @@
                         [3, "click"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Impossible Tasks"), h(), d(3, "span")(4, "input", 1), M("change", function (o) {
+                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Impossible Tasks"), h(), d(3, "span")(4, "input", 1), T("change", function (o) {
                             return n.pauseOnImpossibleFailChange(o)
-                        }), h(), d(5, "label", 2), m(6, "Automatically pause if task related activity fails"), h()(), B(7, "hr"), d(8, "div")(9, "table"), T(10, q5, 10, 6, "tr", 3), h()()()), 2 & e && (g(4), b("checked", n.activityService.pauseOnImpossibleFail), g(6), b("ngForOf", n.impossibleTaskService.tasks))
+                        }), h(), d(5, "label", 2), m(6, "Automatically pause if task related activity fails"), h()(), B(7, "hr"), d(8, "div")(9, "table"), x(10, q5, 10, 6, "tr", 3), h()()()), 2 & e && (g(4), b("checked", n.activityService.pauseOnImpossibleFail), g(6), b("ngForOf", n.impossibleTaskService.tasks))
                     },
-                    directives: [Nt, st, si, At],
+                    directives: [Bt, st, li, Pt],
                     styles: ["", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
@@ -28462,17 +28518,17 @@
                         template: function (e, n) {
                             if (1 & e) {
                                 const r = V();
-                                d(0, "div", 0)(1, "h3"), m(2, "Import/Export Save File"), h(), B(3, "hr"), d(4, "div")(5, "textarea", 1, 2), m(7, "要导出游戏，请按“导出”按钮，然后将此框的内容复制并粘贴到您要存储保存数据的任何位置。 要导入游戏，请将保存数据粘贴到此框中，然后按导入按钮。 确保框中唯一的内容是您的保存数据，否则保存可能已损坏。 最好的方法是在剪贴板中保存游戏数据，然后单击此框并按 Ctrl-a 然后按 Ctrl-v。"), h()(), d(8, "button", 3), M("click", function () {
+                                d(0, "div", 0)(1, "h3"), m(2, "Import/Export Save File"), h(), B(3, "hr"), d(4, "div")(5, "textarea", 1, 2), m(7, "To export a game, press the Export button then copy and paste the contents of this box to wherever you want to store the save data. To import a game, paste save data into this box and press the Import button. Make sure that the only thing in the box is your save data or the save may be corrupted. The best way to do this is have the game data in your clipboard, then click on this box and press Ctrl-a then Ctrl-v."), h()(), d(8, "button", 3), T("click", function () {
                                     E(r);
-                                    const a = Rt(6);
+                                    const a = Ft(6);
                                     return n.importClick(a.value)
-                                }), m(9, "Import"), h(), d(10, "button", 3), M("click", function () {
+                                }), m(9, "Import"), h(), d(10, "button", 3), T("click", function () {
                                     return n.exportClick()
-                                }), m(11, "Export"), h(), d(12, "input", 4, 5), M("change", function (a) {
+                                }), m(11, "Export"), h(), d(12, "input", 4, 5), T("change", function (a) {
                                     return n.importFileClick(a)
-                                }), h(), d(14, "button", 3), M("click", function () {
-                                    return E(r), Rt(13).click()
-                                }), m(15, "Import file"), h(), d(16, "button", 3), M("click", function () {
+                                }), h(), d(14, "button", 3), T("click", function () {
+                                    return E(r), Ft(13).click()
+                                }), m(15, "Import file"), h(), d(16, "button", 3), T("click", function () {
                                     return n.exportFileClick()
                                 }), m(17, "Export file"), h()()
                             }
@@ -28516,21 +28572,21 @@
                         selectors: [
                             ["app-changelog-panel"]
                         ],
-                        decls: 251,
+                        decls: 256,
                         vars: 0,
                         consts: [
                             [1, "darkMode"],
                             [1, "changeLogContainer"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Change Log"), h(), B(3, "hr"), d(4, "div", 1)(5, "table")(6, "tr")(7, "td"), m(8, "v1.0.63"), h(), d(9, "td"), m(10, "Grandmother still loves you even when you are very powerful. Additional accessibility support. Bug fixes"), h()(), d(11, "tr")(12, "td"), m(13, "v1.0.62"), h(), d(14, "td"), m(15, "Screen readers can now read the game's icon buttons. Core Cultivation will not show up until mana is unlocked. Balancing Chi is now available earlier but will not work at full strength until mana is unlocked. New achievements. Bug fixes."), h()(), d(16, "tr")(17, "td"), m(18, "v1.0.61"), h(), d(19, "td"), m(20, "A new achievement for managing your followers. Immortality races Season 1 (see the Discord). Bug fixes."), h()(), d(21, "tr")(22, "td"), m(23, "v1.0.60"), h(), d(24, "td"), m(25, "Equipment and Home panels can now be collapsed. Bug fixes."), h()(), d(26, "tr")(27, "td"), m(28, "v1.0.59"), h(), d(29, "td"), m(30, "Life summary panel. Tips are available for cultivators who don't want to figure things out on their own. Automated merging is easier to achieve. Low level crafting produces better items. Balance changes to equipment and boss fights. Game speed hotkeys changed. Bug fixes."), h()(), d(31, "tr")(32, "td"), m(33, "v1.0.58"), h(), d(34, "td"), m(35, "Tuned equipment degradation down. Equipment should now reach equilibrium between damage and improvement at higher points."), h()(), d(36, "tr")(37, "td"), m(38, "v1.0.57"), h(), d(39, "td"), m(40, "Fix for wooden weapons not getting proper benefit from weaponsmiths."), h()(), d(41, "tr")(42, "td"), m(43, "v1.0.56"), h(), d(44, "td"), m(45, "New tooltip system. Notification for offline tick gains. Minor changes to import/export functions. Equipment damage system changed. Hotkeys 0-5 for game speeds. Activities you can't do now show as disabled instead of disappearing. Notification popups. Bug fixes."), h()(), d(46, "tr")(47, "td"), m(48, "v1.0.55"), h(), d(49, "td"), m(50, "Monsters have started dropping better hides. Inventory sorting. A new activity. More options panel options. You can import and export save files instead of text blocks. Bug fixes."), h()(), d(51, "tr")(52, "td"), m(53, "v1.0.54"), h(), d(54, "td"), m(55, "Preformance improvements to allow experienced cultivators fly through the centuries. A new activity. Bug fixes."), h()(), d(56, "tr")(57, "td"), m(58, "v1.0.53"), h(), d(59, "td"), m(60, "You might be more powerful now. Certain enemies might also be. More powerful herbs have been spotted in the wilds. New crafting options. UI improvements and bug fixes."), h()(), d(61, "tr")(62, "td"), m(63, "v1.0.52"), h(), d(64, "td"), m(65, "Even more Bloodline ascensions are now available. New activities. Bug fixes."), h()(), d(66, "tr")(67, "td"), m(68, "v1.0.51"), h(), d(69, "td"), m(70, "A Statistics Panel is now available to show cultivators some information about what they have done. Additional Bloodline ascensions are now available. A late game boss is stronger but now has less health to make that fight less of a grind. Cultivators with the right knowledge can automatically rest instead of becoming exhausted. Some additional game options are available. Balance changes and bug fixes."), h()(), d(71, "tr")(72, "td"), m(73, "v1.0.50"), h(), d(74, "td"), m(75, "An easy mode is available to cultivators who think the game is too hard. New achievements and manuals. New activities for magically empowered seekers of immortality. UI improvements. Bug fixes and balance improvements."), h()(), d(76, "tr")(77, "td"), m(78, "v1.0.49"), h(), d(79, "td"), m(80, "Pause before death is available if you know the right secrets. Improvements to followers. Better game performance. "), h()(), d(81, "tr")(82, "td"), m(83, "v1.0.48"), h(), d(84, "td"), m(85, "Better follower management. Item names stay more consistent when merged and upgraded. Balance and bug fixes."), h()(), d(86, "tr")(87, "td"), m(88, "v1.0.47"), h(), d(89, "td"), m(90, "Better inventory slots that don't jiggle around. Auto-sell and auto-use can now reserve some of the items (set value in the options panel). Bug and balance fixes."), h()(), d(91, "tr")(92, "td"), m(93, "v1.0.46"), h(), d(94, "td"), m(95, "Condensing your Soul Core now provides greater benefits."), h()(), d(96, "tr")(97, "td"), m(98, "v1.0.45"), h(), d(99, "td"), m(100, "A powerful new pill can now be created by aspiring immortals who have mastered many jobs."), h()(), d(101, "tr")(102, "td"), m(103, "v1.0.44"), h(), d(104, "td"), m(105, "Autobuy options are now configurable if you have found the secret knowledge needed."), h()(), d(106, "tr")(107, "td"), m(108, "v1.0.43"), h(), d(109, "td"), m(110, "When the game is paused you can advance a day with the Enter key. Time now moves faster the older you are starting at 5,000 years old. Base lifespan now increases based on total days lived, not number of lives lived. Balance changes to attributes and aptitudes."), h()(), d(111, "tr")(112, "td"), m(113, "v1.0.42"), h(), d(114, "td"), m(115, "Gaining large numbers of items at once is now much more efficient, so having obscenely huge farms no longer breaks the game."), h()(), d(116, "tr")(117, "td"), m(118, "v1.0.41"), h(), d(119, "td"), m(120, "Panel size fixes. Bloodline ascension rank 5. Fixed log line duplication bug. Pause on death should no longer allow extra days to pass before pausing."), h()(), d(121, "tr")(122, "td"), m(123, "v1.0.40"), h(), d(124, "td"), m(125, "Changed the way damage and armor work. Late-game fights should now be more epic and interesting."), h()(), d(126, "tr")(127, "td"), m(128, "v1.0.39"), h(), d(129, "td"), m(130, "Better descriptions for resting activities. Shift-click activities to load them onto the schedule 10 at a time. Canopy beds give more health."), h()(), d(131, "tr")(132, "td"), m(133, "v1.0.38"), h(), d(134, "td"), m(135, "Better performance for aspiring immortals who want to buy vast tracts of land."), h()(), d(136, "tr")(137, "td"), m(138, "v1.0.37"), h(), d(139, "td"), m(140, "New status bars that show values on non-chrome browsers."), h()(), d(141, "tr")(142, "td"), m(143, "v1.0.36"), h(), d(144, "td"), m(145, "You can now choose how much money to reserve when doing automatic purchases."), h()(), d(146, "tr")(147, "td"), m(148, "v1.0.35"), h(), d(149, "td"), m(150, "The log panel can now be resized by sliding the slider up and down. The Ascension Techniques panel stays unlocked once unlocked. Old junky gems can now be easily removed if you know how."), h()(), d(151, "tr")(152, "td"), m(153, "v1.0.34"), h(), d(154, "td"), m(155, "Style fix, clear schedule button, and auto-equip can now be turned off in the options."), h()(), d(156, "tr")(157, "td"), m(158, "v1.0.33"), h(), d(159, "td"), m(160, "Some styling improvements and a fix to very late game reward loot."), h()(), d(161, "tr")(162, "td"), m(163, "v1.0.32"), h(), d(164, "td"), m(165, "Automerging will now upgrade equipped weapons and armor if all merge manuals have been achieved and purchased."), h()(), d(166, "tr")(167, "td"), m(168, "v1.0.31"), h(), d(169, "td"), m(170, "Some balance changes."), h()(), d(171, "tr")(172, "td"), m(173, "v1.0.30"), h(), d(174, "td"), m(175, "A certain impossible task is now slightly less impossible."), h()(), d(176, "tr")(177, "td"), m(178, "v1.0.29"), h(), d(179, "td"), m(180, "Silly levels that stamina could reach are now slightly less silly. Pausing the game banks time ticks."), h()(), d(181, "tr")(182, "td"), m(183, "v1.0.28"), h(), d(184, "td"), m(185, "Improvements to automatic home purchasing."), h()(), d(186, "tr")(187, "td"), m(188, "v1.0.27"), h(), d(189, "td"), m(190, "You can now save and load an activity schedule."), h()(), d(191, "tr")(192, "td"), m(193, "v1.0.26"), h(), d(194, "td"), m(195, "Fixed a bug with activities incorrectly being removed from the schedule on reincarnation."), h()(), d(196, "tr")(197, "td"), m(198, "v1.0.25"), h(), d(199, "td"), m(200, "New activities and activity upgrades now get log entries. Armor now degrades when attacked."), h()(), d(201, "tr")(202, "td"), m(203, "v1.0.24"), h(), d(204, "td"), m(205, "Bug fix for aspiring immortals who got tangled up while trying to swim to the bottom of the ocean."), h()(), d(206, "tr")(207, "td"), m(208, "v1.0.23"), h(), d(209, "td"), m(210, "Bug fix for aspiring immortals who achieved infinite wealth. Money is now capped at an amount that is plenty for everything but doesn't break your computer."), h()(), d(211, "tr")(212, "td"), m(213, "v1.0.22"), h(), d(214, "td"), m(215, "Leatherworking and Woodworking now have master ranks. You can now see how much money you made on each job the last time you did it. Better logs can now be chopped."), h()(), d(216, "tr")(217, "td"), m(218, "v1.0.21"), h(), d(219, "td"), m(220, "Followers can now be trained to be more powerful and can be automatically dismissed by job."), h()(), d(221, "tr")(222, "td"), m(223, "v1.0.20"), h(), d(224, "td"), m(225, "Added Discord link."), h()(), d(226, "tr")(227, "td"), m(228, "v1.0.19"), h(), d(229, "td"), m(230, "Added changelog."), h()(), d(231, "tr")(232, "td"), m(233, "v1.0.18"), h(), d(234, "td"), m(235, "New follower types are now available."), h()(), d(236, "tr")(237, "td"), m(238, "v1.0.17"), h(), d(239, "td"), m(240, "Crafting log entries can now be filtered out."), h()(), d(241, "tr")(242, "td"), m(243, "v1.0.16"), h(), d(244, "td"), m(245, "Added tutorial help button."), h()(), d(246, "tr")(247, "td"), m(248, "v0.0.0 - v1.0.15"), h(), d(249, "td"), m(250, "Created and launched the game."), h()()()()())
+                            1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Change Log"), h(), B(3, "hr"), d(4, "div", 1)(5, "table")(6, "tr")(7, "td"), m(8, "v1.1.0"), h(), d(9, "td"), m(10, "Hell Expansion for advanced cultivators who are ready to move beyond simple immortality. Bug fixes."), h()(), d(11, "tr")(12, "td"), m(13, "v1.0.63"), h(), d(14, "td"), m(15, "Grandmother still loves you even when you are very powerful. Additional accessibility support. Bug fixes"), h()(), d(16, "tr")(17, "td"), m(18, "v1.0.62"), h(), d(19, "td"), m(20, "Screen readers can now read the game's icon buttons. Core Cultivation will not show up until mana is unlocked. Balancing Chi is now available earlier but will not work at full strength until mana is unlocked. New achievements. Bug fixes."), h()(), d(21, "tr")(22, "td"), m(23, "v1.0.61"), h(), d(24, "td"), m(25, "A new achievement for managing your followers. Immortality races Season 1 (see the Discord). Bug fixes."), h()(), d(26, "tr")(27, "td"), m(28, "v1.0.60"), h(), d(29, "td"), m(30, "Equipment and Home panels can now be collapsed. Bug fixes."), h()(), d(31, "tr")(32, "td"), m(33, "v1.0.59"), h(), d(34, "td"), m(35, "Life summary panel. Tips are available for cultivators who don't want to figure things out on their own. Automated merging is easier to achieve. Low level crafting produces better items. Balance changes to equipment and boss fights. Game speed hotkeys changed. Bug fixes."), h()(), d(36, "tr")(37, "td"), m(38, "v1.0.58"), h(), d(39, "td"), m(40, "Tuned equipment degradation down. Equipment should now reach equilibrium between damage and improvement at higher points."), h()(), d(41, "tr")(42, "td"), m(43, "v1.0.57"), h(), d(44, "td"), m(45, "Fix for wooden weapons not getting proper benefit from weaponsmiths."), h()(), d(46, "tr")(47, "td"), m(48, "v1.0.56"), h(), d(49, "td"), m(50, "New tooltip system. Notification for offline tick gains. Minor changes to import/export functions. Equipment damage system changed. Hotkeys 0-5 for game speeds. Activities you can't do now show as disabled instead of disappearing. Notification popups. Bug fixes."), h()(), d(51, "tr")(52, "td"), m(53, "v1.0.55"), h(), d(54, "td"), m(55, "Monsters have started dropping better hides. Inventory sorting. A new activity. More options panel options. You can import and export save files instead of text blocks. Bug fixes."), h()(), d(56, "tr")(57, "td"), m(58, "v1.0.54"), h(), d(59, "td"), m(60, "Preformance improvements to allow experienced cultivators fly through the centuries. A new activity. Bug fixes."), h()(), d(61, "tr")(62, "td"), m(63, "v1.0.53"), h(), d(64, "td"), m(65, "You might be more powerful now. Certain enemies might also be. More powerful herbs have been spotted in the wilds. New crafting options. UI improvements and bug fixes."), h()(), d(66, "tr")(67, "td"), m(68, "v1.0.52"), h(), d(69, "td"), m(70, "Even more Bloodline ascensions are now available. New activities. Bug fixes."), h()(), d(71, "tr")(72, "td"), m(73, "v1.0.51"), h(), d(74, "td"), m(75, "A Statistics Panel is now available to show cultivators some information about what they have done. Additional Bloodline ascensions are now available. A late game boss is stronger but now has less health to make that fight less of a grind. Cultivators with the right knowledge can automatically rest instead of becoming exhausted. Some additional game options are available. Balance changes and bug fixes."), h()(), d(76, "tr")(77, "td"), m(78, "v1.0.50"), h(), d(79, "td"), m(80, "An easy mode is available to cultivators who think the game is too hard. New achievements and manuals. New activities for magically empowered seekers of immortality. UI improvements. Bug fixes and balance improvements."), h()(), d(81, "tr")(82, "td"), m(83, "v1.0.49"), h(), d(84, "td"), m(85, "Pause before death is available if you know the right secrets. Improvements to followers. Better game performance. "), h()(), d(86, "tr")(87, "td"), m(88, "v1.0.48"), h(), d(89, "td"), m(90, "Better follower management. Item names stay more consistent when merged and upgraded. Balance and bug fixes."), h()(), d(91, "tr")(92, "td"), m(93, "v1.0.47"), h(), d(94, "td"), m(95, "Better inventory slots that don't jiggle around. Auto-sell and auto-use can now reserve some of the items (set value in the options panel). Bug and balance fixes."), h()(), d(96, "tr")(97, "td"), m(98, "v1.0.46"), h(), d(99, "td"), m(100, "Condensing your Soul Core now provides greater benefits."), h()(), d(101, "tr")(102, "td"), m(103, "v1.0.45"), h(), d(104, "td"), m(105, "A powerful new pill can now be created by aspiring immortals who have mastered many jobs."), h()(), d(106, "tr")(107, "td"), m(108, "v1.0.44"), h(), d(109, "td"), m(110, "Autobuy options are now configurable if you have found the secret knowledge needed."), h()(), d(111, "tr")(112, "td"), m(113, "v1.0.43"), h(), d(114, "td"), m(115, "When the game is paused you can advance a day with the Enter key. Time now moves faster the older you are starting at 5,000 years old. Base lifespan now increases based on total days lived, not number of lives lived. Balance changes to attributes and aptitudes."), h()(), d(116, "tr")(117, "td"), m(118, "v1.0.42"), h(), d(119, "td"), m(120, "Gaining large numbers of items at once is now much more efficient, so having obscenely huge farms no longer breaks the game."), h()(), d(121, "tr")(122, "td"), m(123, "v1.0.41"), h(), d(124, "td"), m(125, "Panel size fixes. Bloodline ascension rank 5. Fixed log line duplication bug. Pause on death should no longer allow extra days to pass before pausing."), h()(), d(126, "tr")(127, "td"), m(128, "v1.0.40"), h(), d(129, "td"), m(130, "Changed the way damage and armor work. Late-game fights should now be more epic and interesting."), h()(), d(131, "tr")(132, "td"), m(133, "v1.0.39"), h(), d(134, "td"), m(135, "Better descriptions for resting activities. Shift-click activities to load them onto the schedule 10 at a time. Canopy beds give more health."), h()(), d(136, "tr")(137, "td"), m(138, "v1.0.38"), h(), d(139, "td"), m(140, "Better performance for aspiring immortals who want to buy vast tracts of land."), h()(), d(141, "tr")(142, "td"), m(143, "v1.0.37"), h(), d(144, "td"), m(145, "New status bars that show values on non-chrome browsers."), h()(), d(146, "tr")(147, "td"), m(148, "v1.0.36"), h(), d(149, "td"), m(150, "You can now choose how much money to reserve when doing automatic purchases."), h()(), d(151, "tr")(152, "td"), m(153, "v1.0.35"), h(), d(154, "td"), m(155, "The log panel can now be resized by sliding the slider up and down. The Ascension Techniques panel stays unlocked once unlocked. Old junky gems can now be easily removed if you know how."), h()(), d(156, "tr")(157, "td"), m(158, "v1.0.34"), h(), d(159, "td"), m(160, "Style fix, clear schedule button, and auto-equip can now be turned off in the options."), h()(), d(161, "tr")(162, "td"), m(163, "v1.0.33"), h(), d(164, "td"), m(165, "Some styling improvements and a fix to very late game reward loot."), h()(), d(166, "tr")(167, "td"), m(168, "v1.0.32"), h(), d(169, "td"), m(170, "Automerging will now upgrade equipped weapons and armor if all merge manuals have been achieved and purchased."), h()(), d(171, "tr")(172, "td"), m(173, "v1.0.31"), h(), d(174, "td"), m(175, "Some balance changes."), h()(), d(176, "tr")(177, "td"), m(178, "v1.0.30"), h(), d(179, "td"), m(180, "A certain impossible task is now slightly less impossible."), h()(), d(181, "tr")(182, "td"), m(183, "v1.0.29"), h(), d(184, "td"), m(185, "Silly levels that stamina could reach are now slightly less silly. Pausing the game banks time ticks."), h()(), d(186, "tr")(187, "td"), m(188, "v1.0.28"), h(), d(189, "td"), m(190, "Improvements to automatic home purchasing."), h()(), d(191, "tr")(192, "td"), m(193, "v1.0.27"), h(), d(194, "td"), m(195, "You can now save and load an activity schedule."), h()(), d(196, "tr")(197, "td"), m(198, "v1.0.26"), h(), d(199, "td"), m(200, "Fixed a bug with activities incorrectly being removed from the schedule on reincarnation."), h()(), d(201, "tr")(202, "td"), m(203, "v1.0.25"), h(), d(204, "td"), m(205, "New activities and activity upgrades now get log entries. Armor now degrades when attacked."), h()(), d(206, "tr")(207, "td"), m(208, "v1.0.24"), h(), d(209, "td"), m(210, "Bug fix for aspiring immortals who got tangled up while trying to swim to the bottom of the ocean."), h()(), d(211, "tr")(212, "td"), m(213, "v1.0.23"), h(), d(214, "td"), m(215, "Bug fix for aspiring immortals who achieved infinite wealth. Money is now capped at an amount that is plenty for everything but doesn't break your computer."), h()(), d(216, "tr")(217, "td"), m(218, "v1.0.22"), h(), d(219, "td"), m(220, "Leatherworking and Woodworking now have master ranks. You can now see how much money you made on each job the last time you did it. Better logs can now be chopped."), h()(), d(221, "tr")(222, "td"), m(223, "v1.0.21"), h(), d(224, "td"), m(225, "Followers can now be trained to be more powerful and can be automatically dismissed by job."), h()(), d(226, "tr")(227, "td"), m(228, "v1.0.20"), h(), d(229, "td"), m(230, "Added Discord link."), h()(), d(231, "tr")(232, "td"), m(233, "v1.0.19"), h(), d(234, "td"), m(235, "Added changelog."), h()(), d(236, "tr")(237, "td"), m(238, "v1.0.18"), h(), d(239, "td"), m(240, "New follower types are now available."), h()(), d(241, "tr")(242, "td"), m(243, "v1.0.17"), h(), d(244, "td"), m(245, "Crafting log entries can now be filtered out."), h()(), d(246, "tr")(247, "td"), m(248, "v1.0.16"), h(), d(249, "td"), m(250, "Added tutorial help button."), h()(), d(251, "tr")(252, "td"), m(253, "v0.0.0 - v1.0.15"), h(), d(254, "td"), m(255, "Created and launched the game."), h()()()()())
                         },
                         styles: ["table[_ngcontent-%COMP%]{border-spacing:4px}.changeLogContainer[_ngcontent-%COMP%]{max-height:600px}td[_ngcontent-%COMP%]{vertical-align:top}"]
                     }), i
                 })();
 
             function W5(i, t) {
-                if (1 & i && (d(0, "tr")(1, "td"), m(2), I(3, "camelToTitle"), h(), d(4, "td"), m(5), I(6, "bigNumber"), h()()), 2 & i) {
+                if (1 & i && (d(0, "tr")(1, "td"), m(2), O(3, "camelToTitle"), h(), d(4, "td"), m(5), O(6, "bigNumber"), h()()), 2 & i) {
                     const e = t.$implicit;
                     g(2), F(" Highest ", H(3, 2, e.key), " "), g(3), F(" ", H(6, 4, e.value), " ")
                 }
@@ -28549,7 +28605,7 @@
                     ngOnInit() {}
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(yt), _(ro), _(W), _(it), _(Mt), _(Ie), _(Wt), _(Ze), _(ym))
+                    return new(e || i)(_(yt), _(ro), _(W), _(tt), _(Mt), _(Oe), _(jt), _(Ke), _(ym))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -28563,7 +28619,7 @@
                         [4, "ngFor", "ngForOf"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Statistics"), h(), B(3, "hr"), d(4, "div", 1)(5, "table")(6, "tr")(7, "td"), m(8, " Game days per real second: "), h(), d(9, "td"), m(10), I(11, "number"), h()(), d(12, "tr")(13, "td"), m(14, " Game years per real minute: "), h(), d(15, "td"), m(16), I(17, "number"), h()(), d(18, "tr")(19, "td"), m(20, " Game years per real hour: "), h(), d(21, "td"), m(22), I(23, "number"), h()(), d(24, "tr")(25, "td"), m(26, " Total days lived: "), h(), d(27, "td"), m(28), I(29, "bigNumber"), h()(), d(30, "tr")(31, "td"), m(32, " Total lives lived: "), h(), d(33, "td"), m(34), h()(), d(35, "tr")(36, "td"), m(37, " Total enemies killed: "), h(), d(38, "td"), m(39), h()(), d(40, "tr")(41, "td"), m(42, " Enemies killed this life: "), h(), d(43, "td"), m(44), h()(), d(45, "tr")(46, "td"), m(47, " Troubling monsters encountered: "), h(), d(48, "td"), m(49), h()(), d(50, "tr")(51, "td"), m(52, " Manuals discovered: "), h(), d(53, "td"), m(54), h()(), d(55, "tr")(56, "td"), m(57, " Inventory Capacity: "), h(), d(58, "td"), m(59), h()(), d(60, "tr")(61, "td"), m(62, " Automatically sold items: "), h(), d(63, "td"), m(64), h()(), d(65, "tr")(66, "td"), m(67, " Automatically used items: "), h(), d(68, "td"), m(69), h()(), d(70, "tr")(71, "td"), m(72, " Automatically balanced items: "), h(), d(73, "td"), m(74), h()(), d(75, "tr")(76, "td"), m(77, " Items used: "), h(), d(78, "td"), m(79), h()(), d(80, "tr")(81, "td"), m(82, " Items sold: "), h(), d(83, "td"), m(84), h()(), d(85, "tr")(86, "td"), m(87, " Potions used: "), h(), d(88, "td"), m(89), h()(), d(90, "tr")(91, "td"), m(92, " Pills used: "), h(), d(93, "td"), m(94), h()(), d(95, "tr")(96, "td"), m(97, " Gems sold: "), h(), d(98, "td"), m(99), h()(), d(100, "tr")(101, "td"), m(102, " Items overflowed: "), h(), d(103, "td"), m(104), h()(), d(105, "tr")(106, "td"), m(107, " Unlocked Achievements: "), h(), d(108, "td"), m(109), h()(), d(110, "tr")(111, "td"), m(112, " Most land owned: "), h(), d(113, "td"), m(114), I(115, "bigNumber"), h()(), d(116, "tr")(117, "td"), m(118, " Highest land price: "), h(), d(119, "td"), m(120), I(121, "bigNumber"), h()(), d(122, "tr")(123, "td"), m(124, " Most fields owned: "), h(), d(125, "td"), m(126), I(127, "bigNumber"), h()(), d(128, "tr")(129, "td"), m(130, " Highest average farm yield: "), h(), d(131, "td"), m(132), I(133, "number"), h()(), d(134, "tr")(135, "td"), m(136, " Best home owned: "), h(), d(137, "td"), m(138), h()(), d(139, "tr")(140, "td"), m(141, " Follower recruited: "), h(), d(142, "td"), m(143), h()(), d(144, "tr")(145, "td"), m(146, " Followers recruited lately: "), h(), d(147, "td"), m(148), h()(), d(149, "tr")(150, "td"), m(151, " Followers died: "), h(), d(152, "td"), m(153), h()(), d(154, "tr")(155, "td"), m(156, " Followers dismissed: "), h(), d(157, "td"), m(158), h()(), d(159, "tr")(160, "td"), m(161, " Highest follower level: "), h(), d(162, "td"), m(163), h()(), d(164, "tr")(165, "td"), m(166, " Most money: "), h(), d(167, "td"), m(168), I(169, "bigNumber"), h()(), d(170, "tr")(171, "td"), m(172, " Oldest age: "), h(), d(173, "td"), m(174), h()(), T(175, W5, 7, 6, "tr", 2), I(176, "keyvalue"), d(177, "tr")(178, "td"), m(179, " Highest health: "), h(), d(180, "td"), m(181), h()(), d(182, "tr")(183, "td"), m(184, " Highest stamina: "), h(), d(185, "td"), m(186), h()(), d(187, "tr")(188, "td"), m(189, " Highest mana: "), h(), d(190, "td"), m(191), h()(), d(192, "tr")(193, "td"), m(194, " Highest damage dealt: "), h(), d(195, "td"), m(196), I(197, "bigNumber"), h()(), d(198, "tr")(199, "td"), m(200, " Highest damage taken: "), h(), d(201, "td"), m(202), I(203, "bigNumber"), h()(), d(204, "tr")(205, "td"), m(206, " Days spent exhausted "), h(), d(207, "td"), m(208), I(209, "bigNumber"), h()(), d(210, "tr")(211, "td"), m(212, " Completed Apprenticeships "), h(), d(213, "td"), m(214), h()(), d(215, "tr")(216, "td"), m(217, " Open apprenticeships: "), h(), d(218, "td"), m(219), h()(), d(220, "tr")(221, "td"), m(222, " Days spend doing odd jobs: "), h(), d(223, "td"), m(224), h()(), d(225, "tr")(226, "td"), m(227, " Days spent begging: "), h(), d(228, "td"), m(229), h()()()()()), 2 & e && (g(10), F(" ", Ge(11, 43, n.daysPerSecond, "1.0-2"), " "), g(6), F(" ", Ge(17, 46, 60 * n.daysPerSecond / 365, "1.0-2"), " "), g(6), F(" ", Ge(23, 49, 60 * n.daysPerSecond * 60 / 365, "1.0-2"), " "), g(6), F(" ", H(29, 52, n.mainLoopService.totalTicks), " "), g(6), F(" ", n.characterService.characterState.totalLives, " "), g(5), F(" ", n.battleService.totalKills, " "), g(5), F(" ", n.battleService.kills, " "), g(5), F(" ", n.battleService.troubleKills, " "), g(5), F(" ", n.storeService.manuals.length, " "), g(5), F(" ", n.inventoryService.maxItems, " "), g(5), F(" ", n.inventoryService.autoSellEntries.length, " "), g(5), F(" ", n.inventoryService.autoUseEntries.length, " "), g(5), F(" ", n.inventoryService.autoBalanceItems.length, " "), g(5), F(" ", n.inventoryService.lifetimeUsedItems, " "), g(5), F(" ", n.inventoryService.lifetimeSoldItems, " "), g(5), F(" ", n.inventoryService.lifetimePotionsUsed, " "), g(5), F(" ", n.inventoryService.lifetimePillsUsed, " "), g(5), F(" ", n.inventoryService.lifetimeGemsSold, " "), g(5), F(" ", n.inventoryService.thrownAwayItems, " "), g(5), F(" ", n.achievementService.unlockedAchievements.length, " "), g(5), F(" ", H(115, 54, n.homeService.highestLand), " "), g(6), F(" ", H(121, 56, n.homeService.highestLandPrice), " "), g(6), F(" ", H(127, 58, n.homeService.mostFields), " "), g(6), F(" ", Ge(133, 60, n.homeService.highestAverageYield, "1.0-2"), " "), g(6), F(" ", n.homeService.homesList[n.homeService.bestHome].name, " "), g(5), F(" ", n.followerService.totalRecruited, " "), g(5), F(" ", n.followerService.followersRecruited, " "), g(5), F(" ", n.followerService.totalDied, " "), g(5), F(" ", n.followerService.totalDismissed, " "), g(5), F(" ", n.followerService.highestLevel, " "), g(5), F(" ", H(169, 63, n.characterService.characterState.highestMoney), " "), g(6), F(" ", n.characterService.yearify(n.characterService.characterState.highestAge), " "), g(1), b("ngForOf", H(176, 65, n.characterService.characterState.highestAttributes)), g(6), F(" ", n.characterService.characterState.highestHealth, " "), g(5), F(" ", n.characterService.characterState.highestStamina, " "), g(5), F(" ", n.characterService.characterState.highestMana, " "), g(5), F(" ", H(197, 67, n.battleService.highestDamageDealt), " "), g(6), F(" ", H(203, 69, n.battleService.highestDamageTaken), " "), g(6), F(" ", H(209, 71, n.activityService.totalExhaustedDays), " "), g(6), F(" ", n.activityService.completedApprenticeships.length, " "), g(5), F(" ", n.activityService.openApprenticeships, " "), g(5), F(" ", n.activityService.oddJobDays, " "), g(5), F(" ", n.activityService.beggingDays, " "))
+                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Statistics"), h(), B(3, "hr"), d(4, "div", 1)(5, "table")(6, "tr")(7, "td"), m(8, " Game days per real second: "), h(), d(9, "td"), m(10), O(11, "number"), h()(), d(12, "tr")(13, "td"), m(14, " Game years per real minute: "), h(), d(15, "td"), m(16), O(17, "number"), h()(), d(18, "tr")(19, "td"), m(20, " Game years per real hour: "), h(), d(21, "td"), m(22), O(23, "number"), h()(), d(24, "tr")(25, "td"), m(26, " Total days lived: "), h(), d(27, "td"), m(28), O(29, "bigNumber"), h()(), d(30, "tr")(31, "td"), m(32, " Total lives lived: "), h(), d(33, "td"), m(34), h()(), d(35, "tr")(36, "td"), m(37, " Total enemies killed: "), h(), d(38, "td"), m(39), h()(), d(40, "tr")(41, "td"), m(42, " Enemies killed this life: "), h(), d(43, "td"), m(44), h()(), d(45, "tr")(46, "td"), m(47, " Troubling monsters encountered: "), h(), d(48, "td"), m(49), h()(), d(50, "tr")(51, "td"), m(52, " Manuals discovered: "), h(), d(53, "td"), m(54), h()(), d(55, "tr")(56, "td"), m(57, " Inventory Capacity: "), h(), d(58, "td"), m(59), h()(), d(60, "tr")(61, "td"), m(62, " Automatically sold items: "), h(), d(63, "td"), m(64), h()(), d(65, "tr")(66, "td"), m(67, " Automatically used items: "), h(), d(68, "td"), m(69), h()(), d(70, "tr")(71, "td"), m(72, " Automatically balanced items: "), h(), d(73, "td"), m(74), h()(), d(75, "tr")(76, "td"), m(77, " Items used: "), h(), d(78, "td"), m(79), h()(), d(80, "tr")(81, "td"), m(82, " Items sold: "), h(), d(83, "td"), m(84), h()(), d(85, "tr")(86, "td"), m(87, " Potions used: "), h(), d(88, "td"), m(89), h()(), d(90, "tr")(91, "td"), m(92, " Pills used: "), h(), d(93, "td"), m(94), h()(), d(95, "tr")(96, "td"), m(97, " Gems sold: "), h(), d(98, "td"), m(99), h()(), d(100, "tr")(101, "td"), m(102, " Items overflowed: "), h(), d(103, "td"), m(104), h()(), d(105, "tr")(106, "td"), m(107, " Unlocked Achievements: "), h(), d(108, "td"), m(109), h()(), d(110, "tr")(111, "td"), m(112, " Most land owned: "), h(), d(113, "td"), m(114), O(115, "bigNumber"), h()(), d(116, "tr")(117, "td"), m(118, " Highest land price: "), h(), d(119, "td"), m(120), O(121, "bigNumber"), h()(), d(122, "tr")(123, "td"), m(124, " Most fields owned: "), h(), d(125, "td"), m(126), O(127, "bigNumber"), h()(), d(128, "tr")(129, "td"), m(130, " Highest average farm yield: "), h(), d(131, "td"), m(132), O(133, "number"), h()(), d(134, "tr")(135, "td"), m(136, " Best home owned: "), h(), d(137, "td"), m(138), h()(), d(139, "tr")(140, "td"), m(141, " Follower recruited: "), h(), d(142, "td"), m(143), h()(), d(144, "tr")(145, "td"), m(146, " Followers recruited lately: "), h(), d(147, "td"), m(148), h()(), d(149, "tr")(150, "td"), m(151, " Followers died: "), h(), d(152, "td"), m(153), h()(), d(154, "tr")(155, "td"), m(156, " Followers dismissed: "), h(), d(157, "td"), m(158), h()(), d(159, "tr")(160, "td"), m(161, " Highest follower level: "), h(), d(162, "td"), m(163), h()(), d(164, "tr")(165, "td"), m(166, " Most money: "), h(), d(167, "td"), m(168), O(169, "bigNumber"), h()(), d(170, "tr")(171, "td"), m(172, " Oldest age: "), h(), d(173, "td"), m(174), h()(), x(175, W5, 7, 6, "tr", 2), O(176, "keyvalue"), d(177, "tr")(178, "td"), m(179, " Highest health: "), h(), d(180, "td"), m(181), h()(), d(182, "tr")(183, "td"), m(184, " Highest stamina: "), h(), d(185, "td"), m(186), h()(), d(187, "tr")(188, "td"), m(189, " Highest mana: "), h(), d(190, "td"), m(191), h()(), d(192, "tr")(193, "td"), m(194, " Highest damage dealt: "), h(), d(195, "td"), m(196), O(197, "bigNumber"), h()(), d(198, "tr")(199, "td"), m(200, " Highest damage taken: "), h(), d(201, "td"), m(202), O(203, "bigNumber"), h()(), d(204, "tr")(205, "td"), m(206, " Days spent exhausted "), h(), d(207, "td"), m(208), O(209, "bigNumber"), h()(), d(210, "tr")(211, "td"), m(212, " Completed Apprenticeships "), h(), d(213, "td"), m(214), h()(), d(215, "tr")(216, "td"), m(217, " Open apprenticeships: "), h(), d(218, "td"), m(219), h()(), d(220, "tr")(221, "td"), m(222, " Days spend doing odd jobs: "), h(), d(223, "td"), m(224), h()(), d(225, "tr")(226, "td"), m(227, " Days spent begging: "), h(), d(228, "td"), m(229), h()()()()()), 2 & e && (g(10), F(" ", at(11, 43, n.daysPerSecond, "1.0-2"), " "), g(6), F(" ", at(17, 46, 60 * n.daysPerSecond / 365, "1.0-2"), " "), g(6), F(" ", at(23, 49, 60 * n.daysPerSecond * 60 / 365, "1.0-2"), " "), g(6), F(" ", H(29, 52, n.mainLoopService.totalTicks), " "), g(6), F(" ", n.characterService.characterState.totalLives, " "), g(5), F(" ", n.battleService.totalKills, " "), g(5), F(" ", n.battleService.kills, " "), g(5), F(" ", n.battleService.troubleKills, " "), g(5), F(" ", n.storeService.manuals.length, " "), g(5), F(" ", n.inventoryService.maxItems, " "), g(5), F(" ", n.inventoryService.autoSellEntries.length, " "), g(5), F(" ", n.inventoryService.autoUseEntries.length, " "), g(5), F(" ", n.inventoryService.autoBalanceItems.length, " "), g(5), F(" ", n.inventoryService.lifetimeUsedItems, " "), g(5), F(" ", n.inventoryService.lifetimeSoldItems, " "), g(5), F(" ", n.inventoryService.lifetimePotionsUsed, " "), g(5), F(" ", n.inventoryService.lifetimePillsUsed, " "), g(5), F(" ", n.inventoryService.lifetimeGemsSold, " "), g(5), F(" ", n.inventoryService.thrownAwayItems, " "), g(5), F(" ", n.achievementService.unlockedAchievements.length, " "), g(5), F(" ", H(115, 54, n.homeService.highestLand), " "), g(6), F(" ", H(121, 56, n.homeService.highestLandPrice), " "), g(6), F(" ", H(127, 58, n.homeService.mostFields), " "), g(6), F(" ", at(133, 60, n.homeService.highestAverageYield, "1.0-2"), " "), g(6), F(" ", n.homeService.homesList[n.homeService.bestHome].name, " "), g(5), F(" ", n.followerService.totalRecruited, " "), g(5), F(" ", n.followerService.followersRecruited, " "), g(5), F(" ", n.followerService.totalDied, " "), g(5), F(" ", n.followerService.totalDismissed, " "), g(5), F(" ", n.followerService.highestLevel, " "), g(5), F(" ", H(169, 63, n.characterService.characterState.highestMoney), " "), g(6), F(" ", n.characterService.yearify(n.characterService.characterState.highestAge), " "), g(1), b("ngForOf", H(176, 65, n.characterService.characterState.highestAttributes)), g(6), F(" ", n.characterService.characterState.highestHealth, " "), g(5), F(" ", n.characterService.characterState.highestStamina, " "), g(5), F(" ", n.characterService.characterState.highestMana, " "), g(5), F(" ", H(197, 67, n.battleService.highestDamageDealt), " "), g(6), F(" ", H(203, 69, n.battleService.highestDamageTaken), " "), g(6), F(" ", H(209, 71, n.activityService.totalExhaustedDays), " "), g(6), F(" ", n.activityService.completedApprenticeships.length, " "), g(5), F(" ", n.activityService.openApprenticeships, " "), g(5), F(" ", n.activityService.oddJobDays, " "), g(5), F(" ", n.activityService.beggingDays, " "))
                     },
                     styles: ["table[_ngcontent-%COMP%]{width:100%}.statisticsDiv[_ngcontent-%COMP%]{width:100%;height:500px;overflow:auto}td[_ngcontent-%COMP%]{width:45%}"]
                 }), i
@@ -28606,17 +28662,17 @@
                         [1, "spaced", "warning"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Save Menu"), h(), B(3, "hr"), d(4, "div")(5, "span"), m(6, "Select Save File "), h()(), d(7, "div")(8, "button", 1), M("click", function () {
+                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Save Menu"), h(), B(3, "hr"), d(4, "div")(5, "span"), m(6, "Select Save File "), h()(), d(7, "div")(8, "button", 1), T("click", function () {
                             return n.fileClicked("")
-                        }), m(9, " Slot 0 "), h(), d(10, "button", 1), M("click", function () {
+                        }), m(9, " Slot 0 "), h(), d(10, "button", 1), T("click", function () {
                             return n.fileClicked("1")
-                        }), m(11, " Slot 1 "), h(), d(12, "button", 1), M("click", function () {
+                        }), m(11, " Slot 1 "), h(), d(12, "button", 1), T("click", function () {
                             return n.fileClicked("2")
-                        }), m(13, " Slot 2 "), h(), d(14, "span", 2), m(15), h()(), d(16, "div", 3)(17, "span")(18, "label", 4), m(19, "Change how often the game autosaves (in seconds) "), h(), d(20, "input", 5), M("change", function (o) {
+                        }), m(13, " Slot 2 "), h(), d(14, "span", 2), m(15), h()(), d(16, "div", 3)(17, "span")(18, "label", 4), m(19, "Change how often the game autosaves (in seconds) "), h(), d(20, "input", 5), T("change", function (o) {
                             return n.autoSaveInterval(o)
-                        }), h(), m(21, "\xa0 "), d(22, "span", 6), m(23, "Changing this will save immediately."), h()()()()), 2 & e && (g(8), b("ngClass", ze(5, Jm, "" === n.gameStateService.saveSlot)), g(2), b("ngClass", ze(7, Jm, "1" === n.gameStateService.saveSlot)), g(2), b("ngClass", ze(9, Jm, "2" === n.gameStateService.saveSlot)), g(3), le(n.error), g(5), ve("value", n.gameStateService.saveInterval))
+                        }), h(), m(21, "\xa0 "), d(22, "span", 6), m(23, "Changing this will save immediately."), h()()()()), 2 & e && (g(8), b("ngClass", je(5, Jm, "" === n.gameStateService.saveSlot)), g(2), b("ngClass", je(7, Jm, "1" === n.gameStateService.saveSlot)), g(2), b("ngClass", je(9, Jm, "2" === n.gameStateService.saveSlot)), g(3), le(n.error), g(5), ve("value", n.gameStateService.saveInterval))
                     },
-                    directives: [Di],
+                    directives: [fi],
                     styles: [".rightAligned[_ngcontent-%COMP%]{float:right;margin-right:6px}.spaced[_ngcontent-%COMP%]{margin-top:3px;margin-right:6px}.warning[_ngcontent-%COMP%]{color:red}.green[_ngcontent-%COMP%]{color:green}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
@@ -28624,8 +28680,8 @@
             function J5(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 46), M("click", function () {
-                        return E(e), w().impossibleTasksClicked()
+                    d(0, "mat-icon", 46), T("click", function () {
+                        return E(e), S().impossibleTasksClicked()
                     }), m(1, " priority_high "), h()
                 }
             }
@@ -28633,53 +28689,53 @@
             function Q5(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "span")(1, "mat-icon", 47), M("click", function () {
-                        return E(e), w().ascensionStoreClicked()
+                    d(0, "span")(1, "mat-icon", 47), T("click", function () {
+                        return E(e), S().ascensionStoreClicked()
                     }), m(2, " keyboard_double_arrow_up "), h()()
                 }
             }
 
             function Z5(i, t) {
                 if (1 & i && B(0, "app-vertical-panel-slider", 42), 2 & i) {
-                    w();
-                    const e = Rt(40),
-                        n = Rt(43);
+                    S();
+                    const e = Ft(40),
+                        n = Ft(43);
                     b("top", e)("bottom", n)
                 }
             }
 
             function X5(i, t) {
                 if (1 & i && B(0, "app-vertical-panel-slider", 42), 2 & i) {
-                    w();
-                    const e = Rt(43),
-                        n = Rt(46);
+                    S();
+                    const e = Ft(43),
+                        n = Ft(46);
                     b("top", e)("bottom", n)
                 }
             }
 
             function eq(i, t) {
                 if (1 & i && B(0, "app-vertical-panel-slider", 42), 2 & i) {
-                    w();
-                    const e = Rt(49),
-                        n = Rt(52);
+                    S();
+                    const e = Ft(49),
+                        n = Ft(52);
                     b("top", e)("bottom", n)
                 }
             }
 
             function tq(i, t) {
                 if (1 & i && B(0, "app-vertical-panel-slider", 42), 2 & i) {
-                    w();
-                    const e = Rt(55),
-                        n = Rt(58);
+                    S();
+                    const e = Ft(55),
+                        n = Ft(58);
                     b("top", e)("bottom", n)
                 }
             }
 
             function iq(i, t) {
                 if (1 & i && B(0, "app-vertical-panel-slider", 42), 2 & i) {
-                    w();
-                    const e = Rt(58),
-                        n = Rt(61);
+                    S();
+                    const e = Ft(58),
+                        n = Ft(61);
                     b("top", e)("bottom", n)
                 }
             }
@@ -28701,7 +28757,7 @@
                     }
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275pipe = It({
+                    }, i.\u0275pipe = Ot({
                         name: "floor",
                         type: i,
                         pure: !0
@@ -28715,13 +28771,13 @@
                     }
                     return i.\u0275fac = function (e) {
                         return new(e || i)
-                    }, i.\u0275pipe = It({
+                    }, i.\u0275pipe = Ot({
                         name: "camelToTitle",
                         type: i,
                         pure: !0
                     }), i
                 })(),
-                jt = (() => {
+                Yt = (() => {
                     class i {
                         constructor(e) {
                             this.mainLoopService = e
@@ -28740,7 +28796,7 @@
                     }
                     return i.\u0275fac = function (e) {
                         return new(e || i)(_(yt, 16))
-                    }, i.\u0275pipe = It({
+                    }, i.\u0275pipe = Ot({
                         name: "bigNumber",
                         type: i,
                         pure: !0
@@ -28758,7 +28814,7 @@
                             this.gameStateService.loadFromLocalStorage(), this.mainLoopService.start()
                         }
                         hardResetClicked(e) {
-                            e.preventDefault(), confirm("这将永久重置所有内容。 你确定吗？") && this.gameStateService.hardReset()
+                            e.preventDefault(), confirm("This will reset everything permanently. Are you sure?") && this.gameStateService.hardReset()
                         }
                         saveClicked(e) {
                             e.preventDefault(), e.stopPropagation(), (e.ctrlKey || e.metaKey) && (e.shiftKey || e.altKey) ? this.gameStateService.loadFromLocalStorage(!0) : e.shiftKey || e.altKey ? this.dialog.open(K5, {
@@ -28797,7 +28853,7 @@
                             })
                         }
                         rebirthClicked(e) {
-                            e.preventDefault(), confirm("这将结束你现在的生活。 你确定吗？") && this.gameStateService.rebirth()
+                            e.preventDefault(), confirm("This will end your current life. Are you sure?") && this.gameStateService.rebirth()
                         }
                         ascensionStoreClicked() {
                             this.storeService.updateAscensions(), this.dialog.open(nM, {
@@ -28858,14 +28914,14 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(yt), _(Oi), _(ro), _(Ie), _(vr), _(Oe), _(Wi))
+                        return new(e || i)(_(yt), _(Oi), _(ro), _(Oe), _(vr), _(Ie), _(Wi))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
                             ["app-root"]
                         ],
                         hostBindings: function (e, n) {
-                            1 & e && M("keydown", function (o) {
+                            1 & e && T("keydown", function (o) {
                                 return n.handleKeyboardEvent(o)
                             }, !1, zv)
                         },
@@ -28922,32 +28978,32 @@
                             ["matTooltip", "Ascension Techniques.", "aria-label", "Ascension", "aria-hidden", "false", 1, "iconButton", 3, "click"]
                         ],
                         template: function (e, n) {
-                            if (1 & e && (d(0, "div", 0)(1, "div", 1)(2, "div", 2)(3, "span", 3), m(4), d(5, "span", 4), M("click", function () {
+                            if (1 & e && (d(0, "div", 0)(1, "div", 1)(2, "div", 2)(3, "span", 3), m(4), d(5, "span", 4), T("click", function () {
                                     return n.changelogClicked()
-                                }), m(6), h()(), d(7, "mat-icon", 5), M("click", function () {
+                                }), m(6), h()(), d(7, "mat-icon", 5), T("click", function () {
                                     return n.tutorialClicked()
-                                }), m(8, " help "), h(), d(9, "mat-icon", 6), M("click", function () {
+                                }), m(8, " help "), h(), d(9, "mat-icon", 6), T("click", function () {
                                     return n.statisticsClicked()
-                                }), m(10, " format_list_numbered_rtl "), h(), d(11, "span")(12, "mat-icon", 7), M("click", function () {
+                                }), m(10, " format_list_numbered_rtl "), h(), d(11, "span")(12, "mat-icon", 7), T("click", function () {
                                     return n.storeClicked()
-                                }), m(13, " local_library "), h(), d(14, "mat-icon", 8), M("click", function () {
+                                }), m(13, " local_library "), h(), d(14, "mat-icon", 8), T("click", function () {
                                     return n.storeOptionsClicked()
-                                }), m(15, " settings "), h()(), d(16, "mat-icon", 9), M("click", function () {
+                                }), m(15, " settings "), h()(), d(16, "mat-icon", 9), T("click", function () {
                                     return n.achievementsClicked()
-                                }), m(17, " military_tech "), h(), T(18, J5, 2, 0, "mat-icon", 10), T(19, Q5, 3, 0, "span", 11), d(20, "span")(21, "a", 12), M("click", function (o) {
+                                }), m(17, " military_tech "), h(), x(18, J5, 2, 0, "mat-icon", 10), x(19, Q5, 3, 0, "span", 11), d(20, "span")(21, "a", 12), T("click", function (o) {
                                     return n.rebirthClicked(o)
-                                }), m(22, "Reincarnate"), h()(), d(23, "mat-icon", 13), M("click", function (o) {
+                                }), m(22, "Reincarnate"), h()(), d(23, "mat-icon", 13), T("click", function (o) {
                                     return n.saveClicked(o)
-                                }), m(24, " save "), h(), d(25, "span")(26, "input", 14), M("change", function () {
+                                }), m(24, " save "), h(), d(25, "span")(26, "input", 14), T("change", function () {
                                     return n.darkModeToggle()
-                                }), h(), d(27, "label", 15), m(28, "Dark Mode"), h()(), d(29, "mat-icon", 16), M("click", function () {
+                                }), h(), d(27, "label", 15), m(28, "Dark Mode"), h()(), d(29, "mat-icon", 16), T("click", function () {
                                     return n.exportClicked()
-                                }), m(30, " upload "), h(), d(31, "a", 17), M("click", function (o) {
+                                }), m(30, " upload "), h(), d(31, "a", 17), T("click", function (o) {
                                     return n.hardResetClicked(o)
-                                }), m(32, "Hard Reset"), h(), d(33, "a", 18), m(34, "Discord"), h()(), d(35, "div", 19)(36, "div", 20, 21)(38, "div", 22), B(39, "app-time-panel", 23, 24), T(41, Z5, 1, 2, "app-vertical-panel-slider", 25), B(42, "app-attributes-panel", 26, 27), T(44, X5, 1, 2, "app-vertical-panel-slider", 25), B(45, "app-health-panel", 28, 29), h(), d(47, "div", 30), B(48, "app-activity-panel", 31, 32), T(50, eq, 1, 2, "app-vertical-panel-slider", 25), B(51, "app-battle-panel", 33, 34), h(), d(53, "div", 35), B(54, "app-equipment-panel", 36, 37), T(56, tq, 1, 2, "app-vertical-panel-slider", 25), B(57, "app-home-panel", 38, 39), T(59, iq, 1, 2, "app-vertical-panel-slider", 25), B(60, "app-inventory-panel", 40, 41), h()(), B(62, "app-vertical-panel-slider", 42), d(63, "div", 43, 44), B(65, "app-log-panel", 45), h()()()()), 2 & e) {
-                                const r = Rt(37),
-                                    o = Rt(64);
-                                b("ngClass", ze(14, nq, n.gameStateService.isDarkMode)), g(4), F(" Immortality Idle - ", n.characterService.characterState.god ? "The Divine Cultivator" : n.hellService.inHell ? "Escape from The Eighteen Hells" : n.characterService.characterState.immortal ? "You are Immortal!" : "Can you become an immortal?", " "), g(2), le(n.gameStateService.isExperimental ? "Experimental" : "v" + n.applicationVersion), g(6), b("ngClass", ze(16, rq, n.storeService.isManualAvailable())), g(6), b("ngIf", n.impossibleTaskService.impossibleTasksUnlocked), g(1), b("ngIf", n.characterService.characterState.ascensionUnlocked), g(7), b("checked", n.gameStateService.isDarkMode), g(15), b("ngIf", n.activateSliders), g(3), b("ngIf", n.activateSliders), g(6), b("ngIf", n.activateSliders), g(6), b("ngIf", n.activateSliders), g(3), b("ngIf", n.activateSliders), g(3), b("top", r)("bottom", o)
+                                }), m(32, "Hard Reset"), h(), d(33, "a", 18), m(34, "Discord"), h()(), d(35, "div", 19)(36, "div", 20, 21)(38, "div", 22), B(39, "app-time-panel", 23, 24), x(41, Z5, 1, 2, "app-vertical-panel-slider", 25), B(42, "app-attributes-panel", 26, 27), x(44, X5, 1, 2, "app-vertical-panel-slider", 25), B(45, "app-health-panel", 28, 29), h(), d(47, "div", 30), B(48, "app-activity-panel", 31, 32), x(50, eq, 1, 2, "app-vertical-panel-slider", 25), B(51, "app-battle-panel", 33, 34), h(), d(53, "div", 35), B(54, "app-equipment-panel", 36, 37), x(56, tq, 1, 2, "app-vertical-panel-slider", 25), B(57, "app-home-panel", 38, 39), x(59, iq, 1, 2, "app-vertical-panel-slider", 25), B(60, "app-inventory-panel", 40, 41), h()(), B(62, "app-vertical-panel-slider", 42), d(63, "div", 43, 44), B(65, "app-log-panel", 45), h()()()()), 2 & e) {
+                                const r = Ft(37),
+                                    o = Ft(64);
+                                b("ngClass", je(14, nq, n.gameStateService.isDarkMode)), g(4), F(" Immortality Idle - ", n.characterService.characterState.god ? "The Divine Cultivator" : n.hellService.inHell ? "Escape from The Eighteen Hells" : n.characterService.characterState.immortal ? "You are Immortal!" : "Can you become an immortal?", " "), g(2), le(n.gameStateService.isExperimental ? "Experimental" : "v" + n.applicationVersion), g(6), b("ngClass", je(16, rq, n.storeService.isManualAvailable())), g(6), b("ngIf", n.impossibleTaskService.impossibleTasksUnlocked), g(1), b("ngIf", n.characterService.characterState.ascensionUnlocked), g(7), b("checked", n.gameStateService.isDarkMode), g(15), b("ngIf", n.activateSliders), g(3), b("ngIf", n.activateSliders), g(6), b("ngIf", n.activateSliders), g(6), b("ngIf", n.activateSliders), g(3), b("ngIf", n.activateSliders), g(3), b("top", r)("bottom", o)
                             }
                         },
                         styles: [".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
@@ -28957,11 +29013,11 @@
             function aq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "input", 4), M("change", function (r) {
-                        return E(e), w().pauseOnDeath(r)
+                    d(0, "input", 4), T("change", function (r) {
+                        return E(e), S().pauseOnDeath(r)
                     }), h()
                 }
-                2 & i && b("checked", w().activityService.pauseOnDeath)
+                2 & i && b("checked", S().activityService.pauseOnDeath)
             }
 
             function sq(i, t) {
@@ -28971,11 +29027,11 @@
             function lq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "input", 8), M("change", function (r) {
-                        return E(e), w(2).pauseBeforeDeath(r)
+                    d(0, "input", 8), T("change", function (r) {
+                        return E(e), S(2).pauseBeforeDeath(r)
                     }), h()
                 }
-                2 & i && b("checked", w(2).activityService.pauseBeforeDeath)
+                2 & i && b("checked", S(2).activityService.pauseBeforeDeath)
             }
 
             function cq(i, t) {
@@ -28983,8 +29039,8 @@
             }
 
             function uq(i, t) {
-                if (1 & i && (d(0, "div")(1, "span"), T(2, lq, 1, 1, "input", 6), T(3, cq, 2, 0, "label", 7), h()()), 2 & i) {
-                    const e = w();
+                if (1 & i && (d(0, "div")(1, "span"), x(2, lq, 1, 1, "input", 6), x(3, cq, 2, 0, "label", 7), h()()), 2 & i) {
+                    const e = S();
                     g(2), b("ngIf", e.activityService.autoRestart), g(1), b("ngIf", e.activityService.autoRestart)
                 }
             }
@@ -29002,7 +29058,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Ze))
+                    return new(e || i)(_(Ke))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -29023,7 +29079,7 @@
                         ["for", "pauseBeforeDeath"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Schedule Options"), h(), B(3, "hr"), d(4, "div")(5, "span"), T(6, aq, 1, 1, "input", 1), T(7, sq, 2, 0, "label", 2), h()(), T(8, uq, 4, 2, "div", 3), h()), 2 & e && (g(6), b("ngIf", n.activityService.autoRestart), g(1), b("ngIf", n.activityService.autoRestart), g(1), b("ngIf", n.activityService.autoPauseUnlocked))
+                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Schedule Options"), h(), B(3, "hr"), d(4, "div")(5, "span"), x(6, aq, 1, 1, "input", 1), x(7, sq, 2, 0, "label", 2), h()(), x(8, uq, 4, 2, "div", 3), h()), 2 & e && (g(6), b("ngIf", n.activityService.autoRestart), g(1), b("ngIf", n.activityService.autoRestart), g(1), b("ngIf", n.activityService.autoPauseUnlocked))
                     },
                     directives: [st],
                     styles: ["", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
@@ -29038,47 +29094,47 @@
             function dq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 30), M("click", function () {
-                        return E(e), w().fastClick()
-                    }), I(1, "number"), m(2, " fast_forward "), h()
+                    d(0, "mat-icon", 30), T("click", function () {
+                        return E(e), S().fastClick()
+                    }), O(1, "number"), m(2, " fast_forward "), h()
                 }
                 if (2 & i) {
-                    const e = w();
-                    ui("matTooltip", "Fast Game Speed (", Ge(1, 2, e.mainLoopService.getTPS(5), "1.0-2"), " days/sec).\n      Hotkey: Alt-3"), b("ngClass", ze(5, wa, 5 === e.mainLoopService.tickDivider && !e.mainLoopService.pause))
+                    const e = S();
+                    hi("matTooltip", "Fast Game Speed (", at(1, 2, e.mainLoopService.getTPS(5), "1.0-2"), " days/sec).\n      Hotkey: Alt-3"), b("ngClass", je(5, wa, 5 === e.mainLoopService.tickDivider && !e.mainLoopService.pause))
                 }
             }
 
             function fq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 31), M("click", function () {
-                        return E(e), w().fasterClick()
-                    }), I(1, "number"), m(2, " skip_next "), h()
+                    d(0, "mat-icon", 31), T("click", function () {
+                        return E(e), S().fasterClick()
+                    }), O(1, "number"), m(2, " skip_next "), h()
                 }
                 if (2 & i) {
-                    const e = w();
-                    ui("matTooltip", "Faster Game Speed (", Ge(1, 2, e.mainLoopService.getTPS(2), "1.0-2"), " days/sec).\n      Hotkey: Alt-4"), b("ngClass", ze(5, wa, 2 === e.mainLoopService.tickDivider && !e.mainLoopService.pause))
+                    const e = S();
+                    hi("matTooltip", "Faster Game Speed (", at(1, 2, e.mainLoopService.getTPS(2), "1.0-2"), " days/sec).\n      Hotkey: Alt-4"), b("ngClass", je(5, wa, 2 === e.mainLoopService.tickDivider && !e.mainLoopService.pause))
                 }
             }
 
             function pq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 32), M("click", function () {
-                        return E(e), w().fastestClick()
-                    }), I(1, "number"), m(2, " bolt "), h()
+                    d(0, "mat-icon", 32), T("click", function () {
+                        return E(e), S().fastestClick()
+                    }), O(1, "number"), m(2, " bolt "), h()
                 }
                 if (2 & i) {
-                    const e = w();
-                    ui("matTooltip", "Fastest Game Speed (", Ge(1, 2, e.mainLoopService.getTPS(1), "1.0-2"), " days/sec).\n      Hotkey: Alt-5"), b("ngClass", ze(5, wa, 1 === e.mainLoopService.tickDivider && !e.mainLoopService.pause))
+                    const e = S();
+                    hi("matTooltip", "Fastest Game Speed (", at(1, 2, e.mainLoopService.getTPS(1), "1.0-2"), " days/sec).\n      Hotkey: Alt-5"), b("ngClass", je(5, wa, 1 === e.mainLoopService.tickDivider && !e.mainLoopService.pause))
                 }
             }
 
             function mq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 33), M("click", function () {
-                        return E(e), w().timeOptions()
+                    d(0, "mat-icon", 33), T("click", function () {
+                        return E(e), S().timeOptions()
                     }), m(1, " settings "), h()
                 }
             }
@@ -29086,13 +29142,13 @@
             function gq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "h6")(1, "input", 34), M("change", function (r) {
-                        return E(e), w().useSavedTicks(r)
-                    }), h(), d(2, "label", 35), m(3), I(4, "number"), h()()
+                    d(0, "h6")(1, "input", 34), T("change", function (r) {
+                        return E(e), S().useSavedTicks(r)
+                    }), h(), d(2, "label", 35), m(3), O(4, "number"), h()()
                 }
                 if (2 & i) {
-                    const e = w();
-                    g(1), b("checked", e.mainLoopService.useBankedTicks), g(2), F("Use banked time to accelerate reality (10x). ", Ge(4, 2, e.mainLoopService.bankedTicks, "1.0-0"), " time ticks left.")
+                    const e = S();
+                    g(1), b("checked", e.mainLoopService.useBankedTicks), g(2), F("Use banked time to accelerate reality (10x). ", at(4, 2, e.mainLoopService.bankedTicks, "1.0-0"), " time ticks left.")
                 }
             }
             const Qm = function (i, t) {
@@ -29105,47 +29161,47 @@
             function vq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "tr", 37), M("dragover", function (r) {
-                        return E(e), w(2).allowDrop(r)
+                    d(0, "tr", 37), T("dragover", function (r) {
+                        return E(e), S(2).allowDrop(r)
                     })("drop", function (r) {
                         E(e);
-                        const o = w().index;
-                        return w().drop(o, r)
+                        const o = S().index;
+                        return S().drop(o, r)
                     })("dragstart", function (r) {
                         E(e);
-                        const o = w().index;
-                        return w().drag(o, r)
-                    }), d(1, "td", 38), m(2), h(), d(3, "td", 38)(4, "div", 39), B(5, "span"), h()(), d(6, "td", 38)(7, "mat-icon", 40), M("click", function (r) {
+                        const o = S().index;
+                        return S().drag(o, r)
+                    }), d(1, "td", 38), m(2), h(), d(3, "td", 38)(4, "div", 39), B(5, "span"), h()(), d(6, "td", 38)(7, "mat-icon", 40), T("click", function (r) {
                         E(e);
-                        const o = w().$implicit;
-                        return w().onMinusClick(o, r)
-                    }), m(8, "remove"), h(), d(9, "mat-icon", 41), M("click", function (r) {
+                        const o = S().$implicit;
+                        return S().onMinusClick(o, r)
+                    }), m(8, "remove"), h(), d(9, "mat-icon", 41), T("click", function (r) {
                         E(e);
-                        const o = w().$implicit;
-                        return w().onPlusClick(o, r)
-                    }), m(10, "add"), h(), d(11, "mat-icon", 42), M("click", function () {
+                        const o = S().$implicit;
+                        return S().onPlusClick(o, r)
+                    }), m(10, "add"), h(), d(11, "mat-icon", 42), T("click", function () {
                         E(e);
-                        const r = w().$implicit;
-                        return w().onDisableClick(r)
-                    }), m(12, "cancel"), h(), d(13, "mat-icon", 43), M("click", function () {
+                        const r = S().$implicit;
+                        return S().onDisableClick(r)
+                    }), m(12, "cancel"), h(), d(13, "mat-icon", 43), T("click", function () {
                         E(e);
-                        const r = w().$implicit;
-                        return w().onRemoveClick(r)
+                        const r = S().$implicit;
+                        return S().onRemoveClick(r)
                     }), m(14, "clear"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(),
+                    const e = S(),
                         n = e.index,
                         r = e.$implicit,
-                        o = w();
-                    g(1), b("ngClass", Bn(8, Qm, n === o.activityService.currentIndex, r.disabled)), g(1), ls("", o.getActivityName(r.activity), " (", r.repeatTimes, " ", 1 === r.repeatTimes ? "day" : "days", ")"), g(1), b("ngClass", Bn(11, Qm, n === o.activityService.currentIndex, r.disabled)), g(2), Ft("width", 100 * (n !== o.activityService.currentIndex || r.disabled ? r.repeatTimes : o.activityService.currentTickCount) / r.repeatTimes, "%"), g(1), b("ngClass", Bn(14, Qm, n === o.activityService.currentIndex, r.disabled))
+                        o = S();
+                    g(1), b("ngClass", Bn(8, Qm, n === o.activityService.currentIndex, r.disabled)), g(1), ls("", o.getActivityName(r.activity), " (", r.repeatTimes, " ", 1 === r.repeatTimes ? "day" : "days", ")"), g(1), b("ngClass", Bn(11, Qm, n === o.activityService.currentIndex, r.disabled)), g(2), Lt("width", 100 * (n !== o.activityService.currentIndex || r.disabled ? r.repeatTimes : o.activityService.currentTickCount) / r.repeatTimes, "%"), g(1), b("ngClass", Bn(14, Qm, n === o.activityService.currentIndex, r.disabled))
                 }
             }
 
             function yq(i, t) {
-                if (1 & i && (cr(0), T(1, vq, 15, 17, "tr", 36), ur()), 2 & i) {
+                if (1 & i && (cr(0), x(1, vq, 15, 17, "tr", 36), ur()), 2 & i) {
                     const e = t.$implicit,
-                        n = w();
+                        n = S();
                     g(1), b("ngIf", "" !== n.getActivityName(e.activity))
                 }
             }
@@ -29158,27 +29214,27 @@
             function bq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "tr")(1, "td"), m(2), h(), d(3, "td")(4, "div", 46), B(5, "span"), h()(), d(6, "td")(7, "mat-icon", 43), M("click", function () {
-                        return E(e), w(2).removeSpiritActivity()
+                    d(0, "tr")(1, "td"), m(2), h(), d(3, "td")(4, "div", 46), B(5, "span"), h()(), d(6, "td")(7, "mat-icon", 43), T("click", function () {
+                        return E(e), S(2).removeSpiritActivity()
                     }), m(8, "clear"), h()()()
                 }
                 if (2 & i) {
-                    const e = w(2);
-                    g(2), le(e.getActivityName(e.activityService.spiritActivity)), g(2), b("ngClass", ze(2, _q, e.activityService.spiritActivityProgress && !e.mainLoopService.pause))
+                    const e = S(2);
+                    g(2), le(e.getActivityName(e.activityService.spiritActivity)), g(2), b("ngClass", je(2, _q, e.activityService.spiritActivityProgress && !e.mainLoopService.pause))
                 }
             }
 
             function Sq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "table", 44), M("drop", function (r) {
-                        return E(e), w().spiritActivityDrop(r)
+                    d(0, "table", 44), T("drop", function (r) {
+                        return E(e), S().spiritActivityDrop(r)
                     })("dragover", function (r) {
-                        return E(e), w().allowDrop(r)
-                    }), d(1, "tr")(2, "td", 45), m(3, " Spiritual Projection "), h()(), T(4, bq, 9, 4, "tr", 10), h()
+                        return E(e), S().allowDrop(r)
+                    }), d(1, "tr")(2, "td", 45), m(3, " Spiritual Projection "), h()(), x(4, bq, 9, 4, "tr", 10), h()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(4), b("ngIf", null !== e.activityService.spiritActivity)
                 }
             }
@@ -29284,7 +29340,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(yt), _(Ze), _(Ie), _(Wi))
+                    return new(e || i)(_(yt), _(Ke), _(Oe), _(Wi))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -29342,33 +29398,33 @@
                         [1, "progress-bar", 3, "ngClass"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0), M("dragover", function (o) {
+                        1 & e && (d(0, "div", 0), T("dragover", function (o) {
                             return n.allowDrop(o)
                         })("drop", function (o) {
                             return n.drop(n.activityService.activityLoop.length, o)
-                        }), d(1, "h3", 1)(2, "span", 2)(3, "mat-icon"), m(4, " calendar_month "), h(), m(5, " How will you spend your days? "), h(), d(6, "mat-icon", 3), M("click", function () {
+                        }), d(1, "h3", 1)(2, "span", 2)(3, "mat-icon"), m(4, " calendar_month "), h(), m(5, " How will you spend your days? "), h(), d(6, "mat-icon", 3), T("click", function () {
                             return n.pauseClick()
-                        }), m(7, " pause "), h(), d(8, "mat-icon", 4), M("click", function () {
+                        }), m(7, " pause "), h(), d(8, "mat-icon", 4), T("click", function () {
                             return n.slowClick()
-                        }), m(9, " slow_motion_video "), h(), d(10, "mat-icon", 5), M("click", function () {
+                        }), m(9, " slow_motion_video "), h(), d(10, "mat-icon", 5), T("click", function () {
                             return n.standardClick()
-                        }), I(11, "number"), m(12, " play_arrow "), h(), T(13, dq, 3, 7, "mat-icon", 6), T(14, fq, 3, 7, "mat-icon", 7), T(15, pq, 3, 7, "mat-icon", 8), T(16, mq, 2, 0, "mat-icon", 9), T(17, gq, 5, 5, "h6", 10), h(), d(18, "div", 11)(19, "table"), T(20, yq, 2, 1, "ng-container", 12), h(), T(21, Sq, 5, 1, "table", 13), h(), d(22, "div", 14)(23, "div", 15)(24, "div", 16), M("click", function () {
+                        }), O(11, "number"), m(12, " play_arrow "), h(), x(13, dq, 3, 7, "mat-icon", 6), x(14, fq, 3, 7, "mat-icon", 7), x(15, pq, 3, 7, "mat-icon", 8), x(16, mq, 2, 0, "mat-icon", 9), x(17, gq, 5, 5, "h6", 10), h(), d(18, "div", 11)(19, "table"), x(20, yq, 2, 1, "ng-container", 12), h(), x(21, Sq, 5, 1, "table", 13), h(), d(22, "div", 14)(23, "div", 15)(24, "div", 16), T("click", function () {
                             return n.activityService.saveActivityLoop()
-                        }), d(25, "mat-icon", 17), m(26, " content_paste "), h(), d(27, "div", 18), m(28, "1"), h()(), d(29, "div", 19), M("click", function () {
+                        }), d(25, "mat-icon", 17), m(26, " content_paste "), h(), d(27, "div", 18), m(28, "1"), h()(), d(29, "div", 19), T("click", function () {
                             return n.activityService.saveActivityLoop(2)
-                        }), d(30, "mat-icon", 20), m(31, " content_paste "), h(), d(32, "div", 18), m(33, "2"), h()(), d(34, "div", 21), M("click", function () {
+                        }), d(30, "mat-icon", 20), m(31, " content_paste "), h(), d(32, "div", 18), m(33, "2"), h()(), d(34, "div", 21), T("click", function () {
                             return n.activityService.saveActivityLoop(3)
-                        }), d(35, "mat-icon", 22), m(36, " content_paste "), h(), d(37, "div", 18), m(38, "3"), h()()(), d(39, "div", 15)(40, "div", 23), M("click", function () {
+                        }), d(35, "mat-icon", 22), m(36, " content_paste "), h(), d(37, "div", 18), m(38, "3"), h()()(), d(39, "div", 15)(40, "div", 23), T("click", function () {
                             return n.activityService.loadActivityLoop()
-                        }), d(41, "mat-icon", 24), m(42, " content_paste_go "), h(), d(43, "div", 18), m(44, "1"), h()(), d(45, "div", 25), M("click", function () {
+                        }), d(41, "mat-icon", 24), m(42, " content_paste_go "), h(), d(43, "div", 18), m(44, "1"), h()(), d(45, "div", 25), T("click", function () {
                             return n.activityService.loadActivityLoop(2)
-                        }), d(46, "mat-icon", 26), m(47, " content_paste_go "), h(), d(48, "div", 18), m(49, "2"), h()(), d(50, "div", 27), M("click", function () {
+                        }), d(46, "mat-icon", 26), m(47, " content_paste_go "), h(), d(48, "div", 18), m(49, "2"), h()(), d(50, "div", 27), T("click", function () {
                             return n.activityService.loadActivityLoop(3)
-                        }), d(51, "mat-icon", 28), m(52, " content_paste_go "), h(), d(53, "div", 18), m(54, "3"), h()()(), d(55, "mat-icon", 29), M("click", function () {
+                        }), d(51, "mat-icon", 28), m(52, " content_paste_go "), h(), d(53, "div", 18), m(54, "3"), h()()(), d(55, "mat-icon", 29), T("click", function () {
                             return n.activityService.activityLoop = []
-                        }), m(56, " delete_sweep "), h()()()), 2 & e && (g(6), b("ngClass", ze(14, wa, n.mainLoopService.pause)), g(2), b("ngClass", ze(16, wa, 40 === n.mainLoopService.tickDivider && !n.mainLoopService.pause)), g(2), ui("matTooltip", "Standard Game Speed (", Ge(11, 11, n.mainLoopService.getTPS(10), "1.0-2"), " days/sec).\n      Hotkey: Alt-2"), b("ngClass", ze(18, wa, 10 === n.mainLoopService.tickDivider && !n.mainLoopService.pause)), g(3), b("ngIf", n.mainLoopService.unlockFastSpeed), g(1), b("ngIf", n.mainLoopService.unlockFasterSpeed), g(1), b("ngIf", n.mainLoopService.unlockFastestSpeed), g(1), b("ngIf", n.activityService.autoRestart), g(1), b("ngIf", n.mainLoopService.bankedTicks > 0), g(3), b("ngForOf", n.activityService.activityLoop), g(1), b("ngIf", n.characterService.characterState.manaUnlocked))
+                        }), m(56, " delete_sweep "), h()()()), 2 & e && (g(6), b("ngClass", je(14, wa, n.mainLoopService.pause)), g(2), b("ngClass", je(16, wa, 40 === n.mainLoopService.tickDivider && !n.mainLoopService.pause)), g(2), hi("matTooltip", "Standard Game Speed (", at(11, 11, n.mainLoopService.getTPS(10), "1.0-2"), " days/sec).\n      Hotkey: Alt-2"), b("ngClass", je(18, wa, 10 === n.mainLoopService.tickDivider && !n.mainLoopService.pause)), g(3), b("ngIf", n.mainLoopService.unlockFastSpeed), g(1), b("ngIf", n.mainLoopService.unlockFasterSpeed), g(1), b("ngIf", n.mainLoopService.unlockFastestSpeed), g(1), b("ngIf", n.activityService.autoRestart), g(1), b("ngIf", n.mainLoopService.bankedTicks > 0), g(3), b("ngForOf", n.activityService.activityLoop), g(1), b("ngIf", n.characterService.characterState.manaUnlocked))
                     },
-                    directives: [At, si, Di, st, Nt],
+                    directives: [Pt, li, fi, st, Bt],
                     pipes: [jr],
                     styles: [".dropAccepter[_ngcontent-%COMP%]{width:100%;height:100%;display:flex;flex-direction:column}table[_ngcontent-%COMP%]{width:100%}td[_ngcontent-%COMP%]{border-bottom:1px var(--tableDividerColor) solid;white-space:nowrap;font-size:12px}table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%]:nth-child(3){text-align:end}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle}.progress-bar[_ngcontent-%COMP%]{width:60px}label[_ngcontent-%COMP%]{font-size:10px;vertical-align:top}.iconActive[_ngcontent-%COMP%]{color:var(--panelBackground);background:var(--bodyText)}.panelHeader[_ngcontent-%COMP%]{white-space:nowrap}h6[_ngcontent-%COMP%]{margin-bottom:0;margin-top:-8px}.spiritActivityPanel[_ngcontent-%COMP%]{border:1px solid var(--itemSlotHighlight);width:100%;background-color:var(--manaColor)}.spiritProjectionLabel[_ngcontent-%COMP%]{font-size:x-small;border-bottom:none}.currentRow[_ngcontent-%COMP%]{background-color:var(--itemSlotColor)}.disabled[_ngcontent-%COMP%]{background-color:var(--disabledActivity)}input[_ngcontent-%COMP%]{vertical-align:middle}.overflow[_ngcontent-%COMP%]{overflow:auto}.spaceLeft[_ngcontent-%COMP%]{margin-left:16px}.saveSlot[_ngcontent-%COMP%]{position:absolute;bottom:4px;right:9px;line-height:15px;padding:0 4px;width:-moz-fit-content;width:fit-content;height:-moz-fit-content;height:fit-content;background:inherit;filter:brightness(80%);font-size:10px;border-radius:3px;z-index:1;color:var(--bodyText)}.saveButton[_ngcontent-%COMP%]{width:30px;height:30px;overflow:hidden;position:relative}.saveIcon[_ngcontent-%COMP%]{width:24px;height:24px;font-size:24px}.saveButtonBar[_ngcontent-%COMP%]{display:flex;flex-direction:row;width:90%}.saveButtonGroup[_ngcontent-%COMP%]{flex-grow:1;display:flex;flex-direction:row}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
@@ -29377,21 +29433,21 @@
             function Cq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "tr")(1, "td"), m(2), I(3, "camelToTitle"), h(), d(4, "td"), m(5), h(), d(6, "td", 12), m(7, "Keep up to "), d(8, "input", 13), M("change", function (r) {
+                    d(0, "tr")(1, "td"), m(2), O(3, "camelToTitle"), h(), d(4, "td"), m(5), h(), d(6, "td", 12), m(7, "Keep up to "), d(8, "input", 13), T("change", function (r) {
                         E(e);
-                        const o = w().$implicit;
-                        return w().keepValueChanged(r, o.key)
+                        const o = S().$implicit;
+                        return S().keepValueChanged(r, o.key)
                     }), h()()()
                 }
                 if (2 & i) {
-                    const e = w().$implicit,
-                        n = w();
+                    const e = S().$implicit,
+                        n = S();
                     g(2), le(H(3, 3, e.key)), g(3), le(e.value.description), g(3), ve("value", void 0 === n.followerService.maxFollowerByType[e.key] ? 1e3 : n.followerService.maxFollowerByType[e.key])
                 }
             }
 
             function kq(i, t) {
-                if (1 & i && (cr(0), T(1, Cq, 9, 5, "tr", 11), ur()), 2 & i) {
+                if (1 & i && (cr(0), x(1, Cq, 9, 5, "tr", 11), ur()), 2 & i) {
                     const e = t.$implicit;
                     g(1), b("ngIf", !e.value.hidden)
                 }
@@ -29449,49 +29505,49 @@
                         ["min", "0", "max", "1000", "type", "number", 1, "inputBox", 3, "value", "change"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Manage Followers"), h(), B(3, "hr"), d(4, "div", 1)(5, "span"), m(6), h()(), d(7, "div", 1)(8, "span", 2), m(9, "Set limit on all jobs to "), d(10, "input", 3), M("change", function (o) {
+                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Manage Followers"), h(), B(3, "hr"), d(4, "div", 1)(5, "span"), m(6), h()(), d(7, "div", 1)(8, "span", 2), m(9, "Set limit on all jobs to "), d(10, "input", 3), T("change", function (o) {
                             return n.changeAllChanged(o)
-                        }), h(), m(11, " followers. "), d(12, "button", 4), M("click", function () {
+                        }), h(), m(11, " followers. "), d(12, "button", 4), T("click", function () {
                             return n.changeAllClicked()
-                        }), m(13, "Change All"), h()()(), d(14, "div", 1)(15, "span"), m(16, " Sort followers by "), d(17, "select", 5), M("change", function (o) {
+                        }), m(13, "Change All"), h()()(), d(14, "div", 1)(15, "span"), m(16, " Sort followers by "), d(17, "select", 5), T("change", function (o) {
                             return n.sortOrderChanged(o)
-                        }), d(18, "option", 6), m(19, "Name"), h(), d(20, "option", 6), m(21, "Job"), h(), d(22, "option", 6), m(23, "Age"), h(), d(24, "option", 6), m(25, "Power"), h(), d(26, "option", 6), m(27, "Remaining Life"), h()(), d(28, "span")(29, "input", 7), M("change", function () {
+                        }), d(18, "option", 6), m(19, "Name"), h(), d(20, "option", 6), m(21, "Job"), h(), d(22, "option", 6), m(23, "Age"), h(), d(24, "option", 6), m(25, "Power"), h(), d(26, "option", 6), m(27, "Remaining Life"), h()(), d(28, "span")(29, "input", 7), T("change", function () {
                             return n.sortAscSwitch()
-                        }), h(), d(30, "label", 8), m(31, "Sort Ascending"), h()()()(), d(32, "div", 9)(33, "table"), T(34, kq, 2, 1, "ng-container", 10), I(35, "keyvalue"), h()(), B(36, "br"), d(37, "span"), m(38), h()()), 2 & e && (g(6), Ti("You are currently supporting ", n.followerService.followers.length, " follower. You can support up to ", n.followerService.followerCap, "."), g(12), b("selected", "Name" === n.followerService.sortField), g(2), b("selected", "Job" === n.followerService.sortField), g(2), b("selected", "Age" === n.followerService.sortField), g(2), b("selected", "Power" === n.followerService.sortField), g(2), b("selected", "Remaining Life" === n.followerService.sortField), g(3), b("checked", n.followerService.sortAscending), g(5), b("ngForOf", H(35, 10, n.followerService.jobs)), g(4), F("Total assignments: ", n.getTotalAssingments(), ""))
+                        }), h(), d(30, "label", 8), m(31, "Sort Ascending"), h()()()(), d(32, "div", 9)(33, "table"), x(34, kq, 2, 1, "ng-container", 10), O(35, "keyvalue"), h()(), B(36, "br"), d(37, "span"), m(38), h()()), 2 & e && (g(6), Di("You are currently supporting ", n.followerService.followers.length, " follower. You can support up to ", n.followerService.followerCap, "."), g(12), b("selected", "Name" === n.followerService.sortField), g(2), b("selected", "Job" === n.followerService.sortField), g(2), b("selected", "Age" === n.followerService.sortField), g(2), b("selected", "Power" === n.followerService.sortField), g(2), b("selected", "Remaining Life" === n.followerService.sortField), g(3), b("checked", n.followerService.sortAscending), g(5), b("ngForOf", H(35, 10, n.followerService.jobs)), g(4), F("Total assignments: ", n.getTotalAssingments(), ""))
                     },
-                    directives: [At, qm, zm, Nt, st],
+                    directives: [Pt, qm, zm, Bt, st],
                     pipes: [kc, Sa],
                     styles: [".scrollingDiv[_ngcontent-%COMP%]{max-height:600px;overflow-y:auto}td[_ngcontent-%COMP%]{border-bottom:1px var(--tableDividerColor) solid;vertical-align:top}td[_ngcontent-%COMP%]:last-child{text-align:center}input[type=number][_ngcontent-%COMP%]{width:80px}.topInfo[_ngcontent-%COMP%]{margin-top:4px;padding-bottom:4px;border-bottom:1px var(--tableDividerColor) solid}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
 
             function xq(i, t) {
-                if (1 & i && (d(0, "span", 8), I(1, "bigNumber"), I(2, "number"), I(3, "bigNumber"), I(4, "number"), d(5, "mat-icon"), m(6), h(), m(7), I(8, "camelToTitle"), I(9, "bigNumber"), I(10, "number"), I(11, "number"), h()), 2 & i) {
-                    const e = w().$implicit;
-                    Ql("matTooltip", "", e.value.description, " Your aptitude of ", e.value.aptitude > 1e7 ? H(1, 6, e.value.aptitude) : Ge(2, 8, e.value.aptitude, "1.0-2"), " multiplies your gains by ", e.value.aptitudeMult > 1e5 ? H(3, 11, e.value.aptitudeMult) : Ge(4, 13, e.value.aptitudeMult, "1.0-2"), "."), g(6), le(e.value.icon), g(1), Ti(" ", H(8, 16, e.key), ": ", e.value.value > 1e7 ? H(9, 18, e.value.value) : e.value.value > 1e3 ? Ge(10, 20, e.value.value, "1.0-0") : Ge(11, 23, e.value.value, "1.0-1"), " ")
+                if (1 & i && (d(0, "span", 8), O(1, "bigNumber"), O(2, "bigNumber"), d(3, "mat-icon"), m(4), h(), m(5), O(6, "camelToTitle"), O(7, "bigNumber"), h()), 2 & i) {
+                    const e = S().$implicit;
+                    Ql("matTooltip", "", e.value.description, " Your aptitude of ", H(1, 6, e.value.aptitude), " multiplies your gains by ", H(2, 8, e.value.aptitudeMult), "."), g(4), le(e.value.icon), g(1), Di(" ", H(6, 10, e.key), ": ", H(7, 12, e.value.value), " ")
                 }
             }
 
             function Tq(i, t) {
-                if (1 & i && (d(0, "div"), T(1, xq, 12, 26, "span", 7), h()), 2 & i) {
+                if (1 & i && (d(0, "div"), x(1, xq, 8, 14, "span", 7), h()), 2 & i) {
                     const e = t.$implicit,
-                        n = w();
+                        n = S();
                     g(1), b("ngIf", 0 !== e.value.value || n.character.highestAttributes[e.key])
                 }
             }
 
             function Dq(i, t) {
                 if (1 & i && (d(0, "span", 9), m(1), h()), 2 & i) {
-                    const e = w();
-                    b("ngClass", e.followerService.followersMaxed), g(1), Ti(" \xa0(", e.followerService.followers.length, " / ", e.followerService.followerCap, ") ")
+                    const e = S();
+                    b("ngClass", e.followerService.followersMaxed), g(1), Di(" \xa0(", e.followerService.followers.length, " / ", e.followerService.followerCap, ") ")
                 }
             }
 
             function Eq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 10), M("click", function () {
-                        return E(e), w().followerOptionsClicked()
+                    d(0, "mat-icon", 10), T("click", function () {
+                        return E(e), S().followerOptionsClicked()
                     }), m(1, " settings "), h()
                 }
             }
@@ -29499,21 +29555,21 @@
             function Aq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 13)(1, "span", 14), I(2, "titlecase"), I(3, "number"), I(4, "number"), I(5, "number"), m(6), I(7, "titlecase"), I(8, "camelToTitle"), h(), d(9, "mat-icon", 15), M("click", function (r) {
+                    d(0, "div", 13)(1, "span", 14), O(2, "titlecase"), O(3, "number"), O(4, "number"), O(5, "number"), m(6), O(7, "titlecase"), O(8, "camelToTitle"), h(), d(9, "mat-icon", 15), T("click", function (r) {
                         const a = E(e).$implicit;
-                        return w(2).dismissFollower(r, a)
+                        return S(2).dismissFollower(r, a)
                     }), m(10, " cancel "), h()()
                 }
                 if (2 & i) {
                     const e = t.$implicit,
-                        n = w(2);
-                    g(1), $d("matTooltip", "", e.name, " is a level ", e.power, " ", H(2, 12, e.job), ". ", n.followerService.jobs[e.job].description, "\n            ", e.name, " has followed you for ", Ge(3, 14, e.age / 365, "1.0-1"), " years and will serve for another ", Ge(4, 17, (e.lifespan - e.age) / 365, "1.0-1"), " more years. Daily cost: ", Ge(5, 20, e.cost, "1.0-0"), ""), g(5), ls(" ", H(7, 23, e.name), " (lv.", e.power, " ", H(8, 25, e.job), ") "), g(3), b("matTooltip", n.followerService.autoDismissUnlocked ? "Dismiss this follower.\n            Shift-click to automatically dismiss everyone of this job type.\n            Ctrl-click to set the current number as the limit without dismissing." : "Dismiss this follower.")
+                        n = S(2);
+                    g(1), $d("matTooltip", "", e.name, " is a level ", e.power, " ", H(2, 12, e.job), ". ", n.followerService.jobs[e.job].description, "\n            ", e.name, " has followed you for ", at(3, 14, e.age / 365, "1.0-1"), " years and will serve for another ", at(4, 17, (e.lifespan - e.age) / 365, "1.0-1"), " more years. Daily cost: ", at(5, 20, e.cost, "1.0-0"), ""), g(5), ls(" ", H(7, 23, e.name), " (lv.", e.power, " ", H(8, 25, e.job), ") "), g(3), b("matTooltip", n.followerService.autoDismissUnlocked ? "Dismiss this follower.\n            Shift-click to automatically dismiss everyone of this job type.\n            Ctrl-click to set the current number as the limit without dismissing." : "Dismiss this follower.")
                 }
             }
 
             function Pq(i, t) {
-                if (1 & i && (d(0, "div", 11), T(1, Aq, 11, 27, "div", 12), h()), 2 & i) {
-                    const e = w();
+                if (1 & i && (d(0, "div", 11), x(1, Aq, 11, 27, "div", 12), h()), 2 & i) {
+                    const e = S();
                     g(1), b("ngForOf", e.followerService.followers)
                 }
             }
@@ -29536,7 +29592,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Ie), _(Wi), _(Mt))
+                    return new(e || i)(_(Oe), _(Wi), _(Mt))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -29563,18 +29619,18 @@
                         ["aria-label", "Dismiss Follower", "aria-hidden", "false", 1, "smallerIcon", 3, "matTooltip", "click"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "table")(1, "tr")(2, "td")(3, "h3", 0)(4, "mat-icon", 1), m(5, " bar_chart "), h(), m(6, " Attributes "), h(), T(7, Tq, 2, 1, "div", 2), I(8, "keyvalue"), h(), d(9, "td")(10, "h3", 0)(11, "mat-icon", 3), m(12, " person "), h(), m(13, " Followers "), T(14, Dq, 2, 3, "span", 4), T(15, Eq, 2, 0, "mat-icon", 5), h(), T(16, Pq, 2, 1, "div", 6), h()()()), 2 & e && (g(7), b("ngForOf", Ge(8, 4, n.character.attributes, n.originalOrder)), g(7), b("ngIf", n.followerService.followersUnlocked), g(1), b("ngIf", n.followerService.followersUnlocked && n.followerService.autoDismissUnlocked), g(1), b("ngIf", n.followerService.followersUnlocked))
+                        1 & e && (d(0, "table")(1, "tr")(2, "td")(3, "h3", 0)(4, "mat-icon", 1), m(5, " bar_chart "), h(), m(6, " Attributes "), h(), x(7, Tq, 2, 1, "div", 2), O(8, "keyvalue"), h(), d(9, "td")(10, "h3", 0)(11, "mat-icon", 3), m(12, " person "), h(), m(13, " Followers "), x(14, Dq, 2, 3, "span", 4), x(15, Eq, 2, 0, "mat-icon", 5), h(), x(16, Pq, 2, 1, "div", 6), h()()()), 2 & e && (g(7), b("ngForOf", at(8, 4, n.character.attributes, n.originalOrder)), g(7), b("ngIf", n.followerService.followersUnlocked), g(1), b("ngIf", n.followerService.followersUnlocked && n.followerService.autoDismissUnlocked), g(1), b("ngIf", n.followerService.followersUnlocked))
                     },
-                    directives: [si, At, Nt, st, Di],
-                    pipes: [kc, jt, jr, Sa, un],
+                    directives: [li, Pt, Bt, st, fi],
+                    pipes: [kc, Yt, Sa, un, jr],
                     styles: ["h3[_ngcontent-%COMP%]{width:100%}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:2px;vertical-align:middle}td[_ngcontent-%COMP%]{vertical-align:top;width:200px}span[_ngcontent-%COMP%]{font-size:14px}.followerPanel[_ngcontent-%COMP%]{max-height:200px}.optionsIcon[_ngcontent-%COMP%]{float:right}.UNMAXED[_ngcontent-%COMP%]{color:var(--bodyText)}.MAXED[_ngcontent-%COMP%]{color:var(--textHighlight)}.smallerIcon[_ngcontent-%COMP%]{float:right;height:12px;width:12px;margin-top:1px;margin-bottom:0;vertical-align:top}.followerName[_ngcontent-%COMP%]{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px;display:inline-block}.attributeLine[_ngcontent-%COMP%]{border-bottom:1px var(--tableDividerColor) solid}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
 
             function Oq(i, t) {
-                if (1 & i && (d(0, "span"), m(1), I(2, "number"), h()), 2 & i) {
-                    const e = w();
-                    g(1), F(", ", Ge(2, 1, e.characterService.characterState.age % 365, "1.0-0"), " days")
+                if (1 & i && (d(0, "span"), m(1), O(2, "number"), h()), 2 & i) {
+                    const e = S();
+                    g(1), F(", ", at(2, 1, e.characterService.characterState.age % 365, "1.0-0"), " days")
                 }
             }
 
@@ -29583,18 +29639,18 @@
             }
 
             function Fq(i, t) {
-                if (1 & i && (d(0, "td", 1), m(1), I(2, "number"), h()), 2 & i) {
-                    const e = w();
-                    g(1), F(" You expect to live ", Ge(2, 1, e.characterService.characterState.lifespan / 365, "1.0-1"), " years. ")
+                if (1 & i && (d(0, "td", 1), m(1), O(2, "number"), h()), 2 & i) {
+                    const e = S();
+                    g(1), F(" You expect to live ", at(2, 1, e.characterService.characterState.lifespan / 365, "1.0-1"), " years. ")
                 }
             }
 
             function Lq(i, t) {
-                if (1 & i && (d(0, "div", 12), I(1, "bigNumber"), I(2, "bigNumber"), function ev() {
+                if (1 & i && (d(0, "div", 12), O(1, "bigNumber"), O(2, "bigNumber"), function ev() {
                         ne.lFrame.currentNamespace = "svg"
                     }(), d(3, "svg", 13)(4, "defs")(5, "filter", 14), B(6, "feGaussianBlur", 15), h()(), B(7, "circle", 16)(8, "circle", 17)(9, "path", 18)(10, "circle", 19)(11, "circle", 20), h()()), 2 & i) {
-                    const e = w();
-                    Ql("matTooltip", "Yang: ", H(1, 11, e.characterService.characterState.yang), "\n    Yin: ", H(2, 13, e.characterService.characterState.yin), "\n    Your balance is ", e.balanceString, "."), g(3), Ft("fill", e.yinColor), g(5), Ft("fill", e.yangColor), g(2), Ft("fill", e.yinColor), g(1), Ft("fill", e.yangColor)
+                    const e = S();
+                    Ql("matTooltip", "Yang: ", H(1, 11, e.characterService.characterState.yang), "\n    Yin: ", H(2, 13, e.characterService.characterState.yin), "\n    Your balance is ", e.balanceString, "."), g(3), Lt("fill", e.yinColor), g(5), Lt("fill", e.yangColor), g(2), Lt("fill", e.yinColor), g(1), Lt("fill", e.yangColor)
                 }
             }
             let Nq = (() => {
@@ -29624,7 +29680,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Ie), _(yt))
+                    return new(e || i)(_(Oe), _(yt))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -29656,19 +29712,19 @@
                         ["cx", "125", "cy", "181.6", "r", "17.6"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "h3", 0)(1, "table")(2, "tr")(3, "td", 1), m(4), I(5, "floor"), T(6, Oq, 3, 4, "span", 2), m(7, " old. "), h(), T(8, Rq, 2, 0, "td", 3), T(9, Fq, 3, 4, "td", 3), d(10, "td")(11, "mat-icon", 4), m(12, "timer"), h()()()()(), d(13, "div", 5)(14, "table")(15, "tr")(16, "td", 4), m(17, "Health"), h(), d(18, "td", 6)(19, "div", 7), I(20, "bigNumber"), I(21, "bigNumber"), B(22, "span"), h()(), d(23, "td", 4), m(24, "Stamina"), h(), d(25, "td", 8)(26, "div", 7), I(27, "bigNumber"), I(28, "bigNumber"), B(29, "span"), h()()(), d(30, "tr")(31, "td", 4), m(32, "Nutrition"), h(), d(33, "td", 9)(34, "div", 7), I(35, "bigNumber"), I(36, "bigNumber"), B(37, "span"), h()(), d(38, "td", 4), m(39, "Mana"), h(), d(40, "td", 10)(41, "div", 7), I(42, "bigNumber"), I(43, "bigNumber"), B(44, "span"), h()()()(), T(45, Lq, 12, 15, "div", 11), h()), 2 & e && (g(4), F(" You are ", H(5, 26, n.characterService.characterState.age / 365), " years"), g(2), b("ngIf", n.characterService.characterState.age < 365e4), g(2), b("ngIf", n.characterService.characterState.immortal), g(1), b("ngIf", !n.characterService.characterState.immortal), g(2), ve("matTooltip", n.characterService.lifespanTooltip), g(5), ve("matTooltip", n.characterService.characterState.status.health.description), g(3), Ye("value", H(20, 28, n.Math.floor(n.characterService.characterState.immortal && n.characterService.characterState.status.health.value < 0 ? 0 : n.characterService.characterState.status.health.value)))("max", H(21, 30, n.Math.floor(n.characterService.characterState.status.health.max))), g(3), Ft("width", 100 * n.Math.floor(n.characterService.characterState.immortal && n.characterService.characterState.status.health.value < 0 ? 0 : n.characterService.characterState.status.health.value) / n.Math.floor(n.characterService.characterState.status.health.max), "%"), g(1), ve("matTooltip", n.characterService.characterState.status.stamina.description), g(3), Ye("value", H(27, 32, n.Math.floor(n.characterService.characterState.status.stamina.value)))("max", H(28, 34, n.Math.floor(n.characterService.characterState.status.stamina.max))), g(3), Ft("width", 100 * n.Math.floor(n.characterService.characterState.status.stamina.value) / n.Math.floor(n.characterService.characterState.status.stamina.max), "%"), g(2), ve("matTooltip", n.characterService.characterState.status.nourishment.description), g(3), Ye("value", H(35, 36, n.Math.floor(n.characterService.characterState.status.nourishment.value)))("max", H(36, 38, n.Math.floor(n.characterService.characterState.status.nourishment.max))), g(3), Ft("width", 100 * n.Math.floor(n.characterService.characterState.status.nourishment.value) / n.Math.floor(n.characterService.characterState.status.nourishment.max), "%"), g(1), ve("matTooltip", n.characterService.characterState.status.mana.description), g(3), Ye("value", H(42, 40, n.Math.floor(n.characterService.characterState.status.mana.value)))("max", H(43, 42, n.Math.floor(n.characterService.characterState.status.mana.max))), g(3), Ft("width", 100 * n.Math.floor(n.characterService.characterState.status.mana.value) / n.Math.floor(n.characterService.characterState.status.mana.max), "%"), g(1), b("ngIf", n.characterService.characterState.yinYangUnlocked))
+                        1 & e && (d(0, "h3", 0)(1, "table")(2, "tr")(3, "td", 1), m(4), O(5, "floor"), x(6, Oq, 3, 4, "span", 2), m(7, " old. "), h(), x(8, Rq, 2, 0, "td", 3), x(9, Fq, 3, 4, "td", 3), d(10, "td")(11, "mat-icon", 4), m(12, "timer"), h()()()()(), d(13, "div", 5)(14, "table")(15, "tr")(16, "td", 4), m(17, "Health"), h(), d(18, "td", 6)(19, "div", 7), O(20, "bigNumber"), O(21, "bigNumber"), B(22, "span"), h()(), d(23, "td", 4), m(24, "Stamina"), h(), d(25, "td", 8)(26, "div", 7), O(27, "bigNumber"), O(28, "bigNumber"), B(29, "span"), h()()(), d(30, "tr")(31, "td", 4), m(32, "Nutrition"), h(), d(33, "td", 9)(34, "div", 7), O(35, "bigNumber"), O(36, "bigNumber"), B(37, "span"), h()(), d(38, "td", 4), m(39, "Mana"), h(), d(40, "td", 10)(41, "div", 7), O(42, "bigNumber"), O(43, "bigNumber"), B(44, "span"), h()()()(), x(45, Lq, 12, 15, "div", 11), h()), 2 & e && (g(4), F(" You are ", H(5, 26, n.characterService.characterState.age / 365), " years"), g(2), b("ngIf", n.characterService.characterState.age < 365e4), g(2), b("ngIf", n.characterService.characterState.immortal), g(1), b("ngIf", !n.characterService.characterState.immortal), g(2), ve("matTooltip", n.characterService.lifespanTooltip), g(5), ve("matTooltip", n.characterService.characterState.status.health.description), g(3), ze("value", H(20, 28, n.Math.floor(n.characterService.characterState.immortal && n.characterService.characterState.status.health.value < 0 ? 0 : n.characterService.characterState.status.health.value)))("max", H(21, 30, n.Math.floor(n.characterService.characterState.status.health.max))), g(3), Lt("width", 100 * n.Math.floor(n.characterService.characterState.immortal && n.characterService.characterState.status.health.value < 0 ? 0 : n.characterService.characterState.status.health.value) / n.Math.floor(n.characterService.characterState.status.health.max), "%"), g(1), ve("matTooltip", n.characterService.characterState.status.stamina.description), g(3), ze("value", H(27, 32, n.Math.floor(n.characterService.characterState.status.stamina.value)))("max", H(28, 34, n.Math.floor(n.characterService.characterState.status.stamina.max))), g(3), Lt("width", 100 * n.Math.floor(n.characterService.characterState.status.stamina.value) / n.Math.floor(n.characterService.characterState.status.stamina.max), "%"), g(2), ve("matTooltip", n.characterService.characterState.status.nourishment.description), g(3), ze("value", H(35, 36, n.Math.floor(n.characterService.characterState.status.nourishment.value)))("max", H(36, 38, n.Math.floor(n.characterService.characterState.status.nourishment.max))), g(3), Lt("width", 100 * n.Math.floor(n.characterService.characterState.status.nourishment.value) / n.Math.floor(n.characterService.characterState.status.nourishment.max), "%"), g(1), ve("matTooltip", n.characterService.characterState.status.mana.description), g(3), ze("value", H(42, 40, n.Math.floor(n.characterService.characterState.status.mana.value)))("max", H(43, 42, n.Math.floor(n.characterService.characterState.status.mana.max))), g(3), Lt("width", 100 * n.Math.floor(n.characterService.characterState.status.mana.value) / n.Math.floor(n.characterService.characterState.status.mana.max), "%"), g(1), b("ngIf", n.characterService.characterState.yinYangUnlocked))
                     },
-                    directives: [st, si, At],
-                    pipes: [oq, jr, jt],
+                    directives: [st, li, Pt],
+                    pipes: [oq, jr, Yt],
                     styles: [".panelHeader[_ngcontent-%COMP%]{white-space:nowrap}.progress-bar[_ngcontent-%COMP%]{vertical-align:-.3em}.health[_ngcontent-%COMP%] > .progress-bar[_ngcontent-%COMP%] > span[_ngcontent-%COMP%]{background-color:var(--healthColor)}.stamina[_ngcontent-%COMP%] > .progress-bar[_ngcontent-%COMP%] > span[_ngcontent-%COMP%]{background-color:var(--staminaColor)}.nourishment[_ngcontent-%COMP%] > .progress-bar[_ngcontent-%COMP%] > span[_ngcontent-%COMP%]{background-color:var(--nutritionColor)}.mana[_ngcontent-%COMP%] > .progress-bar[_ngcontent-%COMP%] > span[_ngcontent-%COMP%]{background-color:var(--manaColor)}.headerCell[_ngcontent-%COMP%]{width:210px}td[_ngcontent-%COMP%]{font-size:12px}.yinYang[_ngcontent-%COMP%]{width:50px;max-width:50px;height:50px;max-height:50px;overflow:hidden}.healthPanelContents[_ngcontent-%COMP%]{display:flex;flex-direction:row}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
 
             function Bq(i, t) {
-                if (1 & i && (d(0, "div"), m(1), I(2, "number"), h()), 2 & i) {
-                    const e = w().$implicit,
-                        n = w(2);
-                    g(1), F("$ ", Ge(2, 1, n.storeService.furniturePrices[e.name], "1.0-0"), "")
+                if (1 & i && (d(0, "div"), m(1), O(2, "number"), h()), 2 & i) {
+                    const e = S().$implicit,
+                        n = S(2);
+                    g(1), F("$ ", at(2, 1, n.storeService.furniturePrices[e.name], "1.0-0"), "")
                 }
             }
             const Yu = function (i) {
@@ -29680,111 +29736,111 @@
             function Hq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div")(1, "div", 4)(2, "div")(3, "mat-icon"), m(4), h()(), d(5, "div"), m(6), I(7, "titlecase"), h(), T(8, Bq, 3, 4, "div", 1), h(), d(9, "button", 5), M("click", function () {
+                    d(0, "div")(1, "div", 4)(2, "div")(3, "mat-icon"), m(4), h()(), d(5, "div"), m(6), O(7, "titlecase"), h(), x(8, Bq, 3, 4, "div", 1), h(), d(9, "button", 5), T("click", function () {
                         const o = E(e).$implicit;
-                        return w(2).storeService.buyFurniture(o)
+                        return S(2).storeService.buyFurniture(o)
                     }), m(10), h()()
                 }
                 if (2 & i) {
                     const e = t.$implicit,
-                        n = w(2);
-                    g(1), ve("matTooltip", e.description), b("ngClass", ze(8, Yu, n.homeService.furniture[e.slot] === e)), g(3), le(e.slot), g(2), le(H(7, 6, e.name)), g(2), b("ngIf", n.storeService.furniturePrices[e.name] || !1), g(2), F(" ", n.storeService.furniturePrices[e.name] ? "Buy" : "Use", " ")
+                        n = S(2);
+                    g(1), ve("matTooltip", e.description), b("ngClass", je(8, Yu, n.homeService.furniture[e.slot] === e)), g(3), le(e.slot), g(2), le(H(7, 6, e.name)), g(2), b("ngIf", n.storeService.furniturePrices[e.name] || !1), g(2), F(" ", n.storeService.furniturePrices[e.name] ? "Buy" : "Use", " ")
                 }
             }
 
             function Vq(i, t) {
-                if (1 & i && (d(0, "div")(1, "span"), m(2, "Bed"), h(), B(3, "hr"), d(4, "div", 2), T(5, Hq, 11, 10, "div", 3), h()()), 2 & i) {
-                    const e = w();
+                if (1 & i && (d(0, "div")(1, "span"), m(2, "Bed"), h(), B(3, "hr"), d(4, "div", 2), x(5, Hq, 11, 10, "div", 3), h()()), 2 & i) {
+                    const e = S();
                     g(5), b("ngForOf", e.storeService.getFurnitureForSlot("bed"))
                 }
             }
 
             function Uq(i, t) {
-                if (1 & i && (d(0, "div"), m(1), I(2, "number"), h()), 2 & i) {
-                    const e = w().$implicit,
-                        n = w(2);
-                    g(1), F("$ ", Ge(2, 1, n.storeService.furniturePrices[e.name], "1.0-0"), "")
+                if (1 & i && (d(0, "div"), m(1), O(2, "number"), h()), 2 & i) {
+                    const e = S().$implicit,
+                        n = S(2);
+                    g(1), F("$ ", at(2, 1, n.storeService.furniturePrices[e.name], "1.0-0"), "")
                 }
             }
 
             function jq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div")(1, "div", 4)(2, "div")(3, "mat-icon"), m(4), h()(), d(5, "div"), m(6), I(7, "titlecase"), h(), T(8, Uq, 3, 4, "div", 1), h(), d(9, "button", 5), M("click", function () {
+                    d(0, "div")(1, "div", 4)(2, "div")(3, "mat-icon"), m(4), h()(), d(5, "div"), m(6), O(7, "titlecase"), h(), x(8, Uq, 3, 4, "div", 1), h(), d(9, "button", 5), T("click", function () {
                         const o = E(e).$implicit;
-                        return w(2).storeService.buyFurniture(o)
+                        return S(2).storeService.buyFurniture(o)
                     }), m(10), h()()
                 }
                 if (2 & i) {
                     const e = t.$implicit,
-                        n = w(2);
-                    g(1), ve("matTooltip", e.description), b("ngClass", ze(8, Yu, n.homeService.furniture[e.slot] === e)), g(3), le(e.slot), g(2), le(H(7, 6, e.name)), g(2), b("ngIf", n.storeService.furniturePrices[e.name] || !1), g(2), F(" ", n.storeService.furniturePrices[e.name] ? "Buy" : "Use", " ")
+                        n = S(2);
+                    g(1), ve("matTooltip", e.description), b("ngClass", je(8, Yu, n.homeService.furniture[e.slot] === e)), g(3), le(e.slot), g(2), le(H(7, 6, e.name)), g(2), b("ngIf", n.storeService.furniturePrices[e.name] || !1), g(2), F(" ", n.storeService.furniturePrices[e.name] ? "Buy" : "Use", " ")
                 }
             }
 
             function qq(i, t) {
-                if (1 & i && (d(0, "div")(1, "span"), m(2, "Bathtub"), h(), B(3, "hr"), d(4, "div", 2), T(5, jq, 11, 10, "div", 3), h()()), 2 & i) {
-                    const e = w();
+                if (1 & i && (d(0, "div")(1, "span"), m(2, "Bathtub"), h(), B(3, "hr"), d(4, "div", 2), x(5, jq, 11, 10, "div", 3), h()()), 2 & i) {
+                    const e = S();
                     g(5), b("ngForOf", e.storeService.getFurnitureForSlot("bathtub"))
                 }
             }
 
             function Yq(i, t) {
-                if (1 & i && (d(0, "div"), m(1), I(2, "number"), h()), 2 & i) {
-                    const e = w().$implicit,
-                        n = w(2);
-                    g(1), F("$ ", Ge(2, 1, n.storeService.furniturePrices[e.name], "1.0-0"), "")
+                if (1 & i && (d(0, "div"), m(1), O(2, "number"), h()), 2 & i) {
+                    const e = S().$implicit,
+                        n = S(2);
+                    g(1), F("$ ", at(2, 1, n.storeService.furniturePrices[e.name], "1.0-0"), "")
                 }
             }
 
             function zq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div")(1, "div", 4)(2, "div")(3, "mat-icon"), m(4), h()(), d(5, "div"), m(6), I(7, "titlecase"), h(), T(8, Yq, 3, 4, "div", 1), h(), d(9, "button", 5), M("click", function () {
+                    d(0, "div")(1, "div", 4)(2, "div")(3, "mat-icon"), m(4), h()(), d(5, "div"), m(6), O(7, "titlecase"), h(), x(8, Yq, 3, 4, "div", 1), h(), d(9, "button", 5), T("click", function () {
                         const o = E(e).$implicit;
-                        return w(2).storeService.buyFurniture(o)
+                        return S(2).storeService.buyFurniture(o)
                     }), m(10), h()()
                 }
                 if (2 & i) {
                     const e = t.$implicit,
-                        n = w(2);
-                    g(1), ve("matTooltip", e.description), b("ngClass", ze(8, Yu, n.homeService.furniture[e.slot] === e)), g(3), le(e.slot), g(2), le(H(7, 6, e.name)), g(2), b("ngIf", n.storeService.furniturePrices[e.name] || !1), g(2), F(" ", n.storeService.furniturePrices[e.name] ? "Buy" : "Use", " ")
+                        n = S(2);
+                    g(1), ve("matTooltip", e.description), b("ngClass", je(8, Yu, n.homeService.furniture[e.slot] === e)), g(3), le(e.slot), g(2), le(H(7, 6, e.name)), g(2), b("ngIf", n.storeService.furniturePrices[e.name] || !1), g(2), F(" ", n.storeService.furniturePrices[e.name] ? "Buy" : "Use", " ")
                 }
             }
 
             function Gq(i, t) {
-                if (1 & i && (d(0, "div")(1, "span"), m(2, "Kitchen"), h(), B(3, "hr"), d(4, "div", 2), T(5, zq, 11, 10, "div", 3), h()()), 2 & i) {
-                    const e = w();
+                if (1 & i && (d(0, "div")(1, "span"), m(2, "Kitchen"), h(), B(3, "hr"), d(4, "div", 2), x(5, zq, 11, 10, "div", 3), h()()), 2 & i) {
+                    const e = S();
                     g(5), b("ngForOf", e.storeService.getFurnitureForSlot("kitchen"))
                 }
             }
 
             function $q(i, t) {
-                if (1 & i && (d(0, "div"), m(1), I(2, "number"), h()), 2 & i) {
-                    const e = w().$implicit,
-                        n = w(2);
-                    g(1), F("$ ", Ge(2, 1, n.storeService.furniturePrices[e.name], "1.0-0"), "")
+                if (1 & i && (d(0, "div"), m(1), O(2, "number"), h()), 2 & i) {
+                    const e = S().$implicit,
+                        n = S(2);
+                    g(1), F("$ ", at(2, 1, n.storeService.furniturePrices[e.name], "1.0-0"), "")
                 }
             }
 
             function Wq(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div")(1, "div", 4)(2, "div")(3, "mat-icon"), m(4), h()(), d(5, "div"), m(6), I(7, "titlecase"), h(), T(8, $q, 3, 4, "div", 1), h(), d(9, "button", 5), M("click", function () {
+                    d(0, "div")(1, "div", 4)(2, "div")(3, "mat-icon"), m(4), h()(), d(5, "div"), m(6), O(7, "titlecase"), h(), x(8, $q, 3, 4, "div", 1), h(), d(9, "button", 5), T("click", function () {
                         const o = E(e).$implicit;
-                        return w(2).storeService.buyFurniture(o)
+                        return S(2).storeService.buyFurniture(o)
                     }), m(10), h()()
                 }
                 if (2 & i) {
                     const e = t.$implicit,
-                        n = w(2);
-                    g(1), ve("matTooltip", e.description), b("ngClass", ze(8, Yu, n.homeService.furniture[e.slot] === e)), g(3), le(e.slot), g(2), le(H(7, 6, e.name)), g(2), b("ngIf", n.storeService.furniturePrices[e.name] || !1), g(2), F(" ", n.storeService.furniturePrices[e.name] ? "Buy" : "Use", " ")
+                        n = S(2);
+                    g(1), ve("matTooltip", e.description), b("ngClass", je(8, Yu, n.homeService.furniture[e.slot] === e)), g(3), le(e.slot), g(2), le(H(7, 6, e.name)), g(2), b("ngIf", n.storeService.furniturePrices[e.name] || !1), g(2), F(" ", n.storeService.furniturePrices[e.name] ? "Buy" : "Use", " ")
                 }
             }
 
             function Kq(i, t) {
-                if (1 & i && (d(0, "div")(1, "span"), m(2, "Workbench"), h(), B(3, "hr"), d(4, "div", 2), T(5, Wq, 11, 10, "div", 3), h()()), 2 & i) {
-                    const e = w();
+                if (1 & i && (d(0, "div")(1, "span"), m(2, "Workbench"), h(), B(3, "hr"), d(4, "div", 2), x(5, Wq, 11, 10, "div", 3), h()()), 2 & i) {
+                    const e = S();
                     g(5), b("ngForOf", e.storeService.getFurnitureForSlot("workbench"))
                 }
             }
@@ -29798,7 +29854,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(ro), _(Ie), _(it), _(W), _(Ri), _(Oi))
+                    return new(e || i)(_(ro), _(Oe), _(tt), _(W), _(Ri), _(Oi))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -29815,16 +29871,16 @@
                         [3, "click"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Furniture Shop"), h(), B(3, "hr")(4, "br"), T(5, Vq, 6, 1, "div", 1), T(6, qq, 6, 1, "div", 1), T(7, Gq, 6, 1, "div", 1), T(8, Kq, 6, 1, "div", 1), h()), 2 & e && (g(5), b("ngIf", n.storeService.getFurnitureForSlot("bed").length > 0), g(1), b("ngIf", n.storeService.getFurnitureForSlot("bathtub").length > 0), g(1), b("ngIf", n.storeService.getFurnitureForSlot("kitchen").length > 0), g(1), b("ngIf", n.storeService.getFurnitureForSlot("workbench").length > 0))
+                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Furniture Shop"), h(), B(3, "hr")(4, "br"), x(5, Vq, 6, 1, "div", 1), x(6, qq, 6, 1, "div", 1), x(7, Gq, 6, 1, "div", 1), x(8, Kq, 6, 1, "div", 1), h()), 2 & e && (g(5), b("ngIf", n.storeService.getFurnitureForSlot("bed").length > 0), g(1), b("ngIf", n.storeService.getFurnitureForSlot("bathtub").length > 0), g(1), b("ngIf", n.storeService.getFurnitureForSlot("kitchen").length > 0), g(1), b("ngIf", n.storeService.getFurnitureForSlot("workbench").length > 0))
                     },
-                    directives: [st, Nt, Di, At, si],
+                    directives: [st, Bt, fi, Pt, li],
                     pipes: [un, jr],
                     styles: [".furnitureModal[_ngcontent-%COMP%]{overflow-x:hidden;overflow-y:scroll;max-height:600px}.itemSlot[_ngcontent-%COMP%]{width:75px;height:75px;background-color:var(--storeButtonColor);line-height:12px}.ownedItem[_ngcontent-%COMP%]{background-color:var(--storeButtonDisabledColor)!important;border:1px solid var(--storeButtonDisabledColor)!important}.inventoryGrid[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:1em;text-align:center;justify-content:center}hr[_ngcontent-%COMP%]{margin-top:2px}button[_ngcontent-%COMP%]{width:90%;display:inline-block;margin-top:4px}"]
                 }), i
             })();
 
             function Qq(i, t) {
-                if (1 & i && (d(0, "div")(1, "div", 7)(2, "div"), m(3), I(4, "titlecase"), h(), d(5, "div"), m(6), h(), d(7, "div"), m(8), I(9, "percent"), h()()()), 2 & i) {
+                if (1 & i && (d(0, "div")(1, "div", 7)(2, "div"), m(3), O(4, "titlecase"), h(), d(5, "div"), m(6), h(), d(7, "div"), m(8), O(9, "percent"), h()()()), 2 & i) {
                     const e = t.$implicit;
                     g(1), Lr("matTooltip", "You will harvest ", e.yield, " in ", e.daysToHarvest, " days"), g(2), le(H(4, 5, e.cropName)), g(3), le(e.yield), g(2), le(H(9, 7, (e.originalDaysToHarvest - e.daysToHarvest) / e.originalDaysToHarvest))
                 }
@@ -29845,7 +29901,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(it), _(Ie), _(Oi))
+                    return new(e || i)(_(tt), _(Oe), _(Oi))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -29864,101 +29920,127 @@
                         ["tabindex", "0", 1, "itemSlot", 3, "matTooltip"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Your Farm"), h(), B(3, "hr"), d(4, "div", 1)(5, "span"), m(6), I(7, "bigNumber"), I(8, "bigNumber"), h(), d(9, "mat-icon", 2), M("click", function (o) {
+                        1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Your Farm"), h(), B(3, "hr"), d(4, "div", 1)(5, "span"), m(6), O(7, "bigNumber"), O(8, "bigNumber"), h(), d(9, "mat-icon", 2), T("click", function (o) {
                             return n.buyClicked(o)
-                        }), I(10, "bigNumber"), m(11, " add "), h(), d(12, "mat-icon", 3), M("click", function (o) {
+                        }), O(10, "bigNumber"), m(11, " add "), h(), d(12, "mat-icon", 3), T("click", function (o) {
                             return n.plowClicked(o)
-                        }), m(13, " waves "), h(), d(14, "mat-icon", 4), M("click", function (o) {
+                        }), m(13, " waves "), h(), d(14, "mat-icon", 4), T("click", function (o) {
                             return n.clearClicked(o)
-                        }), m(15, " delete_sweep "), h()(), d(16, "div", 5), T(17, Qq, 10, 9, "div", 6), h()()), 2 & e && (g(6), Ti("Your ", H(7, 4, n.homeService.fields.length + n.homeService.extraFields), " fields produced an average of ", H(8, 6, n.homeService.averageYield), " food per day over the last year."), g(3), ui("matTooltip", "Buy a plot of land for ", H(10, 8, n.homeService.landPrice), " taels. Shift-click to buy 10 plots, Ctrl-click to buy half the land you can afford."), g(8), b("ngForOf", n.homeService.fields))
+                        }), m(15, " delete_sweep "), h()(), d(16, "div", 5), x(17, Qq, 10, 9, "div", 6), h()()), 2 & e && (g(6), Di("Your ", H(7, 4, n.homeService.fields.length + n.homeService.extraFields), " fields produced an average of ", H(8, 6, n.homeService.averageYield), " food per day over the last year."), g(3), hi("matTooltip", "Buy a plot of land for ", H(10, 8, n.homeService.landPrice), " taels. Shift-click to buy 10 plots, Ctrl-click to buy half the land you can afford."), g(8), b("ngForOf", n.homeService.fields))
                     },
-                    directives: [si, At, Nt],
-                    pipes: [jt, un, Mc],
+                    directives: [li, Pt, Bt],
+                    pipes: [Yt, un, Mc],
                     styles: [".itemSlot[_ngcontent-%COMP%]{width:42px;height:42px;padding:2px;line-height:12px}.farmGrid[_ngcontent-%COMP%]{width:670px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;gap:2px}.iconButton[_ngcontent-%COMP%]{float:right}.yieldText[_ngcontent-%COMP%]{height:30px}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
 
             function Xq(i, t) {
-                1 & i && B(0, "div", 22), 2 & i && ui("matTooltip", "You don't own a ", w().$implicit, ", but your home could hold one.")
+                if (1 & i && (d(0, "div", 8)(1, "span"), m(2), O(3, "bigNumber"), h()()), 2 & i) {
+                    const e = S(2);
+                    g(2), Di("It costs ", H(3, 2, e.homeService.home.costPerDay), " ", 1 === e.homeService.home.costPerDay ? "tael" : "taels", " per day to maintain your home")
+                }
             }
 
             function e8(i, t) {
-                if (1 & i && (d(0, "div", 23), m(1), I(2, "titlecase"), h()), 2 & i) {
-                    const e = w().$implicit,
-                        n = w(3);
+                1 & i && B(0, "div", 16), 2 & i && hi("matTooltip", "You don't own a ", S().$implicit, ", but your home could hold one.")
+            }
+
+            function t8(i, t) {
+                if (1 & i && (d(0, "div", 17), m(1), O(2, "titlecase"), h()), 2 & i) {
+                    const e = S().$implicit,
+                        n = S(3);
                     ve("matTooltip", null == n.homeService.furniture[e] ? null : n.homeService.furniture[e].description), g(1), le(H(2, 2, null == n.homeService.furniture[e] ? null : n.homeService.furniture[e].name))
                 }
             }
 
-            function t8(i, t) {
-                if (1 & i && (d(0, "div"), T(1, Xq, 1, 1, "div", 20), T(2, e8, 3, 4, "div", 21), h()), 2 & i) {
+            function i8(i, t) {
+                if (1 & i && (d(0, "div"), x(1, e8, 1, 1, "div", 14), x(2, t8, 3, 4, "div", 15), h()), 2 & i) {
                     const e = t.$implicit,
-                        n = w(3);
+                        n = S(3);
                     g(1), b("ngIf", !n.homeService.furniture[e]), g(1), b("ngIf", n.homeService.furniture[e])
                 }
             }
 
-            function i8(i, t) {
-                if (1 & i && (d(0, "div", 18), T(1, t8, 3, 2, "div", 19), h()), 2 & i) {
-                    const e = w(2);
+            function n8(i, t) {
+                if (1 & i && (d(0, "div", 12), x(1, i8, 3, 2, "div", 13), h()), 2 & i) {
+                    const e = S(2);
                     g(1), b("ngForOf", e.homeService.home.furnitureSlots)
                 }
             }
 
-            function n8(i, t) {
-                1 & i && (d(0, "div", 18)(1, "span", 24), m(2, "Tent living is rough. All these pesky mice could become a real problem. You might want to buy some land and get a better home."), h()())
-            }
-
             function r8(i, t) {
-                if (1 & i) {
-                    const e = V();
-                    d(0, "mat-icon", 25), M("click", function () {
-                        return E(e), w(2).homeService.upgradeToNextHome()
-                    }), m(1, " add_business "), h()
-                }
-                2 & i && ve("matTooltip", w(2).homeService.nextHome.upgradeToTooltip)
+                1 & i && (d(0, "div", 12)(1, "span", 18), m(2, "Tent living is rough. All these pesky mice could become a real problem. You might want to buy some land and get a better home."), h()())
             }
 
             function o8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 26), M("click", function () {
-                        return E(e), w(2).storeClicked()
+                    d(0, "mat-icon", 25), T("click", function () {
+                        return E(e), S(3).homeService.upgradeToNextHome()
+                    }), m(1, " add_business "), h()
+                }
+                2 & i && ve("matTooltip", S(3).homeService.nextHome.upgradeToTooltip)
+            }
+
+            function a8(i, t) {
+                if (1 & i) {
+                    const e = V();
+                    d(0, "mat-icon", 26), T("click", function () {
+                        return E(e), S(3).storeClicked()
                     }), m(1, " shopping_cart "), h()
                 }
             }
 
-            function a8(i, t) {
-                if (1 & i && (d(0, "div", 27), B(1, "span"), h()), 2 & i) {
-                    const e = w(2);
-                    Ye("value", e.buildTimeYears()), g(1), Ft("width", 100 * e.homeService.houseBuildingProgress, "%")
-                }
-            }
-
             function s8(i, t) {
-                1 & i && B(0, "span", 28)
+                if (1 & i && (d(0, "div", 27), B(1, "span"), h()), 2 & i) {
+                    const e = S(3);
+                    ze("value", e.buildTimeYears()), g(1), Lt("width", 100 * e.homeService.houseBuildingProgress, "%")
+                }
             }
 
             function l8(i, t) {
+                1 & i && B(0, "span", 28)
+            }
+
+            function c8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 0)(1, "div", 6)(2, "div", 7)(3, "span"), m(4), I(5, "bigNumber"), h()(), d(6, "div", 7)(7, "span"), m(8), I(9, "bigNumber"), I(10, "bigNumber"), h()(), T(11, i8, 2, 1, "div", 8), T(12, n8, 3, 0, "div", 8), h(), d(13, "div", 9)(14, "div", 10)(15, "mat-icon", 11), M("click", function (r) {
-                        return E(e), w().buyClicked(r)
-                    }), I(16, "bigNumber"), m(17, " add "), h(), T(18, r8, 2, 1, "mat-icon", 12), T(19, o8, 2, 0, "mat-icon", 13), T(20, a8, 2, 3, "div", 14), T(21, s8, 1, 0, "span", 15), h(), d(22, "div", 10)(23, "mat-icon", 16), M("click", function () {
-                        return E(e), w().farmClicked()
-                    }), m(24, "grass"), h(), d(25, "mat-icon", 17), M("click", function (r) {
-                        return E(e), w().plowClicked(r)
-                    }), m(26, " waves "), h()()()()
+                    d(0, "div", 19)(1, "mat-icon", 20), T("click", function (r) {
+                        return E(e), S(2).buyClicked(r)
+                    }), O(2, "bigNumber"), m(3, " add "), h(), x(4, o8, 2, 1, "mat-icon", 21), x(5, a8, 2, 0, "mat-icon", 22), x(6, s8, 2, 3, "div", 23), x(7, l8, 1, 0, "span", 24), h()
                 }
                 if (2 & i) {
-                    const e = w();
-                    g(4), Ti("It costs ", H(5, 12, e.homeService.home.costPerDay), " ", 1 === e.homeService.home.costPerDay ? "tael" : "taels", " per day to maintain your home"), g(4), ls("You own ", H(9, 14, e.homeService.land), " open ", 1 === e.homeService.land ? "plot" : "plots", " of land and ", H(10, 16, e.homeService.fields.length + e.homeService.extraFields), " fields"), g(3), b("ngIf", e.homeService.home.furnitureSlots.length > 0), g(1), b("ngIf", 0 === e.homeService.home.furnitureSlots.length), g(3), ui("matTooltip", "Buy a plot of land for ", H(16, 18, e.homeService.landPrice), " taels. Shift-click to buy 10 plots, Ctrl-click to buy half the land you can afford."), g(3), b("ngIf", e.homeService.home.name !== e.homeService.nextHome.name), g(1), b("ngIf", e.homeService.home.furnitureSlots.length), g(1), b("ngIf", e.homeService.upgrading), g(1), b("ngIf", e.homeService.upgrading)
+                    const e = S(2);
+                    g(1), hi("matTooltip", "Buy a plot of land for ", H(2, 5, e.homeService.landPrice), " taels. Shift-click to buy 10 plots, Ctrl-click to buy half the land you can afford."), g(3), b("ngIf", e.homeService.home.name !== e.homeService.nextHome.name), g(1), b("ngIf", e.homeService.home.furnitureSlots.length), g(1), b("ngIf", e.homeService.upgrading), g(1), b("ngIf", e.homeService.upgrading)
                 }
             }
-            let c8 = (() => {
+
+            function u8(i, t) {
+                if (1 & i) {
+                    const e = V();
+                    d(0, "div", 19)(1, "mat-icon", 29), T("click", function () {
+                        return E(e), S(2).farmClicked()
+                    }), m(2, "grass"), h(), d(3, "mat-icon", 30), T("click", function (r) {
+                        return E(e), S(2).plowClicked(r)
+                    }), m(4, " waves "), h()()
+                }
+            }
+
+            function h8(i, t) {
+                if (1 & i && (d(0, "div", 0)(1, "div", 6), x(2, Xq, 4, 4, "div", 7), d(3, "div", 8)(4, "span"), m(5), O(6, "bigNumber"), O(7, "bigNumber"), h()(), x(8, n8, 2, 1, "div", 9), x(9, r8, 3, 0, "div", 9), h(), d(10, "div", 10), x(11, c8, 8, 7, "div", 11), x(12, u8, 5, 0, "div", 11), h()()), 2 & i) {
+                    const e = S();
+                    g(2), b("ngIf", !e.hellService.inHell && !e.characterService.characterState.god), g(3), ls("You own ", H(6, 8, e.homeService.land), " open ", 1 === e.homeService.land ? "plot" : "plots", " of land and ", H(7, 10, e.homeService.fields.length + e.homeService.extraFields), " fields"), g(3), b("ngIf", e.homeService.home.furnitureSlots.length > 0 && (!e.hellService.inHell || e.homeService.hellHome)), g(1), b("ngIf", 0 === e.homeService.home.furnitureSlots.length), g(2), b("ngIf", !e.hellService.inHell || e.homeService.hellHome), g(1), b("ngIf", !e.hellService.inHell || e.homeService.hellFood)
+                }
+            }
+            const d8 = function (i) {
+                return {
+                    hellDisabled: i
+                }
+            };
+            let f8 = (() => {
                     class i {
-                        constructor(e, n, r, o, a, s) {
-                            this.characterService = e, this.homeService = n, this.followerService = r, this.dialog = o, this.storeService = a, this.bignumber = s, this.character = e.characterState, this.Math = Math
+                        constructor(e, n, r, o, a, s, l) {
+                            this.characterService = e, this.homeService = n, this.followerService = r, this.hellService = o, this.dialog = a, this.storeService = s, this.bignumber = l, this.character = e.characterState, this.Math = Math
                         }
                         buildTimeYears() {
                             return this.bignumber.transform((1 - this.homeService.houseBuildingProgress) * this.homeService.nextHome.daysToBuild / (1 + this.followerService.jobs.builder.totalPower) / 365) + " years"
@@ -29989,33 +30071,27 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(Ie), _(it), _(Mt), _(Wi), _(ro), _(jt))
+                        return new(e || i)(_(Oe), _(tt), _(Mt), _(Ie), _(Wi), _(ro), _(Yt))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
                             ["app-home-panel"]
                         ],
                         decls: 9,
-                        vars: 4,
+                        vars: 7,
                         consts: [
                             [1, "homeContainer"],
                             [1, "panelHeader"],
                             ["matTooltip", "Your home is an essential part of your life. A better home allows you to recover and has room for furniture that can aid your immortal development."],
-                            [3, "matTooltip"],
+                            [3, "matTooltip", "ngClass"],
                             [3, "click"],
                             ["class", "homeContainer", 4, "ngIf"],
                             [1, "overflow"],
+                            ["class", "homeInfo", 4, "ngIf"],
                             [1, "homeInfo"],
                             ["class", "furnitureSlots", 4, "ngIf"],
                             [1, "buttons"],
-                            [1, "button-group"],
-                            ["aria-label", "Buy Land", "aria-hidden", "false", 1, "iconButton", 3, "matTooltip", "click"],
-                            ["class", "iconButton", "aria-label", "Upgrade Home", "aria-hidden", "false", 3, "matTooltip", "click", 4, "ngIf"],
-                            ["class", "iconButton", "aria-label", "Buy Furniture", "aria-hidden", "false", "matTooltip", "Buy Furniture", 3, "click", 4, "ngIf"],
-                            ["class", "progress-bar", "style", "height:20px;", "matTooltip", "Upgrading your home.", 4, "ngIf"],
-                            ["style", "margin-left: 4px;", 4, "ngIf"],
-                            ["matTooltip", "View your farm.", "aria-label", "View Farm", "aria-hidden", "false", 1, "iconButton", 3, "click"],
-                            ["aria-label", "Plow Field", "aria-hidden", "false", "matTooltip", "Plow a field. Converts a plot of land to a field. You'll need to work at farming it to make it produce much food. Once the harvest is over, you will get the food you've grown and the land will be available again. Shift-click to plow 10 fields, Ctrl-click to plow all your land.", 1, "iconButton", 3, "click"],
+                            ["class", "button-group", 4, "ngIf"],
                             [1, "furnitureSlots"],
                             [4, "ngFor", "ngForOf"],
                             ["class", "itemSlot", 3, "matTooltip", 4, "ngIf"],
@@ -30023,22 +30099,30 @@
                             [1, "itemSlot", 3, "matTooltip"],
                             [1, "itemSlot", "textOverflow", 3, "matTooltip"],
                             [1, "mouseWarning"],
+                            [1, "button-group"],
+                            ["aria-label", "Buy Land", "aria-hidden", "false", 1, "iconButton", 3, "matTooltip", "click"],
+                            ["class", "iconButton", "aria-label", "Upgrade Home", "aria-hidden", "false", 3, "matTooltip", "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Buy Furniture", "aria-hidden", "false", "matTooltip", "Buy Furniture", 3, "click", 4, "ngIf"],
+                            ["class", "progress-bar", "style", "height:20px;", "matTooltip", "Upgrading your home.", 4, "ngIf"],
+                            ["style", "margin-left: 4px;", 4, "ngIf"],
                             ["aria-label", "Upgrade Home", "aria-hidden", "false", 1, "iconButton", 3, "matTooltip", "click"],
                             ["aria-label", "Buy Furniture", "aria-hidden", "false", "matTooltip", "Buy Furniture", 1, "iconButton", 3, "click"],
                             ["matTooltip", "Upgrading your home.", 1, "progress-bar", 2, "height", "20px"],
-                            [2, "margin-left", "4px"]
+                            [2, "margin-left", "4px"],
+                            ["matTooltip", "View your farm.", "aria-label", "View Farm", "aria-hidden", "false", 1, "iconButton", 3, "click"],
+                            ["aria-label", "Plow Field", "aria-hidden", "false", "matTooltip", "Plow a field. Converts a plot of land to a field. You'll need to work at farming it to make it produce much food. Once the harvest is over, you will get the food you've grown and the land will be available again. Shift-click to plow 10 fields, Ctrl-click to plow all your land.", 1, "iconButton", 3, "click"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0)(1, "h3", 1)(2, "mat-icon", 2), m(3, "home"), h(), d(4, "div", 3), m(5), h(), d(6, "button", 4), M("click", function () {
+                            1 & e && (d(0, "div", 0)(1, "h3", 1)(2, "mat-icon", 2), m(3, "home"), h(), d(4, "div", 3), m(5), h(), d(6, "button", 4), T("click", function () {
                                 return n.homeService.hideHome = !n.homeService.hideHome
-                            }), m(7), h()(), T(8, l8, 27, 20, "div", 5), h()), 2 & e && (g(4), ve("matTooltip", n.homeService.home.description), g(1), F(" You live in a ", n.homeService.home.name, " "), g(2), le(n.homeService.hideHome ? "Show" : "Hide"), g(1), b("ngIf", !n.homeService.hideHome))
+                            }), m(7), h()(), x(8, h8, 13, 12, "div", 5), h()), 2 & e && (g(4), ve("matTooltip", n.homeService.home.description), b("ngClass", je(5, d8, n.hellService.inHell)), g(1), F(" You live in a ", n.homeService.home.name, " "), g(2), le(n.homeService.hideHome ? "Show" : "Hide"), g(1), b("ngIf", !n.homeService.hideHome && (!n.hellService.inHell || n.homeService.hellHome || n.homeService.hellFood)))
                         },
-                        directives: [si, At, st, Nt],
-                        pipes: [jt, un],
-                        styles: [".homeContainer[_ngcontent-%COMP%]{display:flex;flex-direction:column;height:100%;padding-left:2px}.homeInfo[_ngcontent-%COMP%]{font-size:12px;margin-top:-2px;margin-bottom:-4px}.mouseWarning[_ngcontent-%COMP%]{font-size:12px;margin:6px}.buttons[_ngcontent-%COMP%]{border-top:1px solid var(--panelBorder);display:flex;justify-content:space-between;white-space:nowrap}.button-group[_ngcontent-%COMP%]{white-space:nowrap}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin-top:2px;margin-bottom:2px;vertical-align:middle}.furnitureSlots[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:2px}.itemSlot[_ngcontent-%COMP%]{width:50px;height:50px}.progress-bar[_ngcontent-%COMP%]{width:180px;margin-left:4px;vertical-align:middle}.overflow[_ngcontent-%COMP%]{overflow:auto}.panelHeader[_ngcontent-%COMP%]{display:flex;gap:4px}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
+                        directives: [li, Pt, fi, st, Bt],
+                        pipes: [Yt, un],
+                        styles: [".homeContainer[_ngcontent-%COMP%]{display:flex;flex-direction:column;height:100%;padding-left:2px}.homeInfo[_ngcontent-%COMP%]{font-size:12px;margin-top:-2px;margin-bottom:-4px}.mouseWarning[_ngcontent-%COMP%]{font-size:12px;margin:6px}.buttons[_ngcontent-%COMP%]{border-top:1px solid var(--panelBorder);display:flex;justify-content:space-between;white-space:nowrap}.button-group[_ngcontent-%COMP%]{white-space:nowrap}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin-top:2px;margin-bottom:2px;vertical-align:middle}.furnitureSlots[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:2px}.itemSlot[_ngcontent-%COMP%]{width:50px;height:50px}.progress-bar[_ngcontent-%COMP%]{width:180px;margin-left:4px;vertical-align:middle}.overflow[_ngcontent-%COMP%]{overflow:auto}.panelHeader[_ngcontent-%COMP%]{display:flex;gap:4px}.hellDisabled[_ngcontent-%COMP%]{opacity:.3}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                     }), i
                 })(),
-                u8 = (() => {
+                p8 = (() => {
                     class i {
                         constructor(e) {
                             this.logService = e
@@ -30048,7 +30132,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(pi))
+                        return new(e || i)(_(gi))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
@@ -30072,15 +30156,15 @@
                             ["for", "filterFollower"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Log Filters"), h(), d(3, "span", 1)(4, "input", 2), M("change", function (o) {
+                            1 & e && (d(0, "div", 0)(1, "h3"), m(2, "Log Filters"), h(), d(3, "span", 1)(4, "input", 2), T("change", function (o) {
                                 return n.topicFilter(o, "STORY")
-                            }), h(), d(5, "label", 3), m(6, "Show Story Log Entries "), d(7, "span", 4), m(8), h()(), B(9, "br"), d(10, "input", 5), M("change", function (o) {
+                            }), h(), d(5, "label", 3), m(6, "Show Story Log Entries "), d(7, "span", 4), m(8), h()(), B(9, "br"), d(10, "input", 5), T("change", function (o) {
                                 return n.topicFilter(o, "EVENT")
-                            }), h(), d(11, "label", 6), m(12), h(), B(13, "br"), d(14, "input", 7), M("change", function (o) {
+                            }), h(), d(11, "label", 6), m(12), h(), B(13, "br"), d(14, "input", 7), T("change", function (o) {
                                 return n.topicFilter(o, "CRAFTING")
-                            }), h(), d(15, "label", 8), m(16), h(), B(17, "br"), d(18, "input", 9), M("change", function (o) {
+                            }), h(), d(15, "label", 8), m(16), h(), B(17, "br"), d(18, "input", 9), T("change", function (o) {
                                 return n.topicFilter(o, "COMBAT")
-                            }), h(), d(19, "label", 10), m(20), h(), B(21, "br"), d(22, "input", 11), M("change", function (o) {
+                            }), h(), d(19, "label", 10), m(20), h(), B(21, "br"), d(22, "input", 11), T("change", function (o) {
                                 return n.topicFilter(o, "FOLLOWER")
                             }), h(), d(23, "label", 12), m(24), h()()()), 2 & e && (g(4), b("checked", n.logService.logTopics.includes("STORY")), g(4), le(n.logService.newStory), g(2), b("checked", n.logService.logTopics.includes("EVENT")), g(2), F("Show Events Log Entries ", n.logService.newEvents, ""), g(2), b("checked", n.logService.logTopics.includes("CRAFTING")), g(2), F("Show Crafting Log Entries ", n.logService.newCrafting, ""), g(2), b("checked", n.logService.logTopics.includes("COMBAT")), g(2), F("Show Combat Log Entries ", n.logService.newCombat, ""), g(2), b("checked", n.logService.logTopics.includes("FOLLOWER")), g(2), F("Show Followers Log Entries ", n.logService.newFollower, ""))
                         },
@@ -30088,13 +30172,13 @@
                     }), i
                 })();
 
-            function h8(i, t) {
+            function m8(i, t) {
                 if (1 & i && (cr(0), d(1, "div", 6), m(2), h(), ur()), 2 & i) {
                     const e = t.$implicit;
                     g(1), b("ngClass", e.type), g(1), F(" ", e.message, " ")
                 }
             }
-            let d8 = (() => {
+            let g8 = (() => {
                 class i {
                     constructor(e, n) {
                         this.logService = e, this.dialog = n
@@ -30103,7 +30187,7 @@
                         e.target instanceof HTMLInputElement && this.logService.enableLogTopic(n, e.target.checked)
                     }
                     logFilterClicked() {
-                        this.dialog.open(u8, {
+                        this.dialog.open(p8, {
                             width: "700px",
                             data: {
                                 someField: "foo"
@@ -30113,7 +30197,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(pi), _(Wi))
+                    return new(e || i)(_(gi), _(Wi))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -30131,182 +30215,194 @@
                         [1, "logEntryDiv", 3, "ngClass"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "h3", 1)(2, "span"), m(3, "Log"), h(), d(4, "mat-icon", 2), M("click", function () {
+                        1 & e && (d(0, "div", 0)(1, "h3", 1)(2, "span"), m(3, "Log"), h(), d(4, "mat-icon", 2), T("click", function () {
                             return n.logFilterClicked()
-                        }), m(5, " filter_alt "), h(), d(6, "span", 3), m(7, "Newest messages appear at the top, so read from the bottom up."), h()(), d(8, "div", 4), T(9, h8, 3, 2, "ng-container", 5), h()()), 2 & e && (g(9), b("ngForOf", n.logService.currentLog))
+                        }), m(5, " filter_alt "), h(), d(6, "span", 3), m(7, "Newest messages appear at the top, so read from the bottom up."), h()(), d(8, "div", 4), x(9, m8, 3, 2, "ng-container", 5), h()()), 2 & e && (g(9), b("ngForOf", n.logService.currentLog))
                     },
-                    directives: [si, At, Nt, Di],
+                    directives: [li, Pt, Bt, fi],
                     styles: [".log[_ngcontent-%COMP%]{flex-direction:column;width:100%;display:flex}.STANDARD[_ngcontent-%COMP%]{color:var(--bodyText)}.INJURY[_ngcontent-%COMP%]{color:var(--healthColor)}.logEntryDiv[_ngcontent-%COMP%]{border-top:1px var(--tableDividerColor) dotted;white-space:nowrap;font-size:12px;line-height:12px;margin-left:2px;margin-top:1px}.logBox[_ngcontent-%COMP%]{overflow:auto;flex:1 1 auto;width:100%}.headerNote[_ngcontent-%COMP%]{margin-left:100px;font-size:x-small}.panelHeader[_ngcontent-%COMP%]{white-space:nowrap;flex:0 1 auto}.highlightText[_ngcontent-%COMP%]{color:var(--healthColor)}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
 
-            function f8(i, t) {
-                if (1 & i && (d(0, "div", 14), m(1), I(2, "bigNumber"), h()), 2 & i) {
-                    const e = w();
+            function v8(i, t) {
+                if (1 & i && (d(0, "div", 14), m(1), O(2, "bigNumber"), h()), 2 & i) {
+                    const e = S();
                     g(1), F("", H(2, 1, e.characterService.characterState.hellMoney), " Hell Money")
                 }
             }
 
-            function p8(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, " soup_kitchen "), h()), 2 & i && ve("matTooltip", w().inventoryService.autoBuyFood ? "You have no food in your inventory. You will spend money on food each day to avoid starvation." : "You have no food in your inventory and have chosen not to buy food to prevent starvation.")
+            function y8(i, t) {
+                if (1 & i && (d(0, "mat-icon", 15), m(1, " soup_kitchen "), h()), 2 & i) {
+                    const e = S();
+                    ve("matTooltip", e.hellService.inHell ? "You have no food, and no one in hell sells rice." : e.inventoryService.autoBuyFood ? "You have no food in your inventory. You will spend money on food each day to avoid starvation." : "You have no food in your inventory and have chosen not to buy food to prevent starvation.")
+                }
             }
 
-            function m8(i, t) {
+            function _8(i, t) {
                 if (1 & i && (d(0, "div", 20), m(1), h()), 2 & i) {
-                    const e = w().$implicit;
+                    const e = S().$implicit;
                     g(1), F("x", null == e ? null : e.quantity, "")
                 }
             }
-            const g8 = function (i, t) {
+            const b8 = function (i, t) {
                 return {
                     selectedItem: i,
                     brokenItem: t
                 }
             };
 
-            function v8(i, t) {
-                if (1 & i) {
-                    const e = V();
-                    d(0, "div", 16), M("dragover", function (r) {
-                        return E(e), w().allowDrop(r)
-                    })("drop", function (r) {
-                        const a = E(e).index;
-                        return w().drop(a, r)
-                    })("dragstart", function (r) {
-                        const a = E(e).index;
-                        return w().drag(a, r)
-                    }), d(1, "diV", 17), M("mousedown", function (r) {
-                        const a = E(e).$implicit;
-                        return w().slotClicked(a, r)
-                    })("dblclick", function (r) {
-                        const a = E(e).$implicit;
-                        return w().slotDoubleClicked(a, r)
-                    })("contextmenu", function (r) {
-                        const a = E(e).$implicit;
-                        return w().slotRightClicked(a, r)
-                    }), I(2, "titlecase"), d(3, "div", 18), m(4), I(5, "titlecase"), h(), T(6, m8, 2, 1, "div", 19), h()()
-                }
-                if (2 & i) {
-                    const e = t.$implicit,
-                        n = w();
-                    g(1), ve("matTooltip", null != e && e.item ? H(2, 5, null == e || null == e.item ? null : e.item.name) + "\n\n            " + (null == e || null == e.item ? null : e.item.description) : ""), b("tabindex", null != e && e.item ? "0" : "-1")("ngClass", Bn(9, g8, e && e === n.inventoryService.selectedItem, e && void 0 !== e && !n.inventoryService.hasDurability(e))), g(3), le(H(5, 7, null == e || null == e.item ? null : e.item.name)), g(2), b("ngIf", ((null == e ? null : e.quantity) || 0) > 1)
-                }
-            }
-
-            function y8(i, t) {
-                if (1 & i) {
-                    const e = V();
-                    d(0, "mat-icon", 31), M("click", function () {
-                        return E(e), w(2).sell(1)
-                    }), m(1, " attach_money "), h()
-                }
-                if (2 & i) {
-                    const e = w(2);
-                    Lr("matTooltip", "Sell one ", e.inventoryService.selectedItem.item.name, " for ", e.inventoryService.selectedItem.item.value, " taels. Right-click items to sell.")
-                }
-            }
-
-            function _8(i, t) {
-                if (1 & i) {
-                    const e = V();
-                    d(0, "mat-icon", 32), M("click", function () {
-                        return E(e), w(2).sellStack()
-                    }), m(1, " paid "), h()
-                }
-                if (2 & i) {
-                    const e = w(2);
-                    Lr("matTooltip", "Sell all the ", e.inventoryService.selectedItem.item.name, " in this inventory slot for ", e.inventoryService.selectedItem.item.value * e.inventoryService.selectedItem.quantity, " taels.  Shift-right-click items to sell the stack.")
-                }
-            }
-
-            function b8(i, t) {
-                if (1 & i) {
-                    const e = V();
-                    d(0, "mat-icon", 33), M("click", function () {
-                        return E(e), w(2).sellAll()
-                    }), m(1, " shopping_basket "), h()
-                }
-                2 & i && ui("matTooltip", "Sell all the ", w(2).inventoryService.selectedItem.item.name, " in the whole inventory.")
-            }
-
             function S8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 34), M("click", function () {
-                        return E(e), w(2).autoSell()
-                    }), m(1, " currency_exchange "), h()
+                    d(0, "div", 16), T("dragover", function (r) {
+                        return E(e), S().allowDrop(r)
+                    })("drop", function (r) {
+                        const a = E(e).index;
+                        return S().drop(a, r)
+                    })("dragstart", function (r) {
+                        const a = E(e).index;
+                        return S().drag(a, r)
+                    }), d(1, "diV", 17), T("mousedown", function (r) {
+                        const a = E(e).$implicit;
+                        return S().slotClicked(a, r)
+                    })("dblclick", function (r) {
+                        const a = E(e).$implicit;
+                        return S().slotDoubleClicked(a, r)
+                    })("contextmenu", function (r) {
+                        const a = E(e).$implicit;
+                        return S().slotRightClicked(a, r)
+                    }), O(2, "titlecase"), d(3, "div", 18), m(4), O(5, "titlecase"), h(), x(6, _8, 2, 1, "div", 19), h()()
+                }
+                if (2 & i) {
+                    const e = t.$implicit,
+                        n = S();
+                    g(1), ve("matTooltip", null != e && e.item ? H(2, 5, null == e || null == e.item ? null : e.item.name) + "\n\n            " + (null == e || null == e.item ? null : e.item.description) : ""), b("tabindex", null != e && e.item ? "0" : "-1")("ngClass", Bn(9, b8, e && e === n.inventoryService.selectedItem, e && void 0 !== e && !n.inventoryService.hasDurability(e))), g(3), le(H(5, 7, null == e || null == e.item ? null : e.item.name)), g(2), b("ngIf", ((null == e ? null : e.quantity) || 0) > 1)
                 }
             }
 
             function w8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 35), M("click", function () {
-                        return E(e), w(2).use()
-                    }), m(1, " auto_awesome "), h()
+                    d(0, "mat-icon", 32), T("click", function () {
+                        return E(e), S(2).sell(1)
+                    }), m(1, " attach_money "), h()
                 }
                 if (2 & i) {
-                    const e = w(2);
-                    Lr("matTooltip", "", e.inventoryService.selectedItem.item.useLabel, ". ", e.inventoryService.selectedItem.item.useDescription, " Shift-click items to use.")
+                    const e = S(2);
+                    Lr("matTooltip", "Sell one ", e.inventoryService.selectedItem.item.name, " for ", e.inventoryService.selectedItem.item.value, " taels. Right-click items to sell.")
                 }
             }
 
             function C8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 36), M("click", function () {
-                        return E(e), w(2).autoUse()
-                    }), m(1, " auto_mode "), h()
+                    d(0, "mat-icon", 33), T("click", function () {
+                        return E(e), S(2).sellStack()
+                    }), m(1, " paid "), h()
                 }
                 if (2 & i) {
-                    const e = w(2);
-                    Lr("matTooltip", "Auto-", e.inventoryService.selectedItem.item.useLabel, ". ", e.inventoryService.selectedItem.item.useDescription, " Ctrl-click items to auto-use.")
+                    const e = S(2);
+                    Lr("matTooltip", "Sell all the ", e.inventoryService.selectedItem.item.name, " in this inventory slot for ", e.inventoryService.selectedItem.item.value * e.inventoryService.selectedItem.quantity, " taels.  Shift-right-click items to sell the stack.")
                 }
             }
 
             function k8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 37), M("click", function () {
-                        return E(e), w(2).autoBalance()
-                    }), m(1, " balance "), h()
+                    d(0, "mat-icon", 34), T("click", function () {
+                        return E(e), S(2).sellAll()
+                    }), m(1, " shopping_basket "), h()
                 }
+                2 & i && hi("matTooltip", "Sell all the ", S(2).inventoryService.selectedItem.item.name, " in the whole inventory.")
             }
 
             function M8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 38), M("click", function () {
-                        return E(e), w(2).equip()
-                    }), m(1, " shield "), h()
+                    d(0, "mat-icon", 35), T("click", function () {
+                        return E(e), S(2).autoSell()
+                    }), m(1, " currency_exchange "), h()
                 }
             }
 
             function x8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "mat-icon", 39), M("click", function () {
-                        return E(e), w(2).mergeSpiritGem()
-                    }), m(1, " diamond "), h()
+                    d(0, "mat-icon", 36), T("click", function () {
+                        return E(e), S(2).use()
+                    }), m(1, " auto_awesome "), h()
+                }
+                if (2 & i) {
+                    const e = S(2);
+                    Lr("matTooltip", "", e.inventoryService.selectedItem.item.useLabel, ". ", e.inventoryService.selectedItem.item.useDescription, " Shift-click items to use.")
                 }
             }
 
             function T8(i, t) {
-                if (1 & i && (d(0, "div", 21), T(1, y8, 2, 2, "mat-icon", 22), T(2, _8, 2, 2, "mat-icon", 23), T(3, b8, 2, 1, "mat-icon", 24), T(4, S8, 2, 0, "mat-icon", 25), T(5, w8, 2, 2, "mat-icon", 26), T(6, C8, 2, 2, "mat-icon", 27), T(7, k8, 2, 0, "mat-icon", 28), T(8, M8, 2, 0, "mat-icon", 29), T(9, x8, 2, 0, "mat-icon", 30), h()), 2 & i) {
-                    const e = w();
-                    g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value)), g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value)), g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value)), g(1), b("ngIf", e.inventoryService.autoSellUnlocked && e.isFinite(e.inventoryService.selectedItem.item.value) && !e.instanceOfEquipment(e.inventoryService.selectedItem.item)), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel && e.inventoryService.autoUseUnlocked), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel && e.inventoryService.autoBalanceUnlocked && e.isFinite(e.inventoryService.selectedItem.item.value)), g(1), b("ngIf", "equipment" === e.inventoryService.selectedItem.item.type), g(1), b("ngIf", "spiritGem" === e.inventoryService.selectedItem.item.type)
+                if (1 & i) {
+                    const e = V();
+                    d(0, "mat-icon", 37), T("click", function () {
+                        return E(e), S(2).autoUse()
+                    }), m(1, " auto_mode "), h()
+                }
+                if (2 & i) {
+                    const e = S(2);
+                    Lr("matTooltip", "Auto-", e.inventoryService.selectedItem.item.useLabel, ". ", e.inventoryService.selectedItem.item.useDescription, " Ctrl-click items to auto-use.")
                 }
             }
-            const D8 = function (i, t) {
+
+            function D8(i, t) {
+                if (1 & i) {
+                    const e = V();
+                    d(0, "mat-icon", 38), T("click", function () {
+                        return E(e), S(2).autoBalance()
+                    }), m(1, " balance "), h()
+                }
+            }
+
+            function E8(i, t) {
+                if (1 & i) {
+                    const e = V();
+                    d(0, "mat-icon", 39), T("click", function () {
+                        return E(e), S(2).equip()
+                    }), m(1, " shield "), h()
+                }
+            }
+
+            function A8(i, t) {
+                if (1 & i) {
+                    const e = V();
+                    d(0, "mat-icon", 40), T("click", function () {
+                        return E(e), S(2).mergeSpiritGem()
+                    }), m(1, " diamond "), h()
+                }
+            }
+
+            function P8(i, t) {
+                if (1 & i) {
+                    const e = V();
+                    d(0, "mat-icon", 41), T("click", function () {
+                        return E(e), S(2).throwAway()
+                    }), m(1, " delete "), h()
+                }
+            }
+
+            function I8(i, t) {
+                if (1 & i && (d(0, "div", 21), x(1, w8, 2, 2, "mat-icon", 22), x(2, C8, 2, 2, "mat-icon", 23), x(3, k8, 2, 1, "mat-icon", 24), x(4, M8, 2, 0, "mat-icon", 25), x(5, x8, 2, 2, "mat-icon", 26), x(6, T8, 2, 2, "mat-icon", 27), x(7, D8, 2, 0, "mat-icon", 28), x(8, E8, 2, 0, "mat-icon", 29), x(9, A8, 2, 0, "mat-icon", 30), x(10, P8, 2, 0, "mat-icon", 31), h()), 2 & i) {
+                    const e = S();
+                    g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value) && !e.hellService.inHell), g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value) && !e.hellService.inHell), g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value) && !e.hellService.inHell), g(1), b("ngIf", e.inventoryService.autoSellUnlocked && e.isFinite(e.inventoryService.selectedItem.item.value) && !e.instanceOfEquipment(e.inventoryService.selectedItem.item) && !e.hellService.inHell), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel && e.inventoryService.autoUseUnlocked), g(1), b("ngIf", void 0 !== e.inventoryService.selectedItem.item.useLabel && e.inventoryService.autoBalanceUnlocked && e.isFinite(e.inventoryService.selectedItem.item.value) && !e.hellService.inHell), g(1), b("ngIf", "equipment" === e.inventoryService.selectedItem.item.type), g(1), b("ngIf", "spiritGem" === e.inventoryService.selectedItem.item.type), g(1), b("ngIf", e.isFinite(e.inventoryService.selectedItem.item.value))
+                }
+            }
+            const O8 = function (i, t) {
                 return {
                     highlighted: i,
                     sortHighlight: t
                 }
             };
-            let E8 = (() => {
+            let R8 = (() => {
                     class i {
                         constructor(e, n, r, o) {
-                            this.inventoryService = e, this.characterService = n, this.hellService = r, this.mainLoopService = o, this.instanceOfEquipment = mi, this.equipmentSlots = Object.keys(this.characterService.characterState.equipment)
+                            this.inventoryService = e, this.characterService = n, this.hellService = r, this.mainLoopService = o, this.instanceOfEquipment = At, this.equipmentSlots = Object.keys(this.characterService.characterState.equipment)
                         }
                         isFinite(e) {
                             return Number.isFinite(e)
@@ -30373,10 +30469,10 @@
                                         p = null == u ? void 0 : u.item,
                                         v = null == f ? void 0 : f.item;
                                     if (p && v)
-                                        if (mi(p) && mi(v)) {
+                                        if (At(p) && At(v)) {
                                             if (p.slot === v.slot) return this.inventoryService.itemStacks[e] = null, this.inventoryService.itemStacks[c] = null, this.inventoryService.selectedItem = null, void this.inventoryService.mergeEquipment(v, p, e)
                                         } else {
-                                            if (p.type.includes("Gem") && mi(v)) return void this.inventoryService.gemifyEquipment(c, v);
+                                            if (p.type.includes("Gem") && At(v)) return void this.inventoryService.gemifyEquipment(c, v);
                                             p.name === v.name ? this.inventoryService.mergeItemStacks(u, f, c) : (this.inventoryService.itemStacks[e] = u, this.inventoryService.itemStacks[c] = f)
                                         }
                                     else this.inventoryService.itemStacks[e] = u, this.inventoryService.itemStacks[c] = f
@@ -30387,9 +30483,12 @@
                                 c && this.inventoryService.openInventorySlots() > 0 && (this.inventoryService.addItem(c), this.characterService.characterState.equipment[l] = null, this.inventoryService.selectedItem = null)
                             }
                         }
+                        throwAway() {
+                            this.inventoryService.selectedItem && this.inventoryService.removeItemStack(this.inventoryService.selectedItem)
+                        }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(W), _(Ie), _(Oe), _(yt))
+                        return new(e || i)(_(W), _(Oe), _(Ie), _(yt))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
@@ -30405,14 +30504,14 @@
                             [1, "moneyLabelColumn"],
                             [1, "moneyContainer"],
                             [1, "moneyColumn"],
-                            ["matTooltip", "Money usable only in hell. Note that this is not transferrable between hells.", "class", "moneyColumn", 4, "ngIf"],
+                            ["matTooltip", "Money accepted as legal tender in hell.", "class", "moneyColumn", 4, "ngIf"],
                             ["class", "noFood", 3, "matTooltip", 4, "ngIf"],
                             ["matTooltip", "Click to sort your inventory. Shift-click to toggle autosort. Ctrl-click to toggle descending.", "aria-label", "Sort Inventory", "aria-hidden", "false", 1, "iconButton", 3, "ngClass", "click"],
                             [1, "overflow"],
                             [1, "inventoryGrid"],
                             ["draggable", "true", 3, "dragover", "drop", "dragstart", 4, "ngFor", "ngForOf"],
                             ["class", "inventoryButtons", 4, "ngIf"],
-                            ["matTooltip", "Money usable only in hell. Note that this is not transferrable between hells.", 1, "moneyColumn"],
+                            ["matTooltip", "Money accepted as legal tender in hell.", 1, "moneyColumn"],
                             [1, "noFood", 3, "matTooltip"],
                             ["draggable", "true", 3, "dragover", "drop", "dragstart"],
                             ["matTooltipPosition", "left", 1, "itemSlot", 3, "tabindex", "ngClass", "matTooltip", "mousedown", "dblclick", "contextmenu"],
@@ -30429,6 +30528,7 @@
                             ["class", "iconButton", "aria-label", "Balance", "aria-hidden", "false", "matTooltip", "Balance between automatically using and selling this item.", 3, "click", 4, "ngIf"],
                             ["class", "iconButton", "aria-label", "Equip", "aria-hidden", "false", "matTooltip", "Equip this. Double-click weapons or armor to equip.", 3, "click", 4, "ngIf"],
                             ["class", "iconButton", "aria-label", "Merge Gem", "aria-hidden", "false", "matTooltip", "Merge 10 of these into a higher grade gem.", 3, "click", 4, "ngIf"],
+                            ["class", "iconButton", "aria-label", "Throw Away", "aria-hidden", "false", "matTooltip", "Throw this stack of items away.", 3, "click", 4, "ngIf"],
                             ["aria-label", "Sell", "aria-hidden", "false", 1, "iconButton", 3, "matTooltip", "click"],
                             ["aria-label", "Sell Stack", "aria-hidden", "false", 1, "iconButton", 3, "matTooltip", "click"],
                             ["aria-label", "Sell All", "aria-hidden", "false", 1, "iconButton", 3, "matTooltip", "click"],
@@ -30437,19 +30537,20 @@
                             ["aria-label", "Auto Use", "aria-hidden", "false", 1, "iconButton", 3, "matTooltip", "click"],
                             ["aria-label", "Balance", "aria-hidden", "false", "matTooltip", "Balance between automatically using and selling this item.", 1, "iconButton", 3, "click"],
                             ["aria-label", "Equip", "aria-hidden", "false", "matTooltip", "Equip this. Double-click weapons or armor to equip.", 1, "iconButton", 3, "click"],
-                            ["aria-label", "Merge Gem", "aria-hidden", "false", "matTooltip", "Merge 10 of these into a higher grade gem.", 1, "iconButton", 3, "click"]
+                            ["aria-label", "Merge Gem", "aria-hidden", "false", "matTooltip", "Merge 10 of these into a higher grade gem.", 1, "iconButton", 3, "click"],
+                            ["aria-label", "Throw Away", "aria-hidden", "false", "matTooltip", "Throw this stack of items away.", 1, "iconButton", 3, "click"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0)(1, "h3", 1)(2, "div", 2)(3, "mat-icon", 3), m(4, " help "), h(), m(5, " Inventory -\xa0 "), h(), d(6, "div", 4), m(7, "Money: "), h(), d(8, "div", 5)(9, "div", 6)(10, "span"), m(11), I(12, "bigNumber"), h()(), T(13, f8, 3, 3, "div", 7), h(), d(14, "div"), T(15, p8, 2, 1, "mat-icon", 8), h(), d(16, "div")(17, "mat-icon", 9), M("click", function (o) {
+                            1 & e && (d(0, "div", 0)(1, "h3", 1)(2, "div", 2)(3, "mat-icon", 3), m(4, " help "), h(), m(5, " Inventory -\xa0 "), h(), d(6, "div", 4), m(7, "Money: "), h(), d(8, "div", 5)(9, "div", 6)(10, "span"), m(11), O(12, "bigNumber"), h()(), x(13, v8, 3, 3, "div", 7), h(), d(14, "div"), x(15, y8, 2, 1, "mat-icon", 8), h(), d(16, "div")(17, "mat-icon", 9), T("click", function (o) {
                                 return n.sortClicked(o)
-                            }), m(18, " sort "), h()()(), d(19, "div", 10)(20, "div", 11), T(21, v8, 7, 12, "div", 12), h()(), T(22, T8, 10, 9, "div", 13), h()), 2 & e && (g(11), F("", H(12, 6, n.characterService.characterState.money), " Taels"), g(2), b("ngIf", n.hellService.inHell), g(2), b("ngIf", n.inventoryService.noFood), g(2), b("ngClass", Bn(8, D8, n.inventoryService.autoSort, n.inventoryService.descendingSort)), g(4), b("ngForOf", n.inventoryService.itemStacks), g(1), b("ngIf", n.inventoryService.selectedItem))
+                            }), m(18, " sort "), h()()(), d(19, "div", 10)(20, "div", 11), x(21, S8, 7, 12, "div", 12), h()(), x(22, I8, 11, 10, "div", 13), h()), 2 & e && (g(11), F("", H(12, 6, n.characterService.characterState.money), " Taels"), g(2), b("ngIf", n.characterService.characterState.hellMoney > 0), g(2), b("ngIf", n.inventoryService.noFood), g(2), b("ngClass", Bn(8, O8, n.inventoryService.autoSort, n.inventoryService.descendingSort)), g(4), b("ngForOf", n.inventoryService.itemStacks), g(1), b("ngIf", n.inventoryService.selectedItem))
                         },
-                        directives: [si, At, st, Di, Nt],
-                        pipes: [jt, un],
+                        directives: [li, Pt, st, fi, Bt],
+                        pipes: [Yt, un],
                         styles: [".inventoryContainer[_ngcontent-%COMP%]{display:flex;flex-direction:column;min-height:0}.inventoryGrid[_ngcontent-%COMP%]{display:flex;flex-wrap:wrap;margin:3px 0;justify-content:center;gap:3px;overflow-anchor:none}.itemSlot[_ngcontent-%COMP%]{width:58px;height:58px;overflow:hidden;position:relative}.sortHighlight[_ngcontent-%COMP%]{background:linear-gradient(90deg,var(--textHighlight) 0%,rgba(0,0,0,0) 100%)}.selectedItem[_ngcontent-%COMP%]{background-color:var(--itemSlotHighlight)}.itemSlot[_ngcontent-%COMP%]   .itemName[_ngcontent-%COMP%]{width:100%;display:inline-block;vertical-align:middle;line-height:12px}.itemQuantity[_ngcontent-%COMP%]{position:absolute;bottom:0;right:0;line-height:15px;padding:0 4px;width:-moz-fit-content;width:fit-content;height:-moz-fit-content;height:fit-content;background:inherit;filter:brightness(80%);border-radius:3px;z-index:1}.overflow[_ngcontent-%COMP%]{overflow:auto}.inventoryButtons[_ngcontent-%COMP%]{border-top:1px solid var(--panelBorder)}.inventoryLabelColumn[_ngcontent-%COMP%]{width:100px;white-space:nowrap}.moneyLabelColumn[_ngcontent-%COMP%]{width:50px;font-size:12px}.moneyColumn[_ngcontent-%COMP%]{width:140px;font-size:12px}.noFood[_ngcontent-%COMP%]{font-size:16px;float:right;margin-top:4px;vertical-align:middle;color:var(--healthColor)}.panelHeader[_ngcontent-%COMP%]{display:flex;justify-content:space-evenly}.moneyContainer[_ngcontent-%COMP%]{display:flex;flex-direction:column}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                     }), i
                 })(),
-                A8 = (() => {
+                F8 = (() => {
                     class i {
                         constructor(e) {
                             this.data = e, this.titleText = "", this.bodyText = "", this.titleText = e.titleText, this.bodyText = e.bodyText
@@ -30475,96 +30576,96 @@
                     }), i
                 })();
 
-            function I8(i, t) {
+            function N8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "span")(1, "button", 8), M("click", function () {
-                        return E(e), w().JoinTheGodsClick()
+                    d(0, "span")(1, "button", 8), T("click", function () {
+                        return E(e), S().JoinTheGodsClick()
                     }), m(2, "Join the Gods"), h()()
                 }
             }
 
-            function O8(i, t) {
+            function B8(i, t) {
                 if (1 & i && (d(0, "span")(1, "div", 9), B(2, "span"), h()()), 2 & i) {
-                    const e = w();
-                    g(1), Ye("value", e.Math.floor(e.impossibleTaskService.taskProgress[e.impossibleTaskService.activeTaskIndex].progress))("max", e.Math.floor(e.impossibleTaskService.tasks[e.impossibleTaskService.activeTaskIndex].progressRequired)), g(1), Ft("width", 100 * e.impossibleTaskService.taskProgress[e.impossibleTaskService.activeTaskIndex].progress / e.impossibleTaskService.tasks[e.impossibleTaskService.activeTaskIndex].progressRequired, "%")
+                    const e = S();
+                    g(1), ze("value", e.Math.floor(e.impossibleTaskService.taskProgress[e.impossibleTaskService.activeTaskIndex].progress))("max", e.Math.floor(e.impossibleTaskService.tasks[e.impossibleTaskService.activeTaskIndex].progressRequired)), g(1), Lt("width", 100 * e.impossibleTaskService.taskProgress[e.impossibleTaskService.activeTaskIndex].progress / e.impossibleTaskService.tasks[e.impossibleTaskService.activeTaskIndex].progressRequired, "%")
                 }
             }
 
-            function R8(i, t) {
+            function H8(i, t) {
                 if (1 & i && (d(0, "span")(1, "div", 9), B(2, "span"), h()()), 2 & i) {
-                    const e = w();
-                    g(1), Ye("value", e.Math.floor(e.hellService.hells[e.hellService.currentHell].progress()))("max", e.Math.floor(e.hellService.hells[e.hellService.currentHell].progressMax())), g(1), Ft("width", 100 * e.hellService.hells[e.hellService.currentHell].progress() / e.hellService.hells[e.hellService.currentHell].progressMax(), "%")
+                    const e = S();
+                    g(1), ze("value", e.Math.floor(e.hellService.hells[e.hellService.currentHell].progress()))("max", e.Math.floor(e.hellService.hells[e.hellService.currentHell].progressMax())), g(1), Lt("width", 100 * e.hellService.hells[e.hellService.currentHell].progress() / e.hellService.hells[e.hellService.currentHell].progressMax(), "%")
                 }
             }
 
-            function F8(i, t) {
+            function V8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "span")(1, "button", 8), M("click", function () {
-                        return E(e), w().hellBoss()
+                    d(0, "span")(1, "button", 8), T("click", function () {
+                        return E(e), S().hellBoss()
                     }), m(2), h()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(2), le(e.hellService.completedHellBosses.includes(e.hellService.currentHell) ? "Beat On The Hell Lord Some More" : "Challenge the Hell Lord")
                 }
             }
 
-            function L8(i, t) {
+            function U8(i, t) {
                 1 & i && (d(0, "mat-icon", 15), m(1, " model_training "), h())
             }
 
-            function N8(i, t) {
-                if (1 & i && (d(0, "span")(1, "mat-icon", 5), I(2, "bigNumber"), m(3, " attach_money "), h()()), 2 & i) {
-                    const e = w(2).$implicit;
-                    g(1), ui("matTooltip", "Exactly how much will you make doing this job? It can depend on your attributes, but the last time you did this job you made ", H(2, 1, e.lastIncome), " taels.")
+            function j8(i, t) {
+                if (1 & i && (d(0, "span")(1, "mat-icon", 5), O(2, "bigNumber"), m(3, " attach_money "), h()()), 2 & i) {
+                    const e = S(2).$implicit;
+                    g(1), hi("matTooltip", "Exactly how much will you make doing this job? It can depend on your attributes, but the last time you did this job you made ", H(2, 1, e.lastIncome), " taels.")
                 }
             }
-            const B8 = function (i, t) {
+            const q8 = function (i, t) {
                 return {
                     projectionOnly: i,
                     lockedActivity: t
                 }
             };
 
-            function H8(i, t) {
+            function Y8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "tr", 11), M("dragstart", function (r) {
+                    d(0, "tr", 11), T("dragstart", function (r) {
                         E(e);
-                        const o = w().$implicit;
-                        return w().drag(o, r)
-                    }), d(1, "td")(2, "span", 12)(3, "button", 13), M("click", function (r) {
+                        const o = S().$implicit;
+                        return S().drag(o, r)
+                    }), d(1, "td")(2, "span", 12)(3, "button", 13), T("click", function (r) {
                         E(e);
-                        const o = w().$implicit;
-                        return w().onClick(o, r)
+                        const o = S().$implicit;
+                        return S().onClick(o, r)
                     })("contextmenu", function (r) {
                         E(e);
-                        const o = w().$implicit;
-                        return w().rightClick(o, r)
-                    }), m(4), h(), T(5, L8, 2, 0, "mat-icon", 14), h()(), d(6, "td"), m(7), B(8, "br"), m(9), T(10, N8, 4, 3, "span", 4), h()()
+                        const o = S().$implicit;
+                        return S().rightClick(o, r)
+                    }), m(4), h(), x(5, U8, 2, 0, "mat-icon", 14), h()(), d(6, "td"), m(7), B(8, "br"), m(9), x(10, j8, 4, 3, "span", 4), h()()
                 }
                 if (2 & i) {
-                    const e = w().$implicit,
-                        n = w();
-                    b("ngClass", Bn(8, B8, e.projectionOnly, !e.unlocked)), g(3), ve("matTooltip", n.getActivityTooltip(e)), g(1), F(" ", e.name[e.level], " "), g(1), b("ngIf", e.skipApprenticeshipLevel > 0 && !n.activityService.completedApprenticeships.includes(e.activityType)), g(2), F(" ", e.description[e.level], " "), g(2), Ti(" ", e.consequenceDescription[e.level], " ", e.projectionOnly ? "This activity can only be performed by a spiritual projection of yourself back in the mortal realm." : "", " "), g(1), b("ngIf", e.lastIncome && e.lastIncome > 0)
+                    const e = S().$implicit,
+                        n = S();
+                    b("ngClass", Bn(8, q8, e.projectionOnly, !e.unlocked)), g(3), ve("matTooltip", n.getActivityTooltip(e)), g(1), F(" ", e.name[e.level], " "), g(1), b("ngIf", e.skipApprenticeshipLevel > 0 && !n.activityService.completedApprenticeships.includes(e.activityType)), g(2), F(" ", e.description[e.level], " "), g(2), Di(" ", e.consequenceDescription[e.level], " ", e.projectionOnly ? "This activity can only be performed by a spiritual projection of yourself back in the mortal realm." : "", " "), g(1), b("ngIf", e.lastIncome && e.lastIncome > 0)
                 }
             }
 
-            function V8(i, t) {
-                if (1 & i && (cr(0), T(1, H8, 11, 11, "tr", 10), ur()), 2 & i) {
+            function z8(i, t) {
+                if (1 & i && (cr(0), x(1, Y8, 11, 11, "tr", 10), ur()), 2 & i) {
                     const e = t.$implicit;
                     g(1), b("ngIf", e.discovered || e.unlocked)
                 }
             }
-            let U8 = (() => {
+            let G8 = (() => {
                 class i {
                     constructor(e, n, r, o, a, s, l, c) {
                         this.gameStateService = e, this.activityService = n, this.characterService = r, this.hellService = o, this.inventoryService = a, this.followerService = s, this.impossibleTaskService = l, this.dialog = c, this.camelToTitle = new Sa, this.Math = Math, this.character = r.characterState
                     }
                     JoinTheGodsClick() {
-                        confirm("你确定你准备好了吗？ 当你离开这个凡人领域时，你将需要留下你所有的钱和你的大部分追随者和财产。") && this.dialog.open(A8, {
+                        confirm("Are you sure you are ready for this? You will need to leave all your money and most of your followers and possessions behind as you leave this mortal realm.") && this.dialog.open(F8, {
                             width: "700px",
                             data: {
                                 titleText: "Joining the Gods",
@@ -30612,7 +30713,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Oi), _(Ze), _(Ie), _(Oe), _(W), _(Mt), _(vr), _(Wi))
+                    return new(e || i)(_(Oi), _(Ke), _(Oe), _(Ie), _(W), _(Mt), _(vr), _(Wi))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -30639,10 +30740,10 @@
                         ["matTooltip", "This activity requires that you go through an apprenticeship. You can only do one apprenticeship in each lifetime, so choose carefully what trade you want to learn. Once you've started, other trades may be closed off until your next life."]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "h3", 0)(1, "div", 1)(2, "mat-icon", 2), m(3, " help "), h(), m(4, " Activities "), h(), d(5, "div", 3), T(6, I8, 3, 0, "span", 4), d(7, "span", 5), m(8), h(), T(9, O8, 3, 4, "span", 4), T(10, R8, 3, 4, "span", 4), T(11, F8, 3, 1, "span", 4), h()(), d(12, "div", 6)(13, "table"), T(14, V8, 2, 1, "ng-container", 7), h()()), 2 & e && (g(6), b("ngIf", n.characterService.characterState.immortal && !n.hellService.inHell && n.activityService.hellEnabled), g(1), ve("matTooltip", n.activityService.activityHeaderDescription), g(1), F("", n.activityService.activityHeader, " "), g(1), b("ngIf", n.impossibleTaskService.activeTaskIndex >= 0), g(1), b("ngIf", n.hellService.inHell && n.hellService.currentHell >= 0 && !n.hellService.completedHellTasks.includes(n.hellService.currentHell)), g(1), b("ngIf", n.hellService.inHell && n.activityService.hellEnabled && n.hellService.completedHellTasks.includes(n.hellService.currentHell)), g(3), b("ngForOf", n.activityService.activities))
+                        1 & e && (d(0, "h3", 0)(1, "div", 1)(2, "mat-icon", 2), m(3, " help "), h(), m(4, " Activities "), h(), d(5, "div", 3), x(6, N8, 3, 0, "span", 4), d(7, "span", 5), m(8), h(), x(9, B8, 3, 4, "span", 4), x(10, H8, 3, 4, "span", 4), x(11, V8, 3, 1, "span", 4), h()(), d(12, "div", 6)(13, "table"), x(14, z8, 2, 1, "ng-container", 7), h()()), 2 & e && (g(6), b("ngIf", n.characterService.characterState.immortal && !n.hellService.inHell && !n.characterService.characterState.god), g(1), ve("matTooltip", n.activityService.activityHeaderDescription), g(1), F("", n.activityService.activityHeader, " "), g(1), b("ngIf", n.impossibleTaskService.activeTaskIndex >= 0), g(1), b("ngIf", n.hellService.inHell && n.hellService.currentHell >= 0 && !n.hellService.completedHellTasks.includes(n.hellService.currentHell)), g(1), b("ngIf", n.hellService.inHell && n.hellService.completedHellTasks.includes(n.hellService.currentHell)), g(3), b("ngForOf", n.activityService.activities))
                     },
-                    directives: [si, At, st, Nt, Di],
-                    pipes: [jt],
+                    directives: [li, Pt, st, Bt, fi],
+                    pipes: [Yt],
                     styles: ["td[_ngcontent-%COMP%]{border-bottom:1px var(--tableDividerColor) solid;font-size:12px}.activitiesContainer[_ngcontent-%COMP%]{min-width:400px}button[_ngcontent-%COMP%]{font-size:12px;min-width:130px}.noWrap[_ngcontent-%COMP%]{white-space:nowrap;width:100%}.standardHeader[_ngcontent-%COMP%]{flex:1;white-space:nowrap}.customHeader[_ngcontent-%COMP%]{flex:4;display:inline-block;width:100%;text-align:center}.panelHeader[_ngcontent-%COMP%]{display:flex}.projectionOnly[_ngcontent-%COMP%]{border:1px solid var(--itemSlotHighlight);background-color:var(--manaColor)}.lockedActivity[_ngcontent-%COMP%]{background-color:var(--disabledActivity)}.activityButton[_ngcontent-%COMP%]{white-space:normal;max-width:150px}.progress-bar[_ngcontent-%COMP%]{height:24px;vertical-align:-.7em;font-size:11px;width:100px}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
@@ -30657,65 +30758,65 @@
                     }
                 };
 
-            function j8(i, t) {
+            function $8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 3)(1, "div", 4), M("dragover", function (r) {
-                        return E(e), w().allowDrop(r)
+                    d(0, "div", 3)(1, "div", 4), T("dragover", function (r) {
+                        return E(e), S().allowDrop(r)
                     })("drop", function (r) {
-                        return E(e), w().drop("head", r)
+                        return E(e), S().drop("head", r)
                     })("dragstart", function (r) {
-                        return E(e), w().drag("head", r)
+                        return E(e), S().drag("head", r)
                     })("dblclick", function (r) {
-                        return E(e), w().slotDoubleClicked("head", r)
-                    }), I(2, "titlecase"), m(3), I(4, "titlecase"), h(), d(5, "div", 5), M("dragover", function (r) {
-                        return E(e), w().allowDrop(r)
+                        return E(e), S().slotDoubleClicked("head", r)
+                    }), O(2, "titlecase"), m(3), O(4, "titlecase"), h(), d(5, "div", 5), T("dragover", function (r) {
+                        return E(e), S().allowDrop(r)
                     })("drop", function (r) {
-                        return E(e), w().drop("rightHand", r)
+                        return E(e), S().drop("rightHand", r)
                     })("dragstart", function (r) {
-                        return E(e), w().drag("rightHand", r)
+                        return E(e), S().drag("rightHand", r)
                     })("dblclick", function (r) {
-                        return E(e), w().slotDoubleClicked("rightHand", r)
-                    }), I(6, "titlecase"), m(7), I(8, "titlecase"), h(), d(9, "div", 6), M("dragover", function (r) {
-                        return E(e), w().allowDrop(r)
+                        return E(e), S().slotDoubleClicked("rightHand", r)
+                    }), O(6, "titlecase"), m(7), O(8, "titlecase"), h(), d(9, "div", 6), T("dragover", function (r) {
+                        return E(e), S().allowDrop(r)
                     })("drop", function (r) {
-                        return E(e), w().drop("body", r)
+                        return E(e), S().drop("body", r)
                     })("dragstart", function (r) {
-                        return E(e), w().drag("body", r)
+                        return E(e), S().drag("body", r)
                     })("dblclick", function (r) {
-                        return E(e), w().slotDoubleClicked("body", r)
-                    }), I(10, "titlecase"), m(11), I(12, "titlecase"), h(), d(13, "div", 7), M("dragover", function (r) {
-                        return E(e), w().allowDrop(r)
+                        return E(e), S().slotDoubleClicked("body", r)
+                    }), O(10, "titlecase"), m(11), O(12, "titlecase"), h(), d(13, "div", 7), T("dragover", function (r) {
+                        return E(e), S().allowDrop(r)
                     })("drop", function (r) {
-                        return E(e), w().drop("leftHand", r)
+                        return E(e), S().drop("leftHand", r)
                     })("dragstart", function (r) {
-                        return E(e), w().drag("leftHand", r)
+                        return E(e), S().drag("leftHand", r)
                     })("dblclick", function (r) {
-                        return E(e), w().slotDoubleClicked("leftHand", r)
-                    }), I(14, "titlecase"), m(15), I(16, "titlecase"), h(), d(17, "div", 8)(18, "span", 9)(19, "mat-icon"), m(20, "manage_accounts"), h(), m(21), I(22, "percent"), h(), B(23, "br"), d(24, "span", 10)(25, "mat-icon"), m(26, "flare"), h(), m(27), I(28, "bigNumber"), h(), B(29, "br"), d(30, "span", 10)(31, "mat-icon"), m(32, "shield"), h(), m(33), I(34, "bigNumber"), h()(), d(35, "div", 11), M("dragover", function (r) {
-                        return E(e), w().allowDrop(r)
+                        return E(e), S().slotDoubleClicked("leftHand", r)
+                    }), O(14, "titlecase"), m(15), O(16, "titlecase"), h(), d(17, "div", 8)(18, "span", 9)(19, "mat-icon"), m(20, "manage_accounts"), h(), m(21), O(22, "percent"), h(), B(23, "br"), d(24, "span", 10)(25, "mat-icon"), m(26, "flare"), h(), m(27), O(28, "bigNumber"), h(), B(29, "br"), d(30, "span", 10)(31, "mat-icon"), m(32, "shield"), h(), m(33), O(34, "bigNumber"), h()(), d(35, "div", 11), T("dragover", function (r) {
+                        return E(e), S().allowDrop(r)
                     })("drop", function (r) {
-                        return E(e), w().drop("legs", r)
+                        return E(e), S().drop("legs", r)
                     })("dragstart", function (r) {
-                        return E(e), w().drag("legs", r)
+                        return E(e), S().drag("legs", r)
                     })("dblclick", function (r) {
-                        return E(e), w().slotDoubleClicked("legs", r)
-                    }), I(36, "titlecase"), m(37), I(38, "titlecase"), h(), d(39, "div", 12), M("dragover", function (r) {
-                        return E(e), w().allowDrop(r)
+                        return E(e), S().slotDoubleClicked("legs", r)
+                    }), O(36, "titlecase"), m(37), O(38, "titlecase"), h(), d(39, "div", 12), T("dragover", function (r) {
+                        return E(e), S().allowDrop(r)
                     })("drop", function (r) {
-                        return E(e), w().drop("feet", r)
+                        return E(e), S().drop("feet", r)
                     })("dragstart", function (r) {
-                        return E(e), w().drag("feet", r)
+                        return E(e), S().drag("feet", r)
                     })("dblclick", function (r) {
-                        return E(e), w().slotDoubleClicked("feet", r)
-                    }), I(40, "titlecase"), m(41), I(42, "titlecase"), h()()
+                        return E(e), S().slotDoubleClicked("feet", r)
+                    }), O(40, "titlecase"), m(41), O(42, "titlecase"), h()()
                 }
                 if (2 & i) {
-                    const e = w();
-                    g(1), ve("matTooltip", null !== e.character.equipment.head ? H(2, 31, null == e.character.equipment.head ? null : e.character.equipment.head.name) + "\n\n      " + (null == e.character.equipment.head ? null : e.character.equipment.head.description) : ""), b("ngClass", ze(61, Ca, "head" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("head")), g(2), F(" ", H(4, 33, null == e.character.equipment.head ? null : e.character.equipment.head.name), " "), g(2), ve("matTooltip", null !== e.character.equipment.rightHand ? H(6, 35, null == e.character.equipment.rightHand ? null : e.character.equipment.rightHand.name) + "\n\n      " + (null == e.character.equipment.rightHand ? null : e.character.equipment.rightHand.description) : ""), b("ngClass", ze(63, Ca, "rightHand" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("rightHand")), g(2), F(" ", H(8, 37, null == e.character.equipment.rightHand ? null : e.character.equipment.rightHand.name), " "), g(2), ve("matTooltip", null !== e.character.equipment.body ? H(10, 39, null == e.character.equipment.body ? null : e.character.equipment.body.name) + "\n\n      " + (null == e.character.equipment.body ? null : e.character.equipment.body.description) : ""), b("ngClass", ze(65, Ca, "body" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("body")), g(2), F(" ", H(12, 41, null == e.character.equipment.body ? null : e.character.equipment.body.name), " "), g(2), ve("matTooltip", null !== e.character.equipment.leftHand ? H(14, 43, null == e.character.equipment.leftHand ? null : e.character.equipment.leftHand.name) + "\n\n      " + (null == e.character.equipment.leftHand ? null : e.character.equipment.leftHand.description) : ""), b("ngClass", ze(67, Ca, "leftHand" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("leftHand")), g(2), F(" ", H(16, 45, null == e.character.equipment.leftHand ? null : e.character.equipment.leftHand.name), " "), g(6), le(H(22, 47, e.character.accuracy)), g(3), ui("matTooltip", "Attack Power. The damage you will do when you hit a monster. Based on your strength and weapons.", e.character.righteousWrathUnlocked ? " Doubled by the power of your righteous wrath." : "", ""), b("ngClass", ze(69, _M, e.character.righteousWrathUnlocked)), g(3), le(H(28, 49, e.character.attackPower)), g(3), ui("matTooltip", "Defense. Reduces damage when a monster hits you. Based on your toughness and armor.", e.character.righteousWrathUnlocked ? " Doubled by the power of your righteous wrath." : "", ""), b("ngClass", ze(71, _M, e.character.righteousWrathUnlocked)), g(3), le(H(34, 51, e.character.defense)), g(2), ve("matTooltip", null !== e.character.equipment.legs ? H(36, 53, null == e.character.equipment.legs ? null : e.character.equipment.legs.name) + "\n\n      " + (null == e.character.equipment.legs ? null : e.character.equipment.legs.description) : ""), b("ngClass", ze(73, Ca, "legs" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("legs")), g(2), F(" ", H(38, 55, null == e.character.equipment.legs ? null : e.character.equipment.legs.name), " "), g(2), ve("matTooltip", null !== e.character.equipment.feet ? H(40, 57, null == e.character.equipment.feet ? null : e.character.equipment.feet.name) + "\n\n      " + (null == e.character.equipment.feet ? null : e.character.equipment.feet.description) : ""), b("ngClass", ze(75, Ca, "feet" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("feet")), g(2), F(" ", H(42, 59, null == e.character.equipment.feet ? null : e.character.equipment.feet.name), " ")
+                    const e = S();
+                    g(1), ve("matTooltip", null !== e.character.equipment.head ? H(2, 31, null == e.character.equipment.head ? null : e.character.equipment.head.name) + "\n\n      " + (null == e.character.equipment.head ? null : e.character.equipment.head.description) : ""), b("ngClass", je(61, Ca, "head" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("head")), g(2), F(" ", H(4, 33, null == e.character.equipment.head ? null : e.character.equipment.head.name), " "), g(2), ve("matTooltip", null !== e.character.equipment.rightHand ? H(6, 35, null == e.character.equipment.rightHand ? null : e.character.equipment.rightHand.name) + "\n\n      " + (null == e.character.equipment.rightHand ? null : e.character.equipment.rightHand.description) : ""), b("ngClass", je(63, Ca, "rightHand" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("rightHand")), g(2), F(" ", H(8, 37, null == e.character.equipment.rightHand ? null : e.character.equipment.rightHand.name), " "), g(2), ve("matTooltip", null !== e.character.equipment.body ? H(10, 39, null == e.character.equipment.body ? null : e.character.equipment.body.name) + "\n\n      " + (null == e.character.equipment.body ? null : e.character.equipment.body.description) : ""), b("ngClass", je(65, Ca, "body" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("body")), g(2), F(" ", H(12, 41, null == e.character.equipment.body ? null : e.character.equipment.body.name), " "), g(2), ve("matTooltip", null !== e.character.equipment.leftHand ? H(14, 43, null == e.character.equipment.leftHand ? null : e.character.equipment.leftHand.name) + "\n\n      " + (null == e.character.equipment.leftHand ? null : e.character.equipment.leftHand.description) : ""), b("ngClass", je(67, Ca, "leftHand" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("leftHand")), g(2), F(" ", H(16, 45, null == e.character.equipment.leftHand ? null : e.character.equipment.leftHand.name), " "), g(6), le(H(22, 47, e.character.accuracy)), g(3), hi("matTooltip", "Attack Power. The damage you will do when you hit a monster. Based on your strength and weapons.", e.character.righteousWrathUnlocked ? " Doubled by the power of your righteous wrath." : "", ""), b("ngClass", je(69, _M, e.character.righteousWrathUnlocked)), g(3), le(H(28, 49, e.character.attackPower)), g(3), hi("matTooltip", "Defense. Reduces damage when a monster hits you. Based on your toughness and armor.", e.character.righteousWrathUnlocked ? " Doubled by the power of your righteous wrath." : "", ""), b("ngClass", je(71, _M, e.character.righteousWrathUnlocked)), g(3), le(H(34, 51, e.character.defense)), g(2), ve("matTooltip", null !== e.character.equipment.legs ? H(36, 53, null == e.character.equipment.legs ? null : e.character.equipment.legs.name) + "\n\n      " + (null == e.character.equipment.legs ? null : e.character.equipment.legs.description) : ""), b("ngClass", je(73, Ca, "legs" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("legs")), g(2), F(" ", H(38, 55, null == e.character.equipment.legs ? null : e.character.equipment.legs.name), " "), g(2), ve("matTooltip", null !== e.character.equipment.feet ? H(40, 57, null == e.character.equipment.feet ? null : e.character.equipment.feet.name) + "\n\n      " + (null == e.character.equipment.feet ? null : e.character.equipment.feet.description) : ""), b("ngClass", je(75, Ca, "feet" === e.getSelectedItemSlot()))("ngClass", e.getEffectClass("feet")), g(2), F(" ", H(42, 59, null == e.character.equipment.feet ? null : e.character.equipment.feet.name), " ")
                 }
             }
-            let q8 = (() => {
+            let W8 = (() => {
                 class i {
                     constructor(e, n) {
                         this.characterService = e, this.inventoryService = n, this.character = e.characterState
@@ -30728,7 +30829,7 @@
                     getSelectedItemSlot() {
                         var e;
                         const n = null === (e = this.inventoryService.selectedItem) || void 0 === e ? void 0 : e.item;
-                        return n && mi(n) ? null == n ? void 0 : n.slot : null
+                        return n && At(n) ? null == n ? void 0 : n.slot : null
                     }
                     allowDrop(e) {
                         var n;
@@ -30747,7 +30848,7 @@
                             const l = null === (o = this.inventoryService.itemStacks[s]) || void 0 === o ? void 0 : o.item,
                                 c = e;
                             if (l) {
-                                if (mi(l) && l.slot != e) return;
+                                if (At(l) && l.slot != e) return;
                                 this.inventoryService.mergeEquippedSlot(c, l, s), this.inventoryService.selectedItem = null
                             }
                         }
@@ -30759,7 +30860,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Ie), _(W))
+                    return new(e || i)(_(Oe), _(W))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -30783,94 +30884,94 @@
                         ["draggable", "true", "tabindex", "0", 1, "itemSlot", "textOverflow", 2, "grid-area", "feet", 3, "ngClass", "matTooltip", "dragover", "drop", "dragstart", "dblclick"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "h3", 0), m(1, "Equipment "), d(2, "button", 1), M("click", function () {
+                        1 & e && (d(0, "h3", 0), m(1, "Equipment "), d(2, "button", 1), T("click", function () {
                             return n.inventoryService.hideEquipment = !n.inventoryService.hideEquipment
-                        }), m(3), h()(), T(4, j8, 43, 77, "div", 2)), 2 & e && (g(3), le(n.inventoryService.hideEquipment ? "Show" : "Hide"), g(1), b("ngIf", !n.inventoryService.hideEquipment))
+                        }), m(3), h()(), x(4, $8, 43, 77, "div", 2)), 2 & e && (g(3), le(n.inventoryService.hideEquipment ? "Show" : "Hide"), g(1), b("ngIf", !n.inventoryService.hideEquipment))
                     },
-                    directives: [st, Di, At, si],
-                    pipes: [un, Mc, jt],
+                    directives: [st, fi, Pt, li],
+                    pipes: [un, Mc, Yt],
                     styles: ['.equipmentContainer[_ngcontent-%COMP%]{margin:2px auto;display:grid;grid-template:". head ." "right body left" "stats legs ." "stats feet .";grid-template-columns:1fr 1fr 1fr;grid-gap:2px;gap:2px}.itemSlot[_ngcontent-%COMP%]{width:80px;height:52px;line-height:12px}.highlightSlot[_ngcontent-%COMP%]{background-color:var(--itemSlotHighlight)}.highlightSpan[_ngcontent-%COMP%]{background-color:var(--manaColor)}.effectlife[_ngcontent-%COMP%]{color:var(--lifeEffectColor)}.effectcorruption[_ngcontent-%COMP%]{color:var(--corruptionEffectColor)}', ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
 
-            function Y8(i, t) {
+            function K8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 11)(1, "input", 12), M("change", function () {
-                        return E(e), w().manaAttackToggle()
+                    d(0, "div", 11)(1, "input", 12), T("change", function () {
+                        return E(e), S().manaAttackToggle()
                     }), h(), d(2, "label", 13)(3, "span"), m(4, "Activate Mana Strike"), h()()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(1), b("checked", e.battleService.enableManaAttack)
                 }
             }
 
-            function z8(i, t) {
+            function J8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 14)(1, "input", 15), M("change", function () {
-                        return E(e), w().pyroclasmToggle()
+                    d(0, "div", 14)(1, "input", 15), T("change", function () {
+                        return E(e), S().pyroclasmToggle()
                     }), h(), d(2, "label", 16)(3, "span"), m(4, "Activate Pyroclasm"), h()()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(1), b("checked", e.battleService.enablePyroclasm)
                 }
             }
 
-            function G8(i, t) {
+            function Q8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 17)(1, "input", 18), M("change", function () {
-                        return E(e), w().metalFistToggle()
+                    d(0, "div", 17)(1, "input", 18), T("change", function () {
+                        return E(e), S().metalFistToggle()
                     }), h(), d(2, "label", 19)(3, "span"), m(4, "Activate Metal Fist"), h()()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(1), b("checked", e.battleService.enableMetalFist)
                 }
             }
 
-            function $8(i, t) {
+            function Z8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 20)(1, "input", 21), M("change", function () {
-                        return E(e), w().manaShieldToggle()
+                    d(0, "div", 20)(1, "input", 21), T("change", function () {
+                        return E(e), S().manaShieldToggle()
                     }), h(), d(2, "label", 22)(3, "span"), m(4, "Activate Mana Shield"), h()()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(1), b("checked", e.battleService.enableManaShield)
                 }
             }
 
-            function W8(i, t) {
+            function X8(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 23)(1, "input", 24), M("change", function () {
-                        return E(e), w().fireShieldToggle()
+                    d(0, "div", 23)(1, "input", 24), T("change", function () {
+                        return E(e), S().fireShieldToggle()
                     }), h(), d(2, "label", 25)(3, "span"), m(4, "Activate Fire Shield"), h()()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(1), b("checked", e.battleService.enableFireShield)
                 }
             }
 
-            function K8(i, t) {
+            function e6(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "div", 26)(1, "input", 27), M("change", function () {
-                        return E(e), w().iceShieldToggle()
+                    d(0, "div", 26)(1, "input", 27), T("change", function () {
+                        return E(e), S().iceShieldToggle()
                     }), h(), d(2, "label", 28)(3, "span"), m(4, "Activate Ice Shield"), h()()()
                 }
                 if (2 & i) {
-                    const e = w();
+                    const e = S();
                     g(1), b("checked", e.battleService.enableIceShield)
                 }
             }
-            let J8 = (() => {
+            let t6 = (() => {
                 class i {
                     constructor(e, n) {
                         this.battleService = e, this.characterService = n
@@ -30902,7 +31003,7 @@
                     }
                 }
                 return i.\u0275fac = function (e) {
-                    return new(e || i)(_(Wt), _(Ie))
+                    return new(e || i)(_(jt), _(Oe))
                 }, i.\u0275cmp = se({
                     type: i,
                     selectors: [
@@ -30942,123 +31043,123 @@
                         ["for", "iceShield"]
                     ],
                     template: function (e, n) {
-                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Battle Options"), h(), B(3, "hr"), d(4, "div")(5, "input", 1), M("change", function () {
+                        1 & e && (d(0, "div", 0)(1, "span"), m(2, "Battle Options"), h(), B(3, "hr"), d(4, "div")(5, "input", 1), T("change", function () {
                             return n.noAttackToggle()
-                        }), h(), d(6, "label", 2)(7, "span"), m(8, "No Special Attack"), h()()(), T(9, Y8, 5, 1, "div", 3), T(10, z8, 5, 1, "div", 4), T(11, G8, 5, 1, "div", 5), B(12, "hr"), d(13, "div")(14, "input", 6), M("change", function () {
+                        }), h(), d(6, "label", 2)(7, "span"), m(8, "No Special Attack"), h()()(), x(9, K8, 5, 1, "div", 3), x(10, J8, 5, 1, "div", 4), x(11, Q8, 5, 1, "div", 5), B(12, "hr"), d(13, "div")(14, "input", 6), T("change", function () {
                             return n.noShieldToggle()
-                        }), h(), d(15, "label", 7)(16, "span"), m(17, "No Shield"), h()()(), T(18, $8, 5, 1, "div", 8), T(19, W8, 5, 1, "div", 9), T(20, K8, 5, 1, "div", 10), h()), 2 & e && (g(5), b("checked", !n.battleService.enableManaAttack && !n.battleService.enablePyroclasm && !n.battleService.enableMetalFist), g(4), b("ngIf", n.battleService.manaAttackUnlocked), g(1), b("ngIf", n.battleService.pyroclasmUnlocked), g(1), b("ngIf", n.battleService.metalFistUnlocked), g(3), b("checked", !n.battleService.enableManaShield && !n.battleService.enableFireShield && !n.battleService.enableIceShield), g(4), b("ngIf", n.battleService.manaShieldUnlocked), g(1), b("ngIf", n.battleService.fireShieldUnlocked), g(1), b("ngIf", n.battleService.iceShieldUnlocked))
+                        }), h(), d(15, "label", 7)(16, "span"), m(17, "No Shield"), h()()(), x(18, Z8, 5, 1, "div", 8), x(19, X8, 5, 1, "div", 9), x(20, e6, 5, 1, "div", 10), h()), 2 & e && (g(5), b("checked", !n.battleService.enableManaAttack && !n.battleService.enablePyroclasm && !n.battleService.enableMetalFist), g(4), b("ngIf", n.battleService.manaAttackUnlocked), g(1), b("ngIf", n.battleService.pyroclasmUnlocked), g(1), b("ngIf", n.battleService.metalFistUnlocked), g(3), b("checked", !n.battleService.enableManaShield && !n.battleService.enableFireShield && !n.battleService.enableIceShield), g(4), b("ngIf", n.battleService.manaShieldUnlocked), g(1), b("ngIf", n.battleService.fireShieldUnlocked), g(1), b("ngIf", n.battleService.iceShieldUnlocked))
                     },
-                    directives: [st, At],
+                    directives: [st, Pt],
                     styles: ["", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                 }), i
             })();
 
-            function Q8(i, t) {
+            function i6(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "span")(1, "mat-icon", 9), M("click", function () {
-                        return E(e), w().battleOptions()
+                    d(0, "span")(1, "mat-icon", 9), T("click", function () {
+                        return E(e), S().battleOptions()
                     }), m(2, " settings "), h()()
                 }
             }
 
-            function Z8(i, t) {
+            function n6(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "button", 10), M("click", function () {
-                        return E(e), w().battleService.trouble()
+                    d(0, "button", 10), T("click", function () {
+                        return E(e), S().battleService.trouble()
                     }), m(1, "Look for Trouble"), h()
                 }
             }
 
-            function X8(i, t) {
+            function r6(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "input", 11), M("change", function (r) {
-                        return E(e), w().autoTroubleChange(r)
+                    d(0, "input", 11), T("change", function (r) {
+                        return E(e), S().autoTroubleChange(r)
                     }), h()
                 }
-                2 & i && b("checked", w().battleService.autoTroubleEnabled)
-            }
-
-            function e6(i, t) {
-                1 & i && (d(0, "label", 12), m(1, "Look for Trouble"), h())
-            }
-
-            function t6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
-            }
-
-            function i6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
-            }
-
-            function n6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
-            }
-
-            function r6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
+                2 & i && b("checked", S().battleService.autoTroubleEnabled)
             }
 
             function o6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
+                1 & i && (d(0, "label", 12), m(1, "Look for Trouble"), h())
             }
 
             function a6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "crisis_alert"), h())
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
             }
 
             function s6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
             }
 
             function l6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
             }
 
             function c6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
             }
 
             function u6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_forward"), h())
             }
 
             function h6(i, t) {
-                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+                1 & i && (d(0, "mat-icon", 15), m(1, "crisis_alert"), h())
             }
 
             function d6(i, t) {
-                if (1 & i && (d(0, "table", 13)(1, "tr")(2, "td", 14), B(3, "mat-icon", 15), h(), d(4, "td", 14), T(5, t6, 2, 0, "mat-icon", 16), h(), d(6, "td", 14), T(7, i6, 2, 0, "mat-icon", 16), h(), d(8, "td", 14), T(9, n6, 2, 0, "mat-icon", 16), h(), d(10, "td", 14), T(11, r6, 2, 0, "mat-icon", 16), h(), d(12, "td", 14), T(13, o6, 2, 0, "mat-icon", 16), h(), d(14, "td", 14), T(15, a6, 2, 0, "mat-icon", 16), h(), d(16, "td", 14), T(17, s6, 2, 0, "mat-icon", 16), h(), d(18, "td", 14), T(19, l6, 2, 0, "mat-icon", 16), h(), d(20, "td", 14), T(21, c6, 2, 0, "mat-icon", 16), h(), d(22, "td", 14), T(23, u6, 2, 0, "mat-icon", 16), h(), d(24, "td", 14), T(25, h6, 2, 0, "mat-icon", 16), h()()()), 2 & i) {
-                    const e = w();
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+            }
+
+            function f6(i, t) {
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+            }
+
+            function p6(i, t) {
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+            }
+
+            function m6(i, t) {
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+            }
+
+            function g6(i, t) {
+                1 & i && (d(0, "mat-icon", 15), m(1, "arrow_backward"), h())
+            }
+
+            function v6(i, t) {
+                if (1 & i && (d(0, "table", 13)(1, "tr")(2, "td", 14), B(3, "mat-icon", 15), h(), d(4, "td", 14), x(5, a6, 2, 0, "mat-icon", 16), h(), d(6, "td", 14), x(7, s6, 2, 0, "mat-icon", 16), h(), d(8, "td", 14), x(9, l6, 2, 0, "mat-icon", 16), h(), d(10, "td", 14), x(11, c6, 2, 0, "mat-icon", 16), h(), d(12, "td", 14), x(13, u6, 2, 0, "mat-icon", 16), h(), d(14, "td", 14), x(15, h6, 2, 0, "mat-icon", 16), h(), d(16, "td", 14), x(17, d6, 2, 0, "mat-icon", 16), h(), d(18, "td", 14), x(19, f6, 2, 0, "mat-icon", 16), h(), d(20, "td", 14), x(21, p6, 2, 0, "mat-icon", 16), h(), d(22, "td", 14), x(23, m6, 2, 0, "mat-icon", 16), h(), d(24, "td", 14), x(25, g6, 2, 0, "mat-icon", 16), h()()()), 2 & i) {
+                    const e = S();
                     g(5), b("ngIf", 4 === e.battleService.tickCounter || 5 === e.battleService.tickCounter), g(2), b("ngIf", 3 === e.battleService.tickCounter || 6 === e.battleService.tickCounter), g(2), b("ngIf", 2 === e.battleService.tickCounter || 7 === e.battleService.tickCounter), g(2), b("ngIf", 1 === e.battleService.tickCounter || 8 === e.battleService.tickCounter), g(2), b("ngIf", 0 === e.battleService.tickCounter || 9 === e.battleService.tickCounter), g(2), b("ngIf", 10 === e.battleService.tickCounter), g(2), b("ngIf", 0 === e.battleService.tickCounter || 9 === e.battleService.tickCounter), g(2), b("ngIf", 1 === e.battleService.tickCounter || 8 === e.battleService.tickCounter), g(2), b("ngIf", 2 === e.battleService.tickCounter || 7 === e.battleService.tickCounter), g(2), b("ngIf", 3 === e.battleService.tickCounter || 6 === e.battleService.tickCounter), g(2), b("ngIf", 4 === e.battleService.tickCounter || 5 === e.battleService.tickCounter)
                 }
             }
 
-            function f6(i, t) {
+            function y6(i, t) {
                 if (1 & i) {
                     const e = V();
-                    d(0, "button", 10), M("click", function () {
+                    d(0, "button", 10), T("click", function () {
                         E(e);
-                        const r = w().$implicit;
-                        return w().battleService.fight(r)
+                        const r = S().$implicit;
+                        return S().battleService.fight(r)
                     }), m(1, "Fight"), h()
                 }
             }
 
-            function p6(i, t) {
+            function _6(i, t) {
                 1 & i && (d(0, "span"), m(1, "Fighting"), h())
             }
 
-            function m6(i, t) {
-                if (1 & i && (cr(0), d(1, "tr")(2, "td"), T(3, f6, 2, 0, "button", 3), T(4, p6, 2, 0, "span", 1), h(), d(5, "td", 17), m(6), I(7, "titlecase"), h(), d(8, "td", 18)(9, "div", 19), I(10, "bigNumber"), I(11, "bigNumber"), B(12, "span"), h()(), d(13, "td", 20)(14, "mat-icon"), m(15, "manage_accounts"), h(), m(16), I(17, "percent"), h(), d(18, "td", 21)(19, "mat-icon"), m(20, "flare"), h(), m(21), I(22, "bigNumber"), h(), d(23, "td", 22)(24, "mat-icon"), m(25, "shield"), h(), m(26), I(27, "bigNumber"), h()(), ur()), 2 & i) {
+            function b6(i, t) {
+                if (1 & i && (cr(0), d(1, "tr")(2, "td"), x(3, y6, 2, 0, "button", 3), x(4, _6, 2, 0, "span", 1), h(), d(5, "td", 17), m(6), O(7, "titlecase"), h(), d(8, "td", 18)(9, "div", 19), O(10, "bigNumber"), O(11, "bigNumber"), B(12, "span"), h()(), d(13, "td", 20)(14, "mat-icon"), m(15, "manage_accounts"), h(), m(16), O(17, "percent"), h(), d(18, "td", 21)(19, "mat-icon"), m(20, "flare"), h(), m(21), O(22, "bigNumber"), h(), d(23, "td", 22)(24, "mat-icon"), m(25, "shield"), h(), m(26), O(27, "bigNumber"), h()(), ur()), 2 & i) {
                     const e = t.$implicit,
-                        n = w();
-                    g(3), b("ngIf", n.battleService.currentEnemy !== e), g(1), b("ngIf", n.battleService.currentEnemy === e), g(2), Ti("", H(7, 11, e.enemy.name), " ", e.quantity > 1 ? "(" + e.quantity + ")" : "", ""), g(3), Ye("value", H(10, 13, n.Math.floor(e.enemy.health)))("max", H(11, 15, n.Math.floor(e.enemy.maxHealth))), g(3), Ft("width", 100 * n.Math.floor(e.enemy.health) / n.Math.floor(e.enemy.maxHealth), "%"), g(4), le(H(17, 17, e.enemy.accuracy)), g(5), le(H(22, 19, e.enemy.attack)), g(5), le(H(27, 21, e.enemy.defense))
+                        n = S();
+                    g(3), b("ngIf", n.battleService.currentEnemy !== e), g(1), b("ngIf", n.battleService.currentEnemy === e), g(2), Di("", H(7, 11, e.enemy.name), " ", e.quantity > 1 ? "(" + e.quantity + ")" : "", ""), g(3), ze("value", H(10, 13, n.Math.floor(e.enemy.health)))("max", H(11, 15, n.Math.floor(e.enemy.maxHealth))), g(3), Lt("width", 100 * n.Math.floor(e.enemy.health) / n.Math.floor(e.enemy.maxHealth), "%"), g(4), le(H(17, 17, e.enemy.accuracy)), g(5), le(H(22, 19, e.enemy.attack)), g(5), le(H(27, 21, e.enemy.defense))
                 }
             }
-            let g6 = (() => {
+            let S6 = (() => {
                     class i {
                         constructor(e, n, r) {
                             this.battleService = e, this.characterService = n, this.dialog = r, this.Math = Math
@@ -31068,7 +31169,7 @@
                             e.target instanceof HTMLInputElement && (this.battleService.autoTroubleEnabled = e.target.checked)
                         }
                         battleOptions() {
-                            this.dialog.open(J8, {
+                            this.dialog.open(t6, {
                                 width: "700px",
                                 data: {
                                     someField: "foo"
@@ -31078,7 +31179,7 @@
                         }
                     }
                     return i.\u0275fac = function (e) {
-                        return new(e || i)(_(Wt), _(Ie), _(Wi))
+                        return new(e || i)(_(jt), _(Oe), _(Wi))
                     }, i.\u0275cmp = se({
                         type: i,
                         selectors: [
@@ -31112,15 +31213,15 @@
                             ["matTooltip", "Defense"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "h3")(1, "mat-icon", 0), m(2, "fort"), h(), m(3, " Battles "), T(4, Q8, 3, 0, "span", 1), d(5, "span", 2), T(6, Z8, 2, 0, "button", 3), T(7, X8, 1, 1, "input", 4), T(8, e6, 2, 0, "label", 5), h()(), d(9, "div", 6), T(10, d6, 26, 11, "table", 7), d(11, "table"), T(12, m6, 28, 23, "ng-container", 8), h()()), 2 & e && (g(4), b("ngIf", n.battleService.manaShieldUnlocked || n.battleService.manaAttackUnlocked || n.battleService.pyroclasmUnlocked || n.battleService.fireShieldUnlocked), g(2), b("ngIf", !n.battleService.autoTroubleUnlocked), g(1), b("ngIf", n.battleService.autoTroubleUnlocked), g(1), b("ngIf", n.battleService.autoTroubleUnlocked), g(2), b("ngIf", n.battleService.enemies.length > 0), g(2), b("ngForOf", n.battleService.enemies))
+                            1 & e && (d(0, "h3")(1, "mat-icon", 0), m(2, "fort"), h(), m(3, " Battles "), x(4, i6, 3, 0, "span", 1), d(5, "span", 2), x(6, n6, 2, 0, "button", 3), x(7, r6, 1, 1, "input", 4), x(8, o6, 2, 0, "label", 5), h()(), d(9, "div", 6), x(10, v6, 26, 11, "table", 7), d(11, "table"), x(12, b6, 28, 23, "ng-container", 8), h()()), 2 & e && (g(4), b("ngIf", n.battleService.manaShieldUnlocked || n.battleService.manaAttackUnlocked || n.battleService.pyroclasmUnlocked || n.battleService.fireShieldUnlocked), g(2), b("ngIf", !n.battleService.autoTroubleUnlocked), g(1), b("ngIf", n.battleService.autoTroubleUnlocked), g(1), b("ngIf", n.battleService.autoTroubleUnlocked), g(2), b("ngIf", n.battleService.enemies.length > 0), g(2), b("ngForOf", n.battleService.enemies))
                         },
-                        directives: [si, At, st, Nt],
-                        pipes: [un, jt, Mc],
+                        directives: [li, Pt, st, Bt],
+                        pipes: [un, Yt, Mc],
                         styles: ["h3[_ngcontent-%COMP%]{margin-bottom:0}.panelHeader[_ngcontent-%COMP%]{white-space:nowrap}.progress-bar[_ngcontent-%COMP%]{vertical-align:-.3em}.health[_ngcontent-%COMP%] > .progress-bar[_ngcontent-%COMP%] > span[_ngcontent-%COMP%]{background-color:var(--healthColor)}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:2px;vertical-align:middle}.rightAligned[_ngcontent-%COMP%]{float:right;margin-right:6px}.clashTable[_ngcontent-%COMP%]{border-spacing:0px}.fixedCell[_ngcontent-%COMP%]{width:16px}.clashIcon[_ngcontent-%COMP%]{margin-top:0;margin-bottom:0}.battleContainer[_ngcontent-%COMP%]{min-height:60px}.enemyName[_ngcontent-%COMP%]{min-width:200px}", ".wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-grow:1;min-height:0;height:100%}.top-line[_ngcontent-%COMP%]{display:flex;justify-content:space-between;margin-top:10px;margin-left:10px;margin-right:10px}.gameTitle[_ngcontent-%COMP%]{font-size:x-large;margin:4px}.mainContainer[_ngcontent-%COMP%]{height:100%;width:100%;background-color:var(--bodyBackground);min-height:0;display:flex;flex-direction:column}.bodyContainer[_ngcontent-%COMP%]{width:100%;display:flex;flex-direction:column;flex-grow:1;min-height:0}.panelContainer[_ngcontent-%COMP%]{display:flex;min-height:0;flex:1 0 75%;overflow:auto}.logContainer[_ngcontent-%COMP%]{width:100%;flex:1 1 110px;display:flex;flex-direction:column;min-height:0}.leftPanel[_ngcontent-%COMP%]{flex:1;display:flex;flex-direction:column;min-width:440px;gap:8px}.centerPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;gap:8px}.rightPanel[_ngcontent-%COMP%]{flex:2;display:flex;flex-direction:column;width:360px;max-width:320px;gap:8px}.timePanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow:auto;margin-bottom:0!important}.attributesPanel[_ngcontent-%COMP%]{flex:1 1 50%;overflow-y:auto;overflow-x:hidden;margin-top:0!important;margin-bottom:0!important}.healthPanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;overflow:auto;flex:0 0 auto}.activityPanel[_ngcontent-%COMP%]{overflow:auto;flex-grow:2;margin-bottom:0!important}.battlePanel[_ngcontent-%COMP%]{flex:1 0 auto;margin-top:0!important;margin-bottom:0!important;overflow:auto}.homePanel[_ngcontent-%COMP%]{margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;flex-grow:0}.logPanel[_ngcontent-%COMP%]{display:flex;flex-grow:1;margin-top:0!important;min-height:0}.inventoryPanel[_ngcontent-%COMP%]{flex-grow:1;margin-top:0!important;margin-bottom:0!important;display:flex;flex-direction:column;min-height:0}.equipmentPanel[_ngcontent-%COMP%]{margin-bottom:0!important;overflow:auto;display:flex;flex-direction:column;flex:0 0 auto}.panel[_ngcontent-%COMP%]{background-color:var(--panelBackground);margin:4px;border:3px solid var(--panelBorder);border-radius:4px}.panelHeader[_ngcontent-%COMP%]{border-bottom:1px solid var(--panelBorder);color:var(--bodyText);font-size:14px;font-weight:400;margin:0 4px}mat-icon[_ngcontent-%COMP%]{height:16px;width:16px;font-size:16px;margin:4px 1px;vertical-align:middle;color:var(--bodyText)}.versionNumber[_ngcontent-%COMP%]{font-size:x-small;text-decoration:underline;cursor:pointer}.highlighted[_ngcontent-%COMP%]{background-color:var(--buttonHighlightBg)}"]
                     }), i
                 })(),
-                y6 = (() => {
-                    class i extends class v6 {
+                C6 = (() => {
+                    class i extends class w6 {
                         constructor() {
                             this.mouseMoveListener = this.handleMouseMove.bind(this), this.mouseUpListener = this.handleMouseUp.bind(this)
                         }
@@ -31165,15 +31266,15 @@
                             [1, "resize-vertical", 3, "mousedown"]
                         ],
                         template: function (e, n) {
-                            1 & e && (d(0, "div", 0)(1, "mat-icon", 1), M("mousedown", function (o) {
+                            1 & e && (d(0, "div", 0)(1, "mat-icon", 1), T("mousedown", function (o) {
                                 return n.handleMouseDown(o)
                             }), m(2, "drag_handle"), h()())
                         },
-                        directives: [si],
+                        directives: [li],
                         styles: [".handle[_ngcontent-%COMP%]{display:flex;justify-content:center}.resize-vertical[_ngcontent-%COMP%]{color:var(--bodyText);cursor:ns-resize;font-size:20px;height:20px;width:20px}"]
                     }), i
                 })(),
-                _6 = (() => {
+                k6 = (() => {
                     class i {
                         constructor(e) {
                             this.nativeElement = e.nativeElement
@@ -31198,16 +31299,16 @@
                         exportAs: ["appResizable"]
                     }), i
                 })();
-            const b6 = [k1, gM, Y1, K1];
-            let S6 = (() => {
+            const M6 = [k1, gM, Y1, K1];
+            let x6 = (() => {
                 class i {}
                 return i.\u0275fac = function (e) {
                     return new(e || i)
-                }, i.\u0275mod = je({
+                }, i.\u0275mod = qe({
                     type: i,
                     bootstrap: [yM]
                 }), i.\u0275inj = He({
-                    providers: [un, jt, P1, {
+                    providers: [un, Yt, P1, {
                         provide: W1,
                         useValue: {
                             disableTooltipInteractivity: !0,
@@ -31215,17 +31316,17 @@
                         }
                     }],
                     imports: [
-                        [x0, VN, IV, S4, Cs, ...b6], k1, gM, Y1, K1
+                        [x0, VN, IV, S4, Cs, ...M6], k1, gM, Y1, K1
                     ]
                 }), i
             })();
-            ho(yM, [Di, si, At, st, _6, wq, y6, Iq, Nq, U8, g6, q8, c8, E8, d8], []), ho(I1, [Nt, Di, At, si, st], [un, jt]), ho(nM, [st], [jt, jr]), ho(vM, [Nt], [jr, jt, kc, Sa]), ho(vm, [], [jt]), Km.production && function XO() {
+            ho(yM, [fi, li, Pt, st, k6, wq, C6, Iq, Nq, G8, S6, W8, f8, R8, g8], []), ho(I1, [Bt, fi, Pt, li, st], [un, Yt]), ho(nM, [st], [Yt, jr]), ho(vM, [Bt], [jr, Yt, kc, Sa]), ho(vm, [], [Yt]), Km.production && function XO() {
                 BS = !1
-            }(), cL().bootstrapModule(S6).catch(i => console.error(i))
+            }(), cL().bootstrapModule(x6).catch(i => console.error(i))
         },
         147: xa => {
             xa.exports = {
-                i8: "1.0.63"
+                i8: "1.1.0"
             }
         }
     },
